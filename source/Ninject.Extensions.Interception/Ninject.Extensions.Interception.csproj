@@ -1,0 +1,110 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{C99A5FAE-C6AD-4F24-A938-EC8BDDB885A6}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Ninject.Extensions.Interception</RootNamespace>
+    <AssemblyName>Ninject.Extensions.Interception</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="LinFu.DynamicProxy, Version=1.0.3002.13039, Culture=neutral, PublicKeyToken=62a6874124340d6e, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\contrib\LinFu.DynamicProxy\LinFu.DynamicProxy.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject, Version=2.0.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\contrib\Ninject\Ninject.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Attributes\DoNotInterceptAttribute.cs" />
+    <Compile Include="Infrastructure\Ensure.cs" />
+    <Compile Include="Infrastructure\Language\ExtensionsForICustomAttributeProvider.cs" />
+    <Compile Include="Infrastructure\Language\ExtensionsForIEnumerable.cs" />
+    <Compile Include="Infrastructure\Language\ExtensionsForMethodBase.cs" />
+    <Compile Include="Advice\IAdvice.cs" />
+    <Compile Include="Advice\Builders\IAdviceBuilder.cs" />
+    <Compile Include="Advice\IAdviceFactory.cs" />
+    <Compile Include="Advice\Syntax\IAdviceOrderSyntax.cs" />
+    <Compile Include="Registry\IAdviceRegistry.cs" />
+    <Compile Include="Advice\Syntax\IAdviceTargetSyntax.cs" />
+    <Compile Include="IInvocation.cs" />
+    <Compile Include="IInterceptor.cs" />
+    <Compile Include="Infrastructure\DisposableObject.cs" />
+    <Compile Include="Injection\Dynamic\DynamicInjectorFactory.cs" />
+    <Compile Include="Injection\Dynamic\DynamicMethodFactory.cs" />
+    <Compile Include="Injection\Dynamic\DynamicMethodInjector.cs" />
+    <Compile Include="Injection\FactoryMethod.cs" />
+    <Compile Include="Injection\Getter.cs" />
+    <Compile Include="Infrastructure\IDisposableEx.cs" />
+    <Compile Include="Injection\IInjector.cs" />
+    <Compile Include="Injection\IInjectorFactory.cs" />
+    <Compile Include="Injection\IMethodInjector.cs" />
+    <Compile Include="Injection\InjectorBase.cs" />
+    <Compile Include="Injection\InjectorFactoryBase.cs" />
+    <Compile Include="Injection\Invoker.cs" />
+    <Compile Include="Injection\Reflection\ReflectionInjectorFactory.cs" />
+    <Compile Include="Injection\Reflection\ReflectionMethodInjector.cs" />
+    <Compile Include="Injection\Setter.cs" />
+    <Compile Include="Attributes\InterceptAttribute.cs" />
+    <Compile Include="InterceptionModule.cs" />
+    <Compile Include="Planning\Strategies\InterceptorRegistrationStrategy.cs" />
+    <Compile Include="Invocation\InvocationBase.cs" />
+    <Compile Include="ProxyFactory\IProxyFactory.cs" />
+    <Compile Include="Request\IProxyRequest.cs" />
+    <Compile Include="Request\IProxyRequestFactory.cs" />
+    <Compile Include="Wrapper\IWrapper.cs" />
+    <Compile Include="Infrastructure\Language\KernelExtensions.cs" />
+    <Compile Include="ProxyFactory\LinFuProxyFactory.cs" />
+    <Compile Include="Wrapper\LinFuWrapper.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Activation\Strategies\ProxyActivationStrategy.cs" />
+    <Compile Include="Planning\Directives\ProxyDirective.cs" />
+    <Compile Include="ProxyFactory\ProxyFactoryBase.cs" />
+    <Compile Include="Request\ProxyRequest.cs" />
+    <Compile Include="SimpleInterceptor.cs" />
+    <Compile Include="Advice\Advice.cs" />
+    <Compile Include="Advice\Builders\AdviceBuilder.cs" />
+    <Compile Include="Advice\AdviceFactory.cs" />
+    <Compile Include="Registry\AdviceRegistry.cs" />
+    <Compile Include="Invocation\Invocation.cs" />
+    <Compile Include="Request\ProxyRequestFactory.cs" />
+    <Compile Include="Wrapper\StandardWrapper.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
