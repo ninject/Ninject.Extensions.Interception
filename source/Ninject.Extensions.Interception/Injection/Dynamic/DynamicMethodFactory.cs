@@ -4,7 +4,7 @@
 
 // 
 // Author: Nate Kohari <nate@enkari.com>
-// Copyright (c) 2007-2009, Enkari, Ltd.
+// Copyright (c) 2007-2010, Enkari, Ltd.
 // 
 // Dual-licensed under the Apache License, Version 2.0, and the Microsoft Public License (Ms-PL).
 // See the file LICENSE.txt for details.
@@ -57,7 +57,8 @@ namespace Ninject.Extensions.Interception.Injection.Dynamic
                 il.EmitCall( OpCodes.Callvirt, method, null );
             }
 
-            if ( method.ReturnType == typeof (void) )
+            if ( method.ReturnType ==
+                 typeof (void) )
             {
                 il.Emit( OpCodes.Ldnull );
             }
@@ -236,7 +237,10 @@ namespace Ninject.Extensions.Interception.Injection.Dynamic
         private static DynamicMethod CreateDynamicInvoker()
         {
 #if !NO_SKIP_VISIBILITY
-            return new DynamicMethod( String.Empty, typeof (object), new[] {typeof (object), typeof (object[])}, Module,
+            return new DynamicMethod( String.Empty,
+                                      typeof (object),
+                                      new[] { typeof (object), typeof (object[]) },
+                                      Module,
                                       true );
 #else
 			return new DynamicMethod(String.Empty, typeof(object), new[] { typeof(object), typeof(object[]) });
@@ -246,7 +250,7 @@ namespace Ninject.Extensions.Interception.Injection.Dynamic
         private static DynamicMethod CreateDynamicFactoryMethod()
         {
 #if !NO_SKIP_VISIBILITY
-            return new DynamicMethod( String.Empty, typeof (object), new[] {typeof (object[])}, Module, true );
+            return new DynamicMethod( String.Empty, typeof (object), new[] { typeof (object[]) }, Module, true );
 #else
 			return new DynamicMethod(String.Empty, typeof(object), new[] { typeof(object[]) });
 #endif
@@ -255,7 +259,7 @@ namespace Ninject.Extensions.Interception.Injection.Dynamic
         private static DynamicMethod CreateDynamicGetterMethod()
         {
 #if !NO_SKIP_VISIBILITY
-            return new DynamicMethod( String.Empty, typeof (object), new[] {typeof (object)}, Module, true );
+            return new DynamicMethod( String.Empty, typeof (object), new[] { typeof (object) }, Module, true );
 #else
 			return new DynamicMethod(String.Empty, typeof(object), new[] { typeof(object) });
 #endif
@@ -264,7 +268,10 @@ namespace Ninject.Extensions.Interception.Injection.Dynamic
         private static DynamicMethod CreateDynamicSetterMethod()
         {
 #if !NO_SKIP_VISIBILITY
-            return new DynamicMethod( String.Empty, typeof (void), new[] {typeof (object), typeof (object)}, Module,
+            return new DynamicMethod( String.Empty,
+                                      typeof (void),
+                                      new[] { typeof (object), typeof (object) },
+                                      Module,
                                       true );
 #else
 			return new DynamicMethod(String.Empty, typeof(void), new[] { typeof(object), typeof(object) });
@@ -288,7 +295,8 @@ namespace Ninject.Extensions.Interception.Injection.Dynamic
 
         private static void EmitLoadParameters( DelegateBuildInfo info, ILGenerator il, int argumentArrayIndex )
         {
-            if ( !info.Method.IsStatic && !( info.Method is ConstructorInfo ) )
+            if ( !info.Method.IsStatic &&
+                 !( info.Method is ConstructorInfo ) )
             {
                 il.Emit( OpCodes.Ldarg_0 );
                 EmitUnboxOrCast( il, info.Method.DeclaringType );
@@ -363,7 +371,8 @@ namespace Ninject.Extensions.Interception.Injection.Dynamic
                     il.Emit( OpCodes.Ldc_I4_8 );
                     break;
                 default:
-                    if ( value > -129 && value < 128 )
+                    if ( value > -129 &&
+                         value < 128 )
                     {
                         il.Emit( OpCodes.Ldc_I4_S, (sbyte) value );
                     }
@@ -392,7 +401,8 @@ namespace Ninject.Extensions.Interception.Injection.Dynamic
                     il.Emit( OpCodes.Ldarg_3 );
                     break;
                 default:
-                    if ( index > -129 && index < 128 )
+                    if ( index > -129 &&
+                         index < 128 )
                     {
                         il.Emit( OpCodes.Ldarg_S, (sbyte) index );
                     }

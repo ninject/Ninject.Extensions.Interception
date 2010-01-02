@@ -2,7 +2,7 @@
 
 // 
 // Author: Nate Kohari <nate@enkari.com>
-// Copyright (c) 2007-2009, Enkari, Ltd.
+// Copyright (c) 2007-2010, Enkari, Ltd.
 // 
 // Dual-licensed under the Apache License, Version 2.0, and the Microsoft Public License (Ms-PL).
 // See the file LICENSE.txt for details.
@@ -35,7 +35,8 @@ namespace Ninject.Extensions.Interception.Infrastructure.Language
         {
             var attributes = member.GetCustomAttributes( typeof (T), true ) as T[];
 
-            if ( ( attributes == null ) || ( attributes.Length == 0 ) )
+            if ( ( attributes == null ) ||
+                 ( attributes.Length == 0 ) )
             {
                 return null;
             }
@@ -55,7 +56,8 @@ namespace Ninject.Extensions.Interception.Infrastructure.Language
         {
             object[] attributes = member.GetCustomAttributes( type, true );
 
-            if ( ( attributes == null ) || ( attributes.Length == 0 ) )
+            if ( ( attributes == null ) ||
+                 ( attributes.Length == 0 ) )
             {
                 return null;
             }
@@ -123,7 +125,8 @@ namespace Ninject.Extensions.Interception.Infrastructure.Language
         {
             T[] attributes = member.GetAllAttributes<T>();
 
-            if ( ( attributes == null ) || ( attributes.Length == 0 ) )
+            if ( ( attributes == null ) ||
+                 ( attributes.Length == 0 ) )
             {
                 return false;
             }

@@ -14,7 +14,7 @@ using System.Runtime.InteropServices;
 [assembly : AssemblyConfiguration( "" )]
 [assembly : AssemblyCompany( "Microsoft" )]
 [assembly : AssemblyProduct( "Ninject.Extensions.Interception.Tests" )]
-[assembly : AssemblyCopyright( "Copyright © Microsoft 2009" )]
+[assembly : AssemblyCopyright( "Copyright © 2007-2010 Innovatian Software, LLC and contributors" )]
 [assembly : AssemblyTrademark( "" )]
 [assembly : AssemblyCulture( "" )]
 

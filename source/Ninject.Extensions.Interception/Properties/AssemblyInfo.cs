@@ -12,8 +12,7 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 
 [assembly : AssemblyProduct( "Ninject Interception Extension" )]
-[assembly : AssemblyCopyright( "Copyright © 2007-2009 Enkari, Ltd. and contributors" )]
-
+[assembly : AssemblyCopyright( "Copyright © 2007-2010 Innovatian Software, LLC and contributors" )]
 [assembly : AssemblyTitle( "Ninject.Extensions.Interception" )]
 [assembly : AssemblyDescription( "" )]
 [assembly : AssemblyConfiguration( "" )]
@@ -21,8 +20,7 @@ using System.Runtime.InteropServices;
 [assembly : AssemblyTrademark( "" )]
 [assembly : AssemblyCulture( "" )]
 [assembly : InternalsVisibleTo( "Ninject.Extensions.Interception.Tests" )]
-
-[assembly: CLSCompliant(true)]
+[assembly : CLSCompliant( true )]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
 // to COM components.  If you need to access a type in this assembly from 

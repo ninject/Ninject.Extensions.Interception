@@ -43,9 +43,15 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ActionInterceptor.cs" />
     <Compile Include="Attributes\DoNotInterceptAttribute.cs" />
+    <Compile Include="Attributes\InternalInterceptAttribute.cs" />
+    <Compile Include="Planning\Strategies\MethodInterceptorRegistrationStrategy.cs" />
+    <Compile Include="Registry\IMethodInterceptorRegistry.cs" />
     <Compile Include="Infrastructure\Ensure.cs" />
     <Compile Include="Infrastructure\Language\ExtensionsForICustomAttributeProvider.cs" />
     <Compile Include="Infrastructure\Language\ExtensionsForIEnumerable.cs" />
@@ -54,6 +60,7 @@
     <Compile Include="Advice\Builders\IAdviceBuilder.cs" />
     <Compile Include="Advice\IAdviceFactory.cs" />
     <Compile Include="Advice\Syntax\IAdviceOrderSyntax.cs" />
+    <Compile Include="Registry\MethodInterceptorCollection.cs" />
     <Compile Include="Registry\IAdviceRegistry.cs" />
     <Compile Include="Advice\Syntax\IAdviceTargetSyntax.cs" />
     <Compile Include="IInvocation.cs" />
@@ -81,6 +88,7 @@
     <Compile Include="ProxyFactory\IProxyFactory.cs" />
     <Compile Include="Request\IProxyRequest.cs" />
     <Compile Include="Request\IProxyRequestFactory.cs" />
+    <Compile Include="Registry\MethodInterceptorRegistry.cs" />
     <Compile Include="Wrapper\IWrapper.cs" />
     <Compile Include="Infrastructure\Language\KernelExtensions.cs" />
     <Compile Include="ProxyFactory\LinFuProxyFactory.cs" />

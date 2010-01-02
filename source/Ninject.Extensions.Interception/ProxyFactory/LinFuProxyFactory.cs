@@ -2,7 +2,7 @@
 
 // 
 // Author: Nate Kohari <nate@enkari.com>
-// Copyright (c) 2007-2009, Enkari, Ltd.
+// Copyright (c) 2007-2010, Enkari, Ltd.
 // 
 // Dual-licensed under the Apache License, Version 2.0, and the Microsoft Public License (Ms-PL).
 // See the file LICENSE.txt for details.
@@ -62,7 +62,7 @@ namespace Ninject.Extensions.Interception.ProxyFactory
         /// </summary>
         /// <param name="context">The context in which the instance was activated.</param>
         /// <returns>A proxy that wraps the instance.</returns>
-        public override void Wrap( IContext context, Ninject.Activation.InstanceReference reference )
+        public override void Wrap( IContext context, InstanceReference reference )
         {
             var wrapper = new LinFuWrapper( Kernel, context, reference.Instance );
             reference.Instance = _factory.CreateProxy( reference.Instance.GetType(), wrapper );
@@ -73,7 +73,7 @@ namespace Ninject.Extensions.Interception.ProxyFactory
         /// </summary>
         /// <param name="context">The context in which the instance was activated.</param>
         /// <returns>The unwrapped instance.</returns>
-        public override void Unwrap( IContext context, Ninject.Activation.InstanceReference reference )
+        public override void Unwrap( IContext context, InstanceReference reference )
         {
             var proxy = reference.Instance as IProxy;
 

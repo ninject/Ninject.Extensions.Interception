@@ -2,7 +2,7 @@
 
 // 
 // Author: Ian Davis <ian.f.davis@gmail.com>
-// Copyright (c) 2009, Ian Davis
+// Copyright (c) 2010, Ian Davis
 // 
 // Dual-licensed under the Apache License, Version 2.0, and the Microsoft Public License (Ms-PL).
 // See the file LICENSE.txt for details.
@@ -46,10 +46,12 @@ namespace Ninject.Extensions.Interception
             Kernel.Components.Add<IAdviceFactory, AdviceFactory>();
             Kernel.Components.Add<IAdviceRegistry, AdviceRegistry>();
             Kernel.Components.Add<IPlanningStrategy, InterceptorRegistrationStrategy>();
+            Kernel.Components.Add<IPlanningStrategy, MethodInterceptorRegistrationStrategy>();
+            Kernel.Components.Add<IMethodInterceptorRegistry, MethodInterceptorRegistry>();
 
 #if NO_LCG
             // If the target platform doesn't have DynamicMethod support, we can't use DynamicInjectorFactory.
-			Kernel.Components.Add<IInjectorFactory, ReflectionInjectorFactory>();
+            Kernel.Components.Add<IInjectorFactory, ReflectionInjectorFactory>();
 #else
             if ( Kernel.Settings.UseReflectionBasedInjection )
             {

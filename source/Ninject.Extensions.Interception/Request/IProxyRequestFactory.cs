@@ -2,7 +2,7 @@
 
 // 
 // Author: Nate Kohari <nate@enkari.com>
-// Copyright (c) 2007-2009, Enkari, Ltd.
+// Copyright (c) 2007-2010, Enkari, Ltd.
 // 
 // Dual-licensed under the Apache License, Version 2.0, and the Microsoft Public License (Ms-PL).
 // See the file LICENSE.txt for details.
@@ -35,7 +35,10 @@ namespace Ninject.Extensions.Interception.Request
         /// <param name="arguments">The arguments to the method.</param>
         /// <param name="genericArguments">The generic type arguments for the method.</param>
         /// <returns>The newly-created request.</returns>
-        IProxyRequest Create( IContext context, object target, MethodInfo method, object[] arguments,
+        IProxyRequest Create( IContext context,
+                              object target,
+                              MethodInfo method,
+                              object[] arguments,
                               Type[] genericArguments );
     }
 }

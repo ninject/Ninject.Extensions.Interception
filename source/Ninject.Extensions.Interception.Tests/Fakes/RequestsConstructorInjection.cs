@@ -2,7 +2,7 @@ namespace Ninject.Extensions.Interception.Tests.Fakes
 {
     public class RequestsConstructorInjection : IMock
     {
-        private SimpleObject _child;
+        private readonly SimpleObject _child;
 
         public RequestsConstructorInjection()
         {
@@ -14,9 +14,6 @@ namespace Ninject.Extensions.Interception.Tests.Fakes
             _child = child;
         }
 
-        public virtual SimpleObject Child
-        {
-            get { return _child; }
-        }
+        public virtual SimpleObject Child { get { return _child; } }
     }
 }

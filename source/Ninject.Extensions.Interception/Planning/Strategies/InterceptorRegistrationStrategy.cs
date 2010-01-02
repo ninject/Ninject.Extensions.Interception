@@ -2,7 +2,7 @@
 
 // 
 // Author: Nate Kohari <nate@enkari.com>
-// Copyright (c) 2007-2009, Enkari, Ltd.
+// Copyright (c) 2007-2010, Enkari, Ltd.
 // 
 // Dual-licensed under the Apache License, Version 2.0, and the Microsoft Public License (Ms-PL).
 // See the file LICENSE.txt for details.
@@ -49,7 +49,7 @@ namespace Ninject.Extensions.Interception.Planning.Strategies
         /// Contributes to the specified plan.
         /// </summary>
         /// <param name="plan">The plan that is being generated.</param>
-        public void Execute( IPlan plan )
+        public virtual void Execute( IPlan plan )
         {
             IEnumerable<MethodInfo> candidates = GetCandidateMethods( plan.Type );
 
@@ -110,7 +110,8 @@ namespace Ninject.Extensions.Interception.Planning.Strategies
         /// <param name="type">The type whose activation plan is being manipulated.</param>
         /// <param name="method">The method that may be intercepted.</param>
         /// <param name="attributes">The interception attributes that apply.</param>
-        protected virtual void RegisterMethodInterceptors( Type type, MethodInfo method,
+        protected virtual void RegisterMethodInterceptors( Type type,
+                                                           MethodInfo method,
                                                            ICollection<InterceptAttribute> attributes )
         {
             foreach ( InterceptAttribute attribute in attributes )
@@ -135,7 +136,8 @@ namespace Ninject.Extensions.Interception.Planning.Strategies
 
             foreach ( MethodInfo method in methods )
             {
-                if ( method.DeclaringType != typeof (object) && !method.IsPrivate && !method.IsFinal )
+                if ( method.DeclaringType != typeof (object) && !method.IsPrivate &&
+                     !method.IsFinal )
                 {
                     yield return method;
                 }

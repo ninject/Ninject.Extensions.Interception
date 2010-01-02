@@ -61,9 +61,12 @@
     <Compile Include="Fakes\IFoo.cs" />
     <Compile Include="Fakes\ObjectWithGenericMethod.cs" />
     <Compile Include="Fakes\ObjectWithMethodInterceptor.cs" />
+    <Compile Include="MethodInterceptionContext.cs" />
+    <Compile Include="Fakes\Mock.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Fakes\RequestsConstructorInjection.cs" />
     <Compile Include="Fakes\SimpleObject.cs" />
+    <Compile Include="PropertyInterceptionContext.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Ninject.Extensions.Interception\Ninject.Extensions.Interception.csproj">

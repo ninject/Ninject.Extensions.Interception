@@ -2,7 +2,7 @@
 
 // 
 // Author: Nate Kohari <nate@enkari.com>
-// Copyright (c) 2007-2009, Enkari, Ltd.
+// Copyright (c) 2007-2010, Enkari, Ltd.
 // 
 // Dual-licensed under the Apache License, Version 2.0, and the Microsoft Public License (Ms-PL).
 // See the file LICENSE.txt for details.
@@ -34,7 +34,10 @@ namespace Ninject.Extensions.Interception.Request
         /// <param name="method">The method that will be called on the target instance.</param>
         /// <param name="arguments">The arguments to the method.</param>
         /// <param name="genericArguments">The generic type arguments for the method.</param>
-        public ProxyRequest( IContext context, object target, MethodInfo method, object[] arguments,
+        public ProxyRequest( IContext context,
+                             object target,
+                             MethodInfo method,
+                             object[] arguments,
                              Type[] genericArguments )
         {
             Ensure.ArgumentNotNull( context, "context" );
@@ -85,10 +88,7 @@ namespace Ninject.Extensions.Interception.Request
         /// <summary>
         /// Gets a value indicating whether the request has generic arguments.
         /// </summary>
-        public bool HasGenericArguments
-        {
-            get { return ( GenericArguments != null ) && ( GenericArguments.Length > 0 ); }
-        }
+        public bool HasGenericArguments { get { return ( GenericArguments != null ) && ( GenericArguments.Length > 0 ); } }
 
         #endregion
     }
