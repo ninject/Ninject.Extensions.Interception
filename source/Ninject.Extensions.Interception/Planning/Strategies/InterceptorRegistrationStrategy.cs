@@ -34,6 +34,11 @@ namespace Ninject.Extensions.Interception.Planning.Strategies
     /// </summary>
     public class InterceptorRegistrationStrategy : NinjectComponent, IPlanningStrategy
     {
+        protected const BindingFlags DefaultBindingFlags =
+            BindingFlags.Public |
+            BindingFlags.NonPublic |
+            BindingFlags.Instance;
+
         public InterceptorRegistrationStrategy( IAdviceFactory adviceFactory, IAdviceRegistry adviceRegistry )
         {
             AdviceFactory = adviceFactory;
@@ -57,7 +62,9 @@ namespace Ninject.Extensions.Interception.Planning.Strategies
 
             foreach ( MethodInfo method in candidates )
             {
-                InterceptAttribute[] attributes = method.GetAllAttributes<InterceptAttribute>();
+                PropertyInfo property = method.GetPropertyFromMethod( plan.Type );
+                ICustomAttributeProvider provider = (ICustomAttributeProvider) property ?? method;
+                InterceptAttribute[] attributes = provider.GetAllAttributes<InterceptAttribute>();
 
                 if ( attributes.Length == 0 )
                 {
@@ -94,14 +101,20 @@ namespace Ninject.Extensions.Interception.Planning.Strategies
 
             foreach ( MethodInfo method in candidates )
             {
-                if ( !method.HasAttribute<DoNotInterceptAttribute>() )
+                PropertyInfo property = method.GetPropertyFromMethod( type );
+                ICustomAttributeProvider provider = (ICustomAttributeProvider) property ?? method;
+
+                if ( !provider.HasAttribute<DoNotInterceptAttribute>() )
                 {
                     RegisterMethodInterceptors( type, method, attributes );
                 }
             }
 
             // Indicate that instances of the type should be proxied.
-            plan.Add( new ProxyDirective() );
+            if ( !plan.Has<ProxyDirective>() )
+            {
+                plan.Add( new ProxyDirective() );
+            }
         }
 
         /// <summary>
@@ -132,16 +145,22 @@ namespace Ninject.Extensions.Interception.Planning.Strategies
         /// <returns>The candidate methods.</returns>
         protected virtual IEnumerable<MethodInfo> GetCandidateMethods( Type type )
         {
-            MethodInfo[] methods = type.GetMethods( BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance );
+            MethodInfo[] methods = type.GetMethods( DefaultBindingFlags );
 
             foreach ( MethodInfo method in methods )
             {
-                if ( method.DeclaringType != typeof (object) && !method.IsPrivate &&
-                     !method.IsFinal )
+                if ( ShouldIntercept( method ) )
                 {
                     yield return method;
                 }
             }
+        }
+
+        protected virtual bool ShouldIntercept( MethodInfo methodInfo )
+        {
+            return methodInfo.DeclaringType != typeof (object) &&
+                   !methodInfo.IsPrivate &&
+                   !methodInfo.IsFinal;
         }
     }
 }

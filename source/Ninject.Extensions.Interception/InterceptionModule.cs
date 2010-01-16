@@ -1,8 +1,8 @@
 #region License
 
 // 
-// Author: Ian Davis <ian.f.davis@gmail.com>
-// Copyright (c) 2010, Ian Davis
+// Author: Ian Davis <ian@innovatian.com>
+// Copyright (c) 2010, Innovatian Software, LLC
 // 
 // Dual-licensed under the Apache License, Version 2.0, and the Microsoft Public License (Ms-PL).
 // See the file LICENSE.txt for details.
@@ -46,6 +46,7 @@ namespace Ninject.Extensions.Interception
             Kernel.Components.Add<IAdviceFactory, AdviceFactory>();
             Kernel.Components.Add<IAdviceRegistry, AdviceRegistry>();
             Kernel.Components.Add<IPlanningStrategy, InterceptorRegistrationStrategy>();
+            Kernel.Components.Add<IPlanningStrategy, AutoNotifyInterceptorRegistrationStrategy>();
             Kernel.Components.Add<IPlanningStrategy, MethodInterceptorRegistrationStrategy>();
             Kernel.Components.Add<IMethodInterceptorRegistry, MethodInterceptorRegistry>();
 

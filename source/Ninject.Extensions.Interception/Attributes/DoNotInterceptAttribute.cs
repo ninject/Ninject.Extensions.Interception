@@ -23,7 +23,7 @@ namespace Ninject.Extensions.Interception.Attributes
     /// at the class level.
     /// </summary>
     [AttributeUsage( AttributeTargets.Method, AllowMultiple = false, Inherited = true )]
-    public sealed class DoNotInterceptAttribute : Attribute
+    public class DoNotInterceptAttribute : Attribute
     {
     }
 }

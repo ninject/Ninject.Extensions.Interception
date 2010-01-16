@@ -51,10 +51,13 @@
   <ItemGroup>
     <Compile Include="Attributes\FlagAttribute.cs" />
     <Compile Include="Fakes\DummyProxyFactory.cs" />
+    <Compile Include="Fakes\ViewModelBase.cs" />
+    <Compile Include="Fakes\ViewModelWithClassNotify.cs" />
     <Compile Include="InterceptionTestContext.cs" />
     <Compile Include="Interceptors\FlagInterceptor.cs" />
     <Compile Include="Fakes\IGenericMethod.cs" />
     <Compile Include="Fakes\IMock.cs" />
+    <Compile Include="AutoNotifyPropertyChangedContext.cs" />
     <Compile Include="LinFuInterceptionContext.cs" />
     <Compile Include="Attributes\CountAttribute.cs" />
     <Compile Include="Interceptors\CountInterceptor.cs" />
@@ -67,6 +70,7 @@
     <Compile Include="Fakes\RequestsConstructorInjection.cs" />
     <Compile Include="Fakes\SimpleObject.cs" />
     <Compile Include="PropertyInterceptionContext.cs" />
+    <Compile Include="Fakes\ViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Ninject.Extensions.Interception\Ninject.Extensions.Interception.csproj">

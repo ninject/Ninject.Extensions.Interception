@@ -50,6 +50,12 @@
     <Compile Include="ActionInterceptor.cs" />
     <Compile Include="Attributes\DoNotInterceptAttribute.cs" />
     <Compile Include="Attributes\InternalInterceptAttribute.cs" />
+    <Compile Include="Attributes\DoNotNotifyOfChangesAttribute.cs" />
+    <Compile Include="IAutoNotifyPropertyChanged.cs" />
+    <Compile Include="Infrastructure\Language\ExtensionsForMethodInfo.cs" />
+    <Compile Include="Planning\Strategies\AutoNotifyInterceptorRegistrationStrategy.cs" />
+    <Compile Include="AutoNotifyPropertyChangedInterceptor.cs" />
+    <Compile Include="Attributes\NotifyOfChangesAttribute.cs" />
     <Compile Include="Planning\Strategies\MethodInterceptorRegistrationStrategy.cs" />
     <Compile Include="Registry\IMethodInterceptorRegistry.cs" />
     <Compile Include="Infrastructure\Ensure.cs" />

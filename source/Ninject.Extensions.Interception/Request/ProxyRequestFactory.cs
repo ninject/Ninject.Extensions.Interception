@@ -32,18 +32,20 @@ namespace Ninject.Extensions.Interception.Request
         /// Creates a request representing the specified method call.
         /// </summary>
         /// <param name="context">The context in which the target instance was activated.</param>
+        /// <param name="proxy">The proxy instance.</param>
         /// <param name="target">The target instance.</param>
         /// <param name="method">The method that will be called on the target instance.</param>
         /// <param name="arguments">The arguments to the method.</param>
         /// <param name="genericArguments">The generic type arguments for the method.</param>
         /// <returns>The newly-created request.</returns>
         public IProxyRequest Create( IContext context,
+                                     object proxy,
                                      object target,
                                      MethodInfo method,
                                      object[] arguments,
                                      Type[] genericArguments )
         {
-            return new ProxyRequest( context, target, method, arguments, genericArguments );
+            return new ProxyRequest( context, proxy, target, method, arguments, genericArguments );
         }
 
         #endregion

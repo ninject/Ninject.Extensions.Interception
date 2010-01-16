@@ -36,6 +36,11 @@ namespace Ninject.Extensions.Interception.Request
         IContext Context { get; }
 
         /// <summary>
+        /// Gets or sets the proxy instance.
+        /// </summary>
+        object Proxy { get; set; }
+
+        /// <summary>
         /// Gets the target instance.
         /// </summary>
         object Target { get; }

@@ -30,23 +30,27 @@ namespace Ninject.Extensions.Interception.Request
         /// Initializes a new instance of the <see cref="ProxyRequest"/> class.
         /// </summary>
         /// <param name="context">The context in which the target instance was activated.</param>
+        /// <param name="proxy"></param>
         /// <param name="target">The target instance.</param>
         /// <param name="method">The method that will be called on the target instance.</param>
         /// <param name="arguments">The arguments to the method.</param>
         /// <param name="genericArguments">The generic type arguments for the method.</param>
         public ProxyRequest( IContext context,
+                             object proxy,
                              object target,
                              MethodInfo method,
                              object[] arguments,
                              Type[] genericArguments )
         {
             Ensure.ArgumentNotNull( context, "context" );
+            Ensure.ArgumentNotNull( proxy, "proxy" );
             Ensure.ArgumentNotNull( target, "target" );
             Ensure.ArgumentNotNull( method, "method" );
             Ensure.ArgumentNotNull( arguments, "arguments" );
 
             Kernel = context.Kernel;
             Context = context;
+            Proxy = proxy;
             Target = target;
             Method = method;
             Arguments = arguments;
@@ -64,6 +68,11 @@ namespace Ninject.Extensions.Interception.Request
         /// Gets the context in which the target instance was activated.
         /// </summary>
         public IContext Context { get; private set; }
+
+        /// <summary>
+        /// Gets or sets the proxy instance.
+        /// </summary>
+        public object Proxy { get; set; }
 
         /// <summary>
         /// Gets the target instance.
@@ -88,7 +97,10 @@ namespace Ninject.Extensions.Interception.Request
         /// <summary>
         /// Gets a value indicating whether the request has generic arguments.
         /// </summary>
-        public bool HasGenericArguments { get { return ( GenericArguments != null ) && ( GenericArguments.Length > 0 ); } }
+        public bool HasGenericArguments
+        {
+            get { return ( GenericArguments != null ) && ( GenericArguments.Length > 0 ); }
+        }
 
         #endregion
     }

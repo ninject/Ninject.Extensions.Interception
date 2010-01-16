@@ -57,6 +57,7 @@ namespace Ninject.Extensions.Interception.Wrapper
 
             return requestFactory.Create(
                 Context,
+                info.Target,
                 Instance,
                 info.TargetMethod,
                 info.Arguments,

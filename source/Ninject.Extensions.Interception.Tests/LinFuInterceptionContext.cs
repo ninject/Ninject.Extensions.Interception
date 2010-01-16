@@ -150,5 +150,22 @@ namespace Ninject.Extensions.Interception.Tests
                 Assert.NotNull( obj.Child );
             }
         }
+
+        [Fact]
+        public void SingletonTests()
+        {
+            using ( StandardKernel kernel = CreateDefaultInterceptionKernel() )
+            {
+                kernel.Bind<RequestsConstructorInjection>().ToSelf().InSingletonScope();
+                // This is just here to trigger proxying, but we won't intercept any calls
+                kernel.Intercept( ( request ) => false ).With<FlagInterceptor>();
+
+                var obj = kernel.Get<RequestsConstructorInjection>();
+
+                Assert.NotNull( obj );
+                Assert.IsAssignableFrom<IProxy>( obj );
+                Assert.NotNull( obj.Child );
+            }
+        }
     }
 }
