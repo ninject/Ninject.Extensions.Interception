@@ -15,6 +15,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using Ninject.Components;
 using Ninject.Extensions.Interception.Advice;
 using Ninject.Extensions.Interception.Infrastructure.Language;
@@ -72,27 +73,55 @@ namespace Ninject.Extensions.Interception.Registry
         public ICollection<IInterceptor> GetInterceptors( IProxyRequest request )
         {
             RuntimeMethodHandle handle = request.Method.GetMethodHandle();
+            ICollection<IInterceptor> interceptors = null;
 
-            if ( _cache.ContainsKey( handle ) )
+            var cacheLock = new ReaderWriterLockSlim( LockRecursionPolicy.NoRecursion );
+            cacheLock.EnterUpgradeableReadLock();
+
+            try
             {
-                return _cache[handle];
+                if ( _cache.ContainsKey( handle ) )
+                {
+                    return _cache[handle];
+                }
+                cacheLock.EnterWriteLock();
+                try
+                {
+                    if ( HasDynamicAdvice && !_cache.ContainsKey( handle ) )
+                    {
+                        interceptors = GetInterceptorsForRequest( request );
+                        // If there are no dynamic interceptors defined, we can safely cache the results.
+                        // Otherwise, we have to evaluate and re-activate the interceptors each time.
+                        _cache.Add( handle, interceptors.ToList() );
+                    }
+                }
+                finally
+                {
+                    cacheLock.ExitWriteLock();
+                }
+
+                if ( interceptors == null )
+                {
+                    interceptors = GetInterceptorsForRequest( request );
+                }
             }
-
-            List<IAdvice> matches = _advice.Where( a => a.Matches( request ) ).ToList();
-            matches.Sort( ( a1, a2 ) => a1.Order - a2.Order );
-
-            List<IInterceptor> interceptors = matches.Convert( a => a.GetInterceptor( request ) ).ToList();
-
-            // If there are no dynamic interceptors defined, we can safely cache the results.
-            // Otherwise, we have to evaluate and re-activate the interceptors each time.
-            if ( HasDynamicAdvice )
+            finally
             {
-                _cache.Add( handle, interceptors );
+                cacheLock.ExitUpgradeableReadLock();
             }
 
             return interceptors;
         }
 
         #endregion
+
+        private ICollection<IInterceptor> GetInterceptorsForRequest( IProxyRequest request )
+        {
+            List<IAdvice> matches = _advice.Where( advice => advice.Matches( request ) ).ToList();
+            matches.Sort( ( lhs, rhs ) => lhs.Order - rhs.Order );
+
+            List<IInterceptor> interceptors = matches.Convert( a => a.GetInterceptor( request ) ).ToList();
+            return interceptors;
+        }
     }
 }
