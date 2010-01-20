@@ -33,7 +33,7 @@ namespace Ninject.Extensions.Interception
     /// Extends the functionality of the kernel, providing a proxy factory that uses LinFu
     /// to generate dynamic proxies.
     /// </summary>
-    public class InterceptionModule : NinjectModule
+    public abstract class InterceptionModule : NinjectModule
     {
         /// <summary>
         /// Loads the module into the kernel.

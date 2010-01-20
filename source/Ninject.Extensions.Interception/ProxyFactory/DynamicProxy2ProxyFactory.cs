@@ -12,7 +12,8 @@
 
 #region Using Directives
 
-using LinFu.DynamicProxy;
+using Castle.Core.Interceptor;
+using Castle.DynamicProxy;
 using Ninject.Activation;
 using Ninject.Extensions.Interception.Wrapper;
 using Ninject.Infrastructure;
@@ -22,14 +23,18 @@ using Ninject.Infrastructure;
 namespace Ninject.Extensions.Interception.ProxyFactory
 {
     /// <summary>
-    /// An implementation of a proxy factory that uses a LinFu <see cref="ProxyFactory"/> and
-    /// <see cref="ProxyFactory"/>s to create wrapped instances.
+    /// An implementation of a proxy factory that uses a Castle DynamicProxy2 <see cref="ProxyGenerator"/>
+    /// and <see cref="DynamicProxy2Wrapper"/>s to create wrapped instances.
     /// </summary>
-    public class LinFuProxyFactory : ProxyFactoryBase, IHaveKernel
+    public class DynamicProxy2ProxyFactory : ProxyFactoryBase, IHaveKernel
     {
-        private LinFu.DynamicProxy.ProxyFactory _factory = new LinFu.DynamicProxy.ProxyFactory();
+        #region Fields
 
-        public LinFuProxyFactory( IKernel kernel )
+        private ProxyGenerator _generator = new ProxyGenerator();
+
+        #endregion
+
+        public DynamicProxy2ProxyFactory( IKernel kernel )
         {
             Kernel = kernel;
         }
@@ -43,6 +48,8 @@ namespace Ninject.Extensions.Interception.ProxyFactory
 
         #endregion
 
+        #region Disposal
+
         /// <summary>
         /// Releases all resources held by the object.
         /// </summary>
@@ -51,37 +58,59 @@ namespace Ninject.Extensions.Interception.ProxyFactory
         {
             if ( disposing && !IsDisposed )
             {
-                _factory = null;
+                _generator = null;
             }
 
             base.Dispose( disposing );
         }
 
+        #endregion
+
+        #region Public Methods
+
         /// <summary>
-        /// Wraps the instance in the specified context in a proxy.
+        /// Wraps the specified instance in a proxy.
         /// </summary>
         /// <param name="context">The context in which the instance was activated.</param>
+        /// <returns>A proxy that wraps the instance.</returns>
         public override void Wrap( IContext context, InstanceReference reference )
         {
-            var wrapper = new LinFuWrapper( Kernel, context, reference.Instance );
-            reference.Instance = _factory.CreateProxy( reference.Instance.GetType(), wrapper );
+            var wrapper = new DynamicProxy2Wrapper( Kernel, context, reference.Instance );
+            reference.Instance = _generator.CreateClassProxy( reference.Instance.GetType(), wrapper );
         }
 
+
         /// <summary>
-        /// Unwraps the instance in the specified context.
+        /// Unwraps the specified proxied instance.
         /// </summary>
         /// <param name="context">The context in which the instance was activated.</param>
+        /// <returns>The unwrapped instance.</returns>
         public override void Unwrap( IContext context, InstanceReference reference )
         {
-            var proxy = reference.Instance as IProxy;
+            var accessor = reference.Instance as IProxyTargetAccessor;
 
-            if ( proxy == null )
+            if ( accessor == null )
             {
                 return;
             }
 
-            var wrapper = proxy.Interceptor as LinFuWrapper;
-            reference.Instance = ( wrapper == null ) ? proxy : wrapper.Instance;
+            Castle.Core.Interceptor.IInterceptor[] interceptors = accessor.GetInterceptors();
+
+            if ( ( interceptors == null ) || ( interceptors.Length == 0 ) )
+            {
+                return;
+            }
+
+            var wrapper = interceptors[0] as IWrapper;
+
+            if ( wrapper == null )
+            {
+                return;
+            }
+
+            reference.Instance = wrapper.Instance;
         }
+
+        #endregion
     }
 }

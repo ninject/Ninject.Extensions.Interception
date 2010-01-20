@@ -14,7 +14,7 @@ namespace Ninject.Extensions.Interception.Tests
 
         protected virtual StandardKernel CreateDefaultInterceptionKernel()
         {
-            return new StandardKernel( GetSettings(), new InterceptionModule() );
+            return new StandardKernel( GetSettings(), new LinFuModule() );
         }
     }
 }

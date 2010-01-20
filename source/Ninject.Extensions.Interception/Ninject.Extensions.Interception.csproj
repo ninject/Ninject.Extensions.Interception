@@ -31,6 +31,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Castle.Core, Version=1.2.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\contrib\Castle-Windsor\bin\net-3.5\Castle.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.DynamicProxy2, Version=2.2.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\contrib\Castle-Windsor\bin\net-3.5\Castle.DynamicProxy2.dll</HintPath>
+    </Reference>
     <Reference Include="LinFu.DynamicProxy, Version=1.0.3002.13039, Culture=neutral, PublicKeyToken=62a6874124340d6e, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\contrib\LinFu.DynamicProxy\LinFu.DynamicProxy.dll</HintPath>
@@ -51,12 +59,15 @@
     <Compile Include="Attributes\DoNotInterceptAttribute.cs" />
     <Compile Include="Attributes\InternalInterceptAttribute.cs" />
     <Compile Include="Attributes\DoNotNotifyOfChangesAttribute.cs" />
+    <Compile Include="DynamicProxy2Module.cs" />
     <Compile Include="IAutoNotifyPropertyChanged.cs" />
     <Compile Include="Infrastructure\Language\ExtensionsForMethodInfo.cs" />
+    <Compile Include="LinFuModule.cs" />
     <Compile Include="Planning\Strategies\AutoNotifyInterceptorRegistrationStrategy.cs" />
     <Compile Include="AutoNotifyPropertyChangedInterceptor.cs" />
     <Compile Include="Attributes\NotifyOfChangesAttribute.cs" />
     <Compile Include="Planning\Strategies\MethodInterceptorRegistrationStrategy.cs" />
+    <Compile Include="ProxyFactory\DynamicProxy2ProxyFactory.cs" />
     <Compile Include="Registry\IMethodInterceptorRegistry.cs" />
     <Compile Include="Infrastructure\Ensure.cs" />
     <Compile Include="Infrastructure\Language\ExtensionsForICustomAttributeProvider.cs" />
@@ -95,6 +106,7 @@
     <Compile Include="Request\IProxyRequest.cs" />
     <Compile Include="Request\IProxyRequestFactory.cs" />
     <Compile Include="Registry\MethodInterceptorRegistry.cs" />
+    <Compile Include="Wrapper\DynamicProxy2Wrapper.cs" />
     <Compile Include="Wrapper\IWrapper.cs" />
     <Compile Include="Infrastructure\Language\KernelExtensions.cs" />
     <Compile Include="ProxyFactory\LinFuProxyFactory.cs" />

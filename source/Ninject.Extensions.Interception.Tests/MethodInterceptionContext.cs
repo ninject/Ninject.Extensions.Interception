@@ -12,7 +12,7 @@ namespace Ninject.Extensions.Interception.Tests
     {
         protected override StandardKernel CreateDefaultInterceptionKernel()
         {
-            var kernel = new StandardKernel( GetSettings(), new InterceptionModule() );
+            var kernel = base.CreateDefaultInterceptionKernel();
             kernel.Bind<Mock>().ToSelf().WithConstructorArgument( "myProperty", "start" );
             return kernel;
         }
