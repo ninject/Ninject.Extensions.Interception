@@ -13,15 +13,15 @@
 #region Using Directives
 
 using System;
-#if !NETCF
 using System.Linq.Expressions;
-#endif // !NETCF
 using System.Reflection;
 using Ninject.Extensions.Interception.Advice;
 using Ninject.Extensions.Interception.Advice.Builders;
 using Ninject.Extensions.Interception.Advice.Syntax;
 using Ninject.Extensions.Interception.Registry;
 using Ninject.Extensions.Interception.Request;
+#if !NETCF
+#endif // !NETCF
 
 #endregion
 
@@ -73,15 +73,23 @@ namespace Ninject.Extensions.Interception.Infrastructure.Language
         /// <param name="kernel">The kernel.</param>
         /// <param name="method">The method to intercept.</param>
         /// <param name="action">The action to take in its place.</param>
-        public static void AddMethodInterceptor(this IKernel kernel,
-                                         MethodInfo method,
-                                         Action<IInvocation> action)
+        public static void AddMethodInterceptor( this IKernel kernel,
+                                                 MethodInfo method,
+                                                 Action<IInvocation> action )
         {
-            var interceptor = new ActionInterceptor(action);
-            kernel.Components.Get<IMethodInterceptorRegistry>().Add(method, interceptor);
+            var interceptor = new ActionInterceptor( action );
+            kernel.Components.Get<IMethodInterceptorRegistry>().Add( method, interceptor );
         }
 
         #if !NETCF
+
+        /// <summary>
+        /// Intercepts the given method call and replaces it with the proxy action.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="kernel">The kernel.</param>
+        /// <param name="methodExpr">The method to intercept.</param>
+        /// <param name="action">The action to take in its place.</param>
         public static void InterceptReplace<T>( this IKernel kernel,
                                                 Expression<Action<T>> methodExpr,
                                                 Action<IInvocation> action )
@@ -89,6 +97,14 @@ namespace Ninject.Extensions.Interception.Infrastructure.Language
             kernel.AddMethodInterceptor( GetMethodFromExpression( methodExpr ), action );
         }
 
+        /// <summary>
+        /// Intercepts the action surrounding the invocation with the two interceptor calls.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="kernel">The kernel.</param>
+        /// <param name="methodExpr">The method to wrap.</param>
+        /// <param name="beforeAction">The before action.</param>
+        /// <param name="afterAction">The after action.</param>
         public static void InterceptAround<T>( this IKernel kernel,
                                                Expression<Action<T>> methodExpr,
                                                Action<IInvocation> beforeAction,
@@ -103,20 +119,45 @@ namespace Ninject.Extensions.Interception.Infrastructure.Language
                                      } );
         }
 
+        /// <summary>
+        /// Intercepts the given action and executes the interception action prior to continuing execution.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="kernel">The kernel.</param>
+        /// <param name="methodExpr">The method to intercept.</param>
+        /// <param name="action">The action to execute before.</param>
         public static void InterceptBefore<T>( this IKernel kernel,
                                                Expression<Action<T>> methodExpr,
                                                Action<IInvocation> action )
         {
-            kernel.InterceptAround( methodExpr, action, i => { } );
+            kernel.InterceptAround( methodExpr, action, i =>
+                                                        {
+                                                        } );
         }
 
+        /// <summary>
+        /// Intercepts the given action and executes the interception action after the method is executed.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="kernel">The kernel.</param>
+        /// <param name="methodExpr">The method to intercept.</param>
+        /// <param name="action">The action to execute before.</param>
         public static void InterceptAfter<T>( this IKernel kernel,
                                               Expression<Action<T>> methodExpr,
                                               Action<IInvocation> action )
         {
-            kernel.InterceptAround( methodExpr, i => { }, action );
+            kernel.InterceptAround( methodExpr, i =>
+                                                {
+                                                }, action );
         }
 
+        /// <summary>
+        /// Intercepts and the replaces get call of a property.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="kernel">The kernel.</param>
+        /// <param name="propertyExpr">The get_ property expression to replace.</param>
+        /// <param name="action">The action to take in its place.</param>
         public static void InterceptReplaceGet<T>( this IKernel kernel,
                                                    Expression<Func<T, object>> propertyExpr,
                                                    Action<IInvocation> action )
@@ -124,6 +165,14 @@ namespace Ninject.Extensions.Interception.Infrastructure.Language
             kernel.AddMethodInterceptor( GetGetterFromExpression( propertyExpr ), action );
         }
 
+        /// <summary>
+        /// Intercepts the action surrounding the invocation with the two interceptor calls.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="kernel">The kernel.</param>
+        /// <param name="propertyExpr">The property expression.</param>
+        /// <param name="beforeAction">The before action.</param>
+        /// <param name="afterAction">The after action.</param>
         public static void InterceptAroundGet<T>( this IKernel kernel,
                                                   Expression<Func<T, object>> propertyExpr,
                                                   Action<IInvocation> beforeAction,
@@ -138,20 +187,45 @@ namespace Ninject.Extensions.Interception.Infrastructure.Language
                                         } );
         }
 
+        /// <summary>
+        /// Intercepts the get call and runs the action prior to executing the original expression.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="kernel">The kernel.</param>
+        /// <param name="propertyExpr">The property expr.</param>
+        /// <param name="action">The action.</param>
         public static void InterceptBeforeGet<T>( this IKernel kernel,
                                                   Expression<Func<T, object>> propertyExpr,
                                                   Action<IInvocation> action )
         {
-            kernel.InterceptAroundGet( propertyExpr, action, i => { } );
+            kernel.InterceptAroundGet( propertyExpr, action, i =>
+                                                             {
+                                                             } );
         }
 
+        /// <summary>
+        /// Intercepts the get call and runs the specified interception action after the get call is made.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="kernel">The kernel.</param>
+        /// <param name="propertyExpr">The property expr.</param>
+        /// <param name="action">The action.</param>
         public static void InterceptAfterGet<T>( this IKernel kernel,
                                                  Expression<Func<T, object>> propertyExpr,
                                                  Action<IInvocation> action )
         {
-            kernel.InterceptAroundGet( propertyExpr, i => { }, action );
+            kernel.InterceptAroundGet( propertyExpr, i =>
+                                                     {
+                                                     }, action );
         }
 
+        /// <summary>
+        /// Intercepts and the replaces set call of a property.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="kernel">The kernel.</param>
+        /// <param name="propertyExpr">The set_ property expression to replace.</param>
+        /// <param name="action">The action to take in its place.</param>
         public static void InterceptReplaceSet<T>( this IKernel kernel,
                                                    Expression<Func<T, object>> propertyExpr,
                                                    Action<IInvocation> action )
@@ -159,6 +233,14 @@ namespace Ninject.Extensions.Interception.Infrastructure.Language
             kernel.AddMethodInterceptor( GetSetterFromExpression( propertyExpr ), action );
         }
 
+        /// <summary>
+        /// Intercepts the action surrounding the invocation with the two interceptor calls.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="kernel">The kernel.</param>
+        /// <param name="propertyExpr">The property expression.</param>
+        /// <param name="beforeAction">The before action.</param>
+        /// <param name="afterAction">The after action.</param>
         public static void InterceptAroundSet<T>( this IKernel kernel,
                                                   Expression<Func<T, object>> propertyExpr,
                                                   Action<IInvocation> beforeAction,
@@ -173,18 +255,36 @@ namespace Ninject.Extensions.Interception.Infrastructure.Language
                                         } );
         }
 
+        /// <summary>
+        /// Intercepts the set call and runs the action prior to executing the original expression.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="kernel">The kernel.</param>
+        /// <param name="propertyExpr">The property expr.</param>
+        /// <param name="action">The action.</param>
         public static void InterceptBeforeSet<T>( this IKernel kernel,
                                                   Expression<Func<T, object>> propertyExpr,
                                                   Action<IInvocation> action )
         {
-            kernel.InterceptAroundSet( propertyExpr, action, i => { } );
+            kernel.InterceptAroundSet( propertyExpr, action, i =>
+                                                             {
+                                                             } );
         }
 
+        /// <summary>
+        /// Intercepts the set call and runs the specified interception action after the set call is made.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="kernel">The kernel.</param>
+        /// <param name="propertyExpr">The property expr.</param>
+        /// <param name="action">The action.</param>
         public static void InterceptAfterSet<T>( this IKernel kernel,
                                                  Expression<Func<T, object>> propertyExpr,
                                                  Action<IInvocation> action )
         {
-            kernel.InterceptAroundSet( propertyExpr, i => { }, action );
+            kernel.InterceptAroundSet( propertyExpr, i =>
+                                                     {
+                                                     }, action );
         }
 
         private static MethodInfo GetMethodFromExpression<T>( Expression<Action<T>> methodExpr )
@@ -243,6 +343,7 @@ namespace Ninject.Extensions.Interception.Infrastructure.Language
             }
             return (PropertyInfo) memberExpr.Member;
         }
+
         #endif
     }
 }
