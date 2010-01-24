@@ -13,7 +13,9 @@
 #region Using Directives
 
 using System;
+#if !NETCF
 using System.Linq.Expressions;
+#endif // !NETCF
 using System.Reflection;
 using Ninject.Extensions.Interception.Advice;
 using Ninject.Extensions.Interception.Advice.Builders;
@@ -55,6 +57,15 @@ namespace Ninject.Extensions.Interception.Infrastructure.Language
             return new AdviceBuilder( advice );
         }
 
+        public static void AddMethodInterceptor(this IKernel kernel,
+                                         MethodInfo method,
+                                         Action<IInvocation> action)
+        {
+            var interceptor = new ActionInterceptor(action);
+            kernel.Components.Get<IMethodInterceptorRegistry>().Add(method, interceptor);
+        }
+
+        #if !NETCF
         public static void InterceptReplace<T>( this IKernel kernel,
                                                 Expression<Action<T>> methodExpr,
                                                 Action<IInvocation> action )
@@ -160,14 +171,6 @@ namespace Ninject.Extensions.Interception.Infrastructure.Language
             kernel.InterceptAroundSet( propertyExpr, i => { }, action );
         }
 
-        public static void AddMethodInterceptor( this IKernel kernel,
-                                                 MethodInfo method,
-                                                 Action<IInvocation> action )
-        {
-            var interceptor = new ActionInterceptor( action );
-            kernel.Components.Get<IMethodInterceptorRegistry>().Add( method, interceptor );
-        }
-
         private static MethodInfo GetMethodFromExpression<T>( Expression<Action<T>> methodExpr )
         {
             var call = methodExpr.Body as MethodCallExpression;
@@ -224,5 +227,6 @@ namespace Ninject.Extensions.Interception.Infrastructure.Language
             }
             return (PropertyInfo) memberExpr.Member;
         }
+        #endif
     }
 }

@@ -75,39 +75,25 @@ namespace Ninject.Extensions.Interception.Registry
             RuntimeMethodHandle handle = request.Method.GetMethodHandle();
             ICollection<IInterceptor> interceptors = null;
 
-            var cacheLock = new ReaderWriterLockSlim( LockRecursionPolicy.NoRecursion );
-            cacheLock.EnterUpgradeableReadLock();
-
-            try
+            lock ( _cache )
             {
                 if ( _cache.ContainsKey( handle ) )
                 {
                     return _cache[handle];
                 }
-                cacheLock.EnterWriteLock();
-                try
-                {
-                    if ( HasDynamicAdvice && !_cache.ContainsKey( handle ) )
-                    {
-                        interceptors = GetInterceptorsForRequest( request );
-                        // If there are no dynamic interceptors defined, we can safely cache the results.
-                        // Otherwise, we have to evaluate and re-activate the interceptors each time.
-                        _cache.Add( handle, interceptors.ToList() );
-                    }
-                }
-                finally
-                {
-                    cacheLock.ExitWriteLock();
-                }
 
-                if ( interceptors == null )
+                if ( HasDynamicAdvice && !_cache.ContainsKey( handle ) )
                 {
                     interceptors = GetInterceptorsForRequest( request );
+                    // If there are no dynamic interceptors defined, we can safely cache the results.
+                    // Otherwise, we have to evaluate and re-activate the interceptors each time.
+                    _cache.Add( handle, interceptors.ToList() );
                 }
             }
-            finally
+
+            if ( interceptors == null )
             {
-                cacheLock.ExitUpgradeableReadLock();
+                interceptors = GetInterceptorsForRequest( request );
             }
 
             return interceptors;

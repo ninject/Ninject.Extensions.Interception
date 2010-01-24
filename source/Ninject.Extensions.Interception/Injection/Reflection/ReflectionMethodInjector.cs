@@ -12,6 +12,7 @@
 
 #region Using Directives
 
+using System;
 using System.Reflection;
 
 #endregion
@@ -51,13 +52,26 @@ namespace Ninject.Extensions.Interception.Injection.Reflection
             catch ( TargetInvocationException ex )
             {
                 // If an exception occurs inside the called member, unwrap it and re-throw.
-                //ExceptionThrower.RethrowPreservingStackTrace(ex.InnerException ?? ex);
-                throw;
+                RethrowPreservingStackTrace( ex.InnerException ?? ex );
             }
 
             return result;
         }
 
         #endregion
+
+        /// <summary>
+        /// Re-throws the specified exception, preserving its internal stack trace.
+        /// </summary>
+        /// <param name="ex">The exception to re-throw.</param>
+        private static void RethrowPreservingStackTrace( Exception ex )
+        {
+            FieldInfo stackTraceField = typeof (Exception).GetField( "_remoteStackTraceString",
+                                                                     BindingFlags.Instance | BindingFlags.NonPublic );
+
+            stackTraceField.SetValue( ex, ex.StackTrace );
+
+            throw ex;
+        }
     }
 }

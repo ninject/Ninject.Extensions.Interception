@@ -24,6 +24,10 @@ namespace Ninject.Extensions.Interception.Attributes
     {
         private static readonly Type InterceptorType = typeof (AutoNotifyPropertyChangedInterceptor<>);
 
+        public NotifyOfChangesAttribute():this(new string[]{})
+        {
+        }
+
         public NotifyOfChangesAttribute( params string[] notifyChangeFor )
         {
             NotifyChangeFor = notifyChangeFor;

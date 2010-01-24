@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<project name="Ninject" default="all">
+	<include buildfile="Ninject.include" />
+	<property name="path.base" value="${project::get-base-directory()}\.."/>
+	<property name="path.build" value="${path.base}/bin"/>
+	<property name="path.lib" value="${path.base}/contrib"/>
+	<property name="path.src" value="${path.base}/source"/>
+	<property name="path.tools" value="${path.base}/contrib"/>
+	
+	<target name="all" depends="create-assembly-info core"/>
+
+	<property name="product.name" value="Ninject.Extensions.Interception"/>
+	<property name="product.company" value="Innovatian, LLC"/>
+	<property name="product.duration" value="2007-2009"/>
+	<property name="product.description" value="Interception extension for Ninject"/>
+	<property name="product.keyfile" value="${product.name}.snk"/>
+	<property name="product.assembly" value="${product.name}.dll"/>
+	<property name="product.assembly.test" value="${product.name}.Tests.dll"/>
+	
+	<target name="core" depends="init">
+		<csc noconfig="true" warnaserror="true" target="library" debug="${build.debug}" optimize="${build.optimize}" define="${build.defines}"
+         keyfile="${path.base}/build/${product.keyfile}" output="${current.path.build}/${product.assembly}">
+			<arg line="/filealign:512" unless="${build.platform == 'mono-2.0'}"/>
+			<sources basedir="${path.src}">
+				<include name="${build.asminfo}"/>
+				<include name="${product.name}/**/*.cs"/>
+			</sources>
+			<references>
+				<include name="mscorlib.dll"/>
+				<include name="System.dll"/>
+				<include name="System.Core.dll"/>
+				<include name="${path.lib}\Ninject\${nant.settings.currentframework}\release\Ninject.dll"/>
+				<include name="${path.lib}\LinFu.DynamicProxy\LinFu.DynamicProxy.dll" unless="${build.platform == 'silverlight-3.0'}"/>
+				<!--<include name="${path.lib}\Castle-Windsor\bin\net-3.5\Castle.Core.dll" unless="${build.platform == 'silverlight-3.0'}"/>
+				<include name="${path.lib}\Castle-Windsor\bin\net-3.5\Castle.DynamicProxy2.dll" unless="${build.platform == 'silverlight-3.0'}"/>
+				<include name="${path.lib}\Castle-Windsor\bin\sl-3.0\Castle.Core.dll" unless="${build.platform == 'net-3.5'}"/>
+				<include name="${path.lib}\Castle-Windsor\bin\sl-3.0\Castle.DynamicProxy2.dll" unless="${build.platform == 'net-3.5'}"/>-->
+				<include name="${path.lib}\Castle-Windsor\bin\net-3.5\Castle.Core.dll" if="${build.platform == 'net-3.5'}"/>
+				<include name="${path.lib}\Castle-Windsor\bin\net-3.5\Castle.DynamicProxy2.dll" if="${build.platform == 'net-3.5'}"/>
+				<include name="${path.lib}\Castle-Windsor\bin\sl-3.0\Castle.Core.dll" if="${build.platform == 'silverlight-3.0'}"/>
+				<include name="${path.lib}\Castle-Windsor\bin\sl-3.0\Castle.DynamicProxy2.dll" if="${build.platform == 'silverlight-3.0'}"/>
+			</references>
+		</csc>
+	</target>
+
+	<target name="compile-tests" depends="core" if="${build.platform == 'net-3.5'}" unless="${skip.tests}">
+		<mkdir dir="${current.path.test}"/>
+		<copy todir="${current.path.test}" flatten="true">
+			<fileset basedir="${current.path.build}">
+				<include name="**/*.dll"/>
+			</fileset>
+		</copy>
+		<copy todir="${current.path.test}">
+			<fileset basedir="${path.tools.xunit}">
+				<include name="xunit.dll"/>
+				<include name="xunit.should.dll"/>
+			</fileset>
+		</copy>
+		<copy todir="${current.path.test}">
+			<fileset basedir="${path.tools.moq}">
+				<include name="Moq.dll"/>
+			</fileset>
+		</copy>
+		<copy todir="${current.path.test}/TestModules">
+			<fileset basedir="${path.src}/Ninject.Tests/TestModules">
+				<include name="Ninject.Tests.TestModule.dll"/>
+			</fileset>
+		</copy>
+		<csc noconfig="true" warnaserror="true" target="library" debug="${build.debug}" optimize="${build.optimize}" define="${build.defines}"
+         output="${current.path.test}/Ninject.Tests.dll">
+			<sources basedir="${path.src}">
+				<include name="Ninject.Tests/**/*.cs"/>
+			</sources>
+			<references basedir="${current.path.test}">
+				<include name="mscorlib.dll"/>
+				<include name="System.dll"/>
+				<include name="System.Core.dll"/>
+				<include name="System.Web.dll"/>
+				<include name="Moq.dll"/>
+				<include name="xunit.dll"/>
+				<include name="xunit.should.dll"/>
+				<include name="Ninject.dll"/>
+			</references>
+			<nowarn>
+				<warning number="1584"/>
+			</nowarn>
+		</csc>
+	</target>
+
+</project>

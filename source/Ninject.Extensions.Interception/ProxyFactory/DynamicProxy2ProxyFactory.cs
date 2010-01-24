@@ -1,3 +1,5 @@
+#if !MONO
+
 #region License
 
 // 
@@ -114,3 +116,5 @@ namespace Ninject.Extensions.Interception.ProxyFactory
         #endregion
     }
 }
+
+#endif //!MONO

@@ -1,3 +1,5 @@
+#if !MONO
+
 #region License
 
 // 
@@ -77,3 +79,5 @@ namespace Ninject.Extensions.Interception.Wrapper
         #endregion
     }
 }
+
+#endif //!MONO

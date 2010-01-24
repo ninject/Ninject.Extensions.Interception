@@ -1,3 +1,5 @@
+#if !SILVERLIGHT
+
 #region License
 
 // 
@@ -65,3 +67,5 @@ namespace Ninject.Extensions.Interception.Wrapper
         }
     }
 }
+
+#endif //!SILVERLIGHT

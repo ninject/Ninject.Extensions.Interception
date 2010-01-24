@@ -12,6 +12,8 @@
     <AssemblyName>Ninject.Extensions.Interception</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>Ninject.Extensions.Interception.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -45,14 +47,12 @@
     </Reference>
     <Reference Include="Ninject, Version=2.0.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\contrib\Ninject\Ninject.dll</HintPath>
+      <HintPath>..\..\contrib\Ninject\net-3.5\release\Ninject.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActionInterceptor.cs" />
@@ -124,6 +124,9 @@
     <Compile Include="Invocation\Invocation.cs" />
     <Compile Include="Request\ProxyRequestFactory.cs" />
     <Compile Include="Wrapper\StandardWrapper.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Ninject.Extensions.Interception.snk" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

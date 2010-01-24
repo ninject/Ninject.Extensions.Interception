@@ -18,7 +18,7 @@ using System;
 
 namespace Ninject.Extensions.Interception.Attributes
 {
-    [AttributeUsage( AttributeTargets.Property, AllowMultiple = true, Inherited = true )]
+    [AttributeUsage( AttributeTargets.Property, AllowMultiple = false, Inherited = true )]
     public class DoNotNotifyOfChangesAttribute : DoNotInterceptAttribute
     {
     }

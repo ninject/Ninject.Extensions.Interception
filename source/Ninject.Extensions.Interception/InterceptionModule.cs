@@ -16,7 +16,9 @@ using Ninject.Activation.Strategies;
 using Ninject.Extensions.Interception.Activation.Strategies;
 using Ninject.Extensions.Interception.Advice;
 using Ninject.Extensions.Interception.Injection;
+#if !NO_LCG
 using Ninject.Extensions.Interception.Injection.Dynamic;
+#endif
 using Ninject.Extensions.Interception.Injection.Reflection;
 using Ninject.Extensions.Interception.Planning.Strategies;
 using Ninject.Extensions.Interception.ProxyFactory;
@@ -40,7 +42,6 @@ namespace Ninject.Extensions.Interception
         /// </summary>
         public override void Load()
         {
-            Kernel.Components.Add<IProxyFactory, LinFuProxyFactory>();
             Kernel.Components.Add<IActivationStrategy, ProxyActivationStrategy>();
             Kernel.Components.Add<IProxyRequestFactory, ProxyRequestFactory>();
             Kernel.Components.Add<IAdviceFactory, AdviceFactory>();

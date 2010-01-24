@@ -1,3 +1,5 @@
+#if !SILVERLIGHT
+
 #region License
 
 // 
@@ -85,3 +87,5 @@ namespace Ninject.Extensions.Interception.ProxyFactory
         }
     }
 }
+
+#endif //!SILVERLIGHT
