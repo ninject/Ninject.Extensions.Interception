@@ -63,6 +63,7 @@
     <Compile Include="Attributes\DoNotNotifyOfChangesAttribute.cs" />
     <Compile Include="DynamicProxy2Module.cs" />
     <Compile Include="IAutoNotifyPropertyChanged.cs" />
+    <Compile Include="IAutoNotifyPropertyChangedInterceptor.cs" />
     <Compile Include="Infrastructure\Language\ExtensionsForMethodInfo.cs" />
     <Compile Include="LinFuModule.cs" />
     <Compile Include="Planning\Strategies\AutoNotifyInterceptorRegistrationStrategy.cs" />

@@ -20,11 +20,19 @@ using Ninject.Extensions.Interception.Infrastructure.Language;
 
 namespace Ninject.Extensions.Interception
 {
-    public class AutoNotifyPropertyChangedInterceptor<TViewModel> : IInterceptor
-        where TViewModel : IAutoNotifyPropertyChanged
+    /// <summary>
+    /// Provides interceptor capabilities for integration in the <see cref="IAutoNotifyPropertyChanged"/> interception scheme.
+    /// </summary>
+    /// <typeparam name="TViewModel">The type of the view model.</typeparam>
+    public class AutoNotifyPropertyChangedInterceptor<TViewModel> 
+        : IAutoNotifyPropertyChangedInterceptor<TViewModel> where TViewModel : IAutoNotifyPropertyChanged
     {
         #region IInterceptor Members
 
+        /// <summary>
+        /// Intercepts the specified invocation.
+        /// </summary>
+        /// <param name="invocation">The invocation to intercept.</param>
         public void Intercept( IInvocation invocation )
         {
             invocation.Proceed();
