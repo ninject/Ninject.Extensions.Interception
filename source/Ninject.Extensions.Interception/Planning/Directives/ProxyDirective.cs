@@ -12,12 +12,16 @@
 
 #region Using Directives
 
+using Ninject.Activation.Strategies;
 using Ninject.Planning.Directives;
 
 #endregion
 
 namespace Ninject.Extensions.Interception.Planning.Directives
 {
+    /// <summary>
+    /// Provides hints to the <see cref="IActivationStrategy"/> pipeline that the type should be proxied.
+    /// </summary>
     public class ProxyDirective : IDirective
     {
     }

@@ -15,10 +15,17 @@ using System;
 
 namespace Ninject.Extensions.Interception
 {
+    /// <summary>
+    /// Provides the ability to supply an action which will be invoked during method inteterception.
+    /// </summary>
     public class ActionInterceptor : IInterceptor
     {
         private readonly Action<IInvocation> _interceptAction;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ActionInterceptor"/> class.
+        /// </summary>
+        /// <param name="interceptAction">The intercept action to take.</param>
         public ActionInterceptor( Action<IInvocation> interceptAction )
         {
             _interceptAction = interceptAction;
@@ -26,6 +33,10 @@ namespace Ninject.Extensions.Interception
 
         #region IInterceptor Members
 
+        /// <summary>
+        /// Intercepts the specified invocation.
+        /// </summary>
+        /// <param name="invocation">The invocation to intercept.</param>
         public void Intercept( IInvocation invocation )
         {
             _interceptAction( invocation );

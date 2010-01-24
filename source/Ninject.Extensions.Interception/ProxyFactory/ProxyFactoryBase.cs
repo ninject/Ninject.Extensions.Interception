@@ -30,6 +30,7 @@ namespace Ninject.Extensions.Interception.ProxyFactory
         /// Wraps the instance in the specified context in a proxy.
         /// </summary>
         /// <param name="context">The context in which the instance was activated.</param>
+        /// <param name="reference">The <see cref="InstanceReference"/> to wrap.</param>
         /// <returns>A proxy that wraps the instance.</returns>
         public abstract void Wrap( IContext context, InstanceReference reference );
 
@@ -37,6 +38,7 @@ namespace Ninject.Extensions.Interception.ProxyFactory
         /// Unwraps the instance in the specified context.
         /// </summary>
         /// <param name="context">The context in which the instance was activated.</param>
+        /// <param name="reference">The <see cref="InstanceReference"/> to unwrap.</param>
         /// <returns>The unwrapped instance.</returns>
         public abstract void Unwrap( IContext context, InstanceReference reference );
 

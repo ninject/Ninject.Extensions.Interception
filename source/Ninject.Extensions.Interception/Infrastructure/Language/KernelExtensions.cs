@@ -27,8 +27,17 @@ using Ninject.Extensions.Interception.Request;
 
 namespace Ninject.Extensions.Interception.Infrastructure.Language
 {
+    /// <summary>
+    /// Provides extensions methods on the <see cref="IKernel"/> interface.
+    /// </summary>
     public static class KernelExtensions
     {
+        /// <summary>
+        /// Begins a dynamic interception definition.
+        /// </summary>
+        /// <param name="kernel">The kernel.</param>
+        /// <param name="predicate">The predicate to run when determining whether to intercept the method call.</param>
+        /// <returns></returns>
         public static IAdviceTargetSyntax Intercept( this IKernel kernel, Predicate<IProxyRequest> predicate )
         {
             return DoIntercept( kernel, predicate );
@@ -37,6 +46,7 @@ namespace Ninject.Extensions.Interception.Infrastructure.Language
         /// <summary>
         /// Begins a dynamic interception definition.
         /// </summary>
+        /// <param name="kernel"></param>
         /// <param name="condition">The condition to evaluate to determine if a request should be intercepted.</param>
         /// <returns>An advice builder.</returns>
         private static IAdviceTargetSyntax DoIntercept( IKernel kernel, Predicate<IProxyRequest> condition )
@@ -57,6 +67,12 @@ namespace Ninject.Extensions.Interception.Infrastructure.Language
             return new AdviceBuilder( advice );
         }
 
+        /// <summary>
+        /// Adds the method interceptor.
+        /// </summary>
+        /// <param name="kernel">The kernel.</param>
+        /// <param name="method">The method to intercept.</param>
+        /// <param name="action">The action to take in its place.</param>
         public static void AddMethodInterceptor(this IKernel kernel,
                                          MethodInfo method,
                                          Action<IInvocation> action)

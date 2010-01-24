@@ -36,6 +36,10 @@ namespace Ninject.Extensions.Interception.ProxyFactory
 
         #endregion
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DynamicProxy2ProxyFactory"/> class.
+        /// </summary>
+        /// <param name="kernel">The kernel.</param>
         public DynamicProxy2ProxyFactory( IKernel kernel )
         {
             Kernel = kernel;
@@ -74,19 +78,18 @@ namespace Ninject.Extensions.Interception.ProxyFactory
         /// Wraps the specified instance in a proxy.
         /// </summary>
         /// <param name="context">The context in which the instance was activated.</param>
-        /// <returns>A proxy that wraps the instance.</returns>
+        /// <param name="reference">The <see cref="InstanceReference"/> to wrap.</param>
         public override void Wrap( IContext context, InstanceReference reference )
         {
             var wrapper = new DynamicProxy2Wrapper( Kernel, context, reference.Instance );
             reference.Instance = _generator.CreateClassProxy( reference.Instance.GetType(), wrapper );
         }
 
-
         /// <summary>
         /// Unwraps the specified proxied instance.
         /// </summary>
         /// <param name="context">The context in which the instance was activated.</param>
-        /// <returns>The unwrapped instance.</returns>
+        /// <param name="reference">The <see cref="InstanceReference"/> to unwrap.</param>
         public override void Unwrap( IContext context, InstanceReference reference )
         {
             var accessor = reference.Instance as IProxyTargetAccessor;

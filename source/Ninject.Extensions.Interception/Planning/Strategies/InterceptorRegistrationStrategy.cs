@@ -34,18 +34,35 @@ namespace Ninject.Extensions.Interception.Planning.Strategies
     /// </summary>
     public class InterceptorRegistrationStrategy : NinjectComponent, IPlanningStrategy
     {
+        /// <summary>
+        /// The default <see cref="BindingFlags"/> to use during reflection.
+        /// </summary>
         protected const BindingFlags DefaultBindingFlags =
             BindingFlags.Public |
             BindingFlags.NonPublic |
             BindingFlags.Instance;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="InterceptorRegistrationStrategy"/> class.
+        /// </summary>
+        /// <param name="adviceFactory">The advice factory.</param>
+        /// <param name="adviceRegistry">The advice registry.</param>
         public InterceptorRegistrationStrategy( IAdviceFactory adviceFactory, IAdviceRegistry adviceRegistry )
         {
             AdviceFactory = adviceFactory;
             AdviceRegistry = adviceRegistry;
         }
 
+        /// <summary>
+        /// Gets or sets the advice factory.
+        /// </summary>
+        /// <value>The advice factory.</value>
         public IAdviceFactory AdviceFactory { get; set; }
+
+        /// <summary>
+        /// Gets or sets the advice registry.
+        /// </summary>
+        /// <value>The advice registry.</value>
         public IAdviceRegistry AdviceRegistry { get; set; }
 
         #region IPlanningStrategy Members
@@ -156,6 +173,13 @@ namespace Ninject.Extensions.Interception.Planning.Strategies
             }
         }
 
+        /// <summary>
+        /// Determines whether the specified <see cref="MethodInfo"/> should be intercepted.
+        /// </summary>
+        /// <param name="methodInfo">The method info.</param>
+        /// <returns>
+        ///     <c>true</c> if the method should be intercepted; <c>false</c> otherwise.
+        /// </returns>
         protected virtual bool ShouldIntercept( MethodInfo methodInfo )
         {
             return methodInfo.DeclaringType != typeof (object) &&

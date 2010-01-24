@@ -15,7 +15,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using Ninject.Components;
 using Ninject.Extensions.Interception.Advice;
 using Ninject.Extensions.Interception.Infrastructure.Language;
@@ -25,6 +24,9 @@ using Ninject.Extensions.Interception.Request;
 
 namespace Ninject.Extensions.Interception.Registry
 {
+    /// <summary>
+    /// Collects advice defined for methods.
+    /// </summary>
     public class AdviceRegistry : NinjectComponent, IAdviceRegistry
     {
         private readonly List<IAdvice> _advice = new List<IAdvice>();

@@ -31,6 +31,10 @@ namespace Ninject.Extensions.Interception.ProxyFactory
     {
         private LinFu.DynamicProxy.ProxyFactory _factory = new LinFu.DynamicProxy.ProxyFactory();
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LinFuProxyFactory"/> class.
+        /// </summary>
+        /// <param name="kernel">The kernel.</param>
         public LinFuProxyFactory( IKernel kernel )
         {
             Kernel = kernel;
@@ -63,6 +67,7 @@ namespace Ninject.Extensions.Interception.ProxyFactory
         /// Wraps the instance in the specified context in a proxy.
         /// </summary>
         /// <param name="context">The context in which the instance was activated.</param>
+        /// <param name="reference">The <see cref="InstanceReference"/> to wrap.</param>
         public override void Wrap( IContext context, InstanceReference reference )
         {
             var wrapper = new LinFuWrapper( Kernel, context, reference.Instance );
@@ -73,6 +78,7 @@ namespace Ninject.Extensions.Interception.ProxyFactory
         /// Unwraps the instance in the specified context.
         /// </summary>
         /// <param name="context">The context in which the instance was activated.</param>
+        /// <param name="reference">The <see cref="InstanceReference"/> to unwrap.</param>
         public override void Unwrap( IContext context, InstanceReference reference )
         {
             var proxy = reference.Instance as IProxy;

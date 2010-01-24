@@ -18,8 +18,15 @@ using System.ComponentModel;
 
 namespace Ninject.Extensions.Interception
 {
+    /// <summary>
+    /// Provides a common interface for classes that wish to provide automatic <see cref="INotifyPropertyChanged"/> functionality.
+    /// </summary>
     public interface IAutoNotifyPropertyChanged : INotifyPropertyChanged
     {
+        /// <summary>
+        /// Raises the <see cref="INotifyPropertyChanged.PropertyChanged"/> event for the given property.
+        /// </summary>
+        /// <param name="propertyName">Name of the property.</param>
         void OnPropertyChanged( string propertyName );
     }
 }

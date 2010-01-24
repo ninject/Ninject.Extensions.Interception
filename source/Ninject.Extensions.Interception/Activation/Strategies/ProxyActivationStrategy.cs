@@ -22,8 +22,16 @@ using Ninject.Extensions.Interception.Registry;
 
 namespace Ninject.Extensions.Interception.Activation.Strategies
 {
+    /// <summary>
+    /// Activates and deactivates proxied instances in the activation pipeline attaching and detaching proxies.
+    /// </summary>
     public class ProxyActivationStrategy : ActivationStrategy
     {
+        /// <summary>
+        /// Activates the specified context.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="reference">The reference.</param>
         public override void Activate( IContext context, InstanceReference reference )
         {
             if ( ShouldProxy( context ) )
@@ -33,6 +41,11 @@ namespace Ninject.Extensions.Interception.Activation.Strategies
             base.Activate( context, reference );
         }
 
+        /// <summary>
+        /// Deactivates the specified context.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="reference">The reference.</param>
         public override void Deactivate( IContext context, InstanceReference reference )
         {
             if ( ShouldProxy( context ) )

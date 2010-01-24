@@ -32,6 +32,11 @@ namespace Ninject.Extensions.Interception.Planning.Strategies
     /// </summary>
     public class AutoNotifyInterceptorRegistrationStrategy : InterceptorRegistrationStrategy
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AutoNotifyInterceptorRegistrationStrategy"/> class.
+        /// </summary>
+        /// <param name="adviceFactory">The advice factory.</param>
+        /// <param name="adviceRegistry">The advice registry.</param>
         public AutoNotifyInterceptorRegistrationStrategy( IAdviceFactory adviceFactory, IAdviceRegistry adviceRegistry )
             : base( adviceFactory, adviceRegistry )
         {
@@ -104,6 +109,13 @@ namespace Ninject.Extensions.Interception.Planning.Strategies
             }
         }
 
+        /// <summary>
+        /// Determines whether the specified <see cref="MethodInfo"/> should be intercepted.
+        /// </summary>
+        /// <param name="methodInfo">The method info.</param>
+        /// <returns>
+        /// 	<c>true</c> if the method should be intercepted; <c>false</c> otherwise.
+        /// </returns>
         protected override bool ShouldIntercept( MethodInfo methodInfo )
         {
             if ( !IsPropertySetter( methodInfo ) )

@@ -16,8 +16,16 @@ using System.Reflection;
 
 namespace Ninject.Extensions.Interception.Registry
 {
+    /// <summary>
+    /// Provides lookup table functionality to trace <see cref="MethodInfo"/> to a collection of <see cref="IInterceptor"/>.
+    /// </summary>
     public class MethodInterceptorCollection : Dictionary<MethodInfo, List<IInterceptor>>
     {
+        /// <summary>
+        /// Adds the specified interceptor for the given method.
+        /// </summary>
+        /// <param name="method">The method to bind the interceptor to.</param>
+        /// <param name="interceptor">The interceptor to add.</param>
         public void Add( MethodInfo method, IInterceptor interceptor )
         {
             if ( !ContainsKey( method ) )

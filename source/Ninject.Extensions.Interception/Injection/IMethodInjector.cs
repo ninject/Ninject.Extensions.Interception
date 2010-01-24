@@ -18,6 +18,9 @@ using System.Reflection;
 
 namespace Ninject.Extensions.Interception.Injection
 {
+    /// <summary>
+    /// Provides a way to inject one or more values into the specified member.
+    /// </summary>
     public interface IMethodInjector : IInjector<MethodInfo>
     {
         /// <summary>

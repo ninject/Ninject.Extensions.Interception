@@ -32,9 +32,11 @@ using Ninject.Planning.Strategies;
 namespace Ninject.Extensions.Interception
 {
     /// <summary>
-    /// Extends the functionality of the kernel, providing a proxy factory that uses LinFu
-    /// to generate dynamic proxies.
+    /// Extends the functionality of the kernel, providing the base functionality needed for interception.
     /// </summary>
+    /// <remarks>
+    /// Note: Inheritors must provide a component binding for <see cref="IProxyFactory"/>.
+    /// </remarks>
     public abstract class InterceptionModule : NinjectModule
     {
         /// <summary>

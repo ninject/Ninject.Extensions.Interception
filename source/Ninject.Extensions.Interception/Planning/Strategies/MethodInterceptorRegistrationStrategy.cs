@@ -21,8 +21,17 @@ using Ninject.Planning;
 
 namespace Ninject.Extensions.Interception.Planning.Strategies
 {
+    /// <summary>
+    /// Provides interceptor attachment for methods configured by the kernel for method level interception.
+    /// </summary>
     public class MethodInterceptorRegistrationStrategy : InterceptorRegistrationStrategy
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MethodInterceptorRegistrationStrategy"/> class.
+        /// </summary>
+        /// <param name="adviceFactory">The advice factory.</param>
+        /// <param name="adviceRegistry">The advice registry.</param>
+        /// <param name="methodInterceptorRegistry">The method interceptor registry.</param>
         public MethodInterceptorRegistrationStrategy( IAdviceFactory adviceFactory,
                                                       IAdviceRegistry adviceRegistry,
                                                       IMethodInterceptorRegistry methodInterceptorRegistry )
@@ -31,10 +40,18 @@ namespace Ninject.Extensions.Interception.Planning.Strategies
             MethodInterceptorRegistry = methodInterceptorRegistry;
         }
 
+        /// <summary>
+        /// Gets or sets the method interceptor registry.
+        /// </summary>
+        /// <value>The method interceptor registry.</value>
         public IMethodInterceptorRegistry MethodInterceptorRegistry { get; set; }
 
         #region Implementation of INinjectComponent
 
+        /// <summary>
+        /// Contributes to the specified plan.
+        /// </summary>
+        /// <param name="plan">The plan that is being generated.</param>
         public override void Execute( IPlan plan )
         {
             if ( !MethodInterceptorRegistry.Contains( plan.Type ) )

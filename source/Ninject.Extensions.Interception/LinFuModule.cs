@@ -20,6 +20,10 @@ using Ninject.Extensions.Interception.ProxyFactory;
 
 namespace Ninject.Extensions.Interception
 {
+    /// <summary>
+    /// Extends the functionality of the kernel, providing a proxy factory that uses LinFu
+    /// to generate dynamic proxies.
+    /// </summary>
     public class LinFuModule : InterceptionModule
     {
         /// <summary>

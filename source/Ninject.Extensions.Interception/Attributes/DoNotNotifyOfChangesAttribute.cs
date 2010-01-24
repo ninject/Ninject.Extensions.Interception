@@ -13,11 +13,15 @@
 #region Using Directives
 
 using System;
+using System.ComponentModel;
 
 #endregion
 
 namespace Ninject.Extensions.Interception.Attributes
 {
+    /// <summary>
+    /// Indicated that the <see cref="INotifyPropertyChanged"/> events should not be raised for the given property.
+    /// </summary>
     [AttributeUsage( AttributeTargets.Property, AllowMultiple = false, Inherited = true )]
     public class DoNotNotifyOfChangesAttribute : DoNotInterceptAttribute
     {
