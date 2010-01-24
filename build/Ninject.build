@@ -14,6 +14,7 @@
 	<property name="product.duration" value="2007-2009"/>
 	<property name="product.description" value="Interception extension for Ninject"/>
 	<property name="product.keyfile" value="${product.name}.snk"/>
+	<property name="product.docfile" value="${product.name}.xml"/>
 	<property name="product.assembly" value="${product.name}.dll"/>
 	<property name="product.assembly.test" value="${product.name}.Tests.dll"/>
 	
@@ -83,7 +84,7 @@
 		</csc>
 	</target>
 
-		<target name="initialize" depends="create-assembly-info">
+	<target name="initialize" depends="create-assembly-info">
 		<mkdir dir="${path.build}" if="${not(directory::exists(path.build))}"/>
 		<mkdir dir="${path.dist}" if="${not(directory::exists(path.dist))}"/>
 

@@ -24,8 +24,8 @@ using Ninject.Infrastructure;
 namespace Ninject.Extensions.Interception.ProxyFactory
 {
     /// <summary>
-    /// An implementation of a proxy factory that uses a LinFu <see cref="ProxyFactory"/> and
-    /// <see cref="ProxyFactory"/>s to create wrapped instances.
+    /// An implementation of a proxy factory that uses a LinFu <see cref="LinFu.DynamicProxy.ProxyFactory"/> 
+    /// to create wrapped instances.
     /// </summary>
     public class LinFuProxyFactory : ProxyFactoryBase, IHaveKernel
     {

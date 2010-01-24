@@ -19,9 +19,16 @@ using System.Collections.Generic;
 
 namespace Ninject.Extensions.Interception.Infrastructure.Language
 {
+
+#if MONO
+    /// <summary>
+    /// 
+    /// </summary>
+#else
     /// <summary>
     /// Extension methods that enhance <see cref="IEnumerable{T}"/>.
     /// </summary>
+#endif // mcs is crazy, error CS1580: Invalid type for parameter `1' in XML comment cref attribute `IEnumerable(T)'
     internal static class ExtensionsForIEnumerable
     {
         /// <summary>
