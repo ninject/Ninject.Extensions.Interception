@@ -13,7 +13,7 @@
 	<property name="product.company" value="Innovatian, LLC"/>
 	<property name="product.duration" value="2007-2009"/>
 	<property name="product.description" value="Interception extension for Ninject"/>
-	<property name="product.keyfile" value="${product.name}.snk"/>
+	<property name="product.keyfile" value="Ninject.snk"/>
 	<property name="product.docfile" value="${product.name}.xml"/>
 	<property name="product.assembly" value="${product.name}.dll"/>
 	<property name="product.assembly.test" value="${product.name}.Tests.dll"/>
