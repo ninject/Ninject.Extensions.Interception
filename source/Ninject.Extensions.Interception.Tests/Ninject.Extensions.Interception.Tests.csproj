@@ -31,13 +31,17 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Castle.Core, Version=1.2.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\contrib\Castle-Windsor\bin\net-3.5\Castle.Core.dll</HintPath>
+    </Reference>
     <Reference Include="LinFu.DynamicProxy, Version=1.0.3002.13039, Culture=neutral, PublicKeyToken=62a6874124340d6e, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\contrib\LinFu.DynamicProxy\LinFu.DynamicProxy.dll</HintPath>
     </Reference>
     <Reference Include="Ninject, Version=2.0.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\contrib\Ninject\Ninject.dll</HintPath>
+      <HintPath>..\..\contrib\Ninject\net-3.5\release\Ninject.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
@@ -50,6 +54,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attributes\FlagAttribute.cs" />
+    <Compile Include="DynamicProxy2BaseTests.cs" />
+    <Compile Include="DynamicProxy2InterceptionContext.cs" />
     <Compile Include="Fakes\DummyProxyFactory.cs" />
     <Compile Include="Fakes\ViewModelBase.cs" />
     <Compile Include="Fakes\ViewModelWithClassNotify.cs" />
@@ -58,6 +64,7 @@
     <Compile Include="Fakes\IGenericMethod.cs" />
     <Compile Include="Fakes\IMock.cs" />
     <Compile Include="AutoNotifyPropertyChangedContext.cs" />
+    <Compile Include="LinFuBaseTests.cs" />
     <Compile Include="LinFuInterceptionContext.cs" />
     <Compile Include="Attributes\CountAttribute.cs" />
     <Compile Include="Interceptors\CountInterceptor.cs" />

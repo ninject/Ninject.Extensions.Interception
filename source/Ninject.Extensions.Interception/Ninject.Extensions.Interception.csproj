@@ -13,7 +13,8 @@
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>Ninject.Extensions.Interception.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -64,6 +65,7 @@
     <Compile Include="DynamicProxy2Module.cs" />
     <Compile Include="IAutoNotifyPropertyChanged.cs" />
     <Compile Include="IAutoNotifyPropertyChangedInterceptor.cs" />
+    <Compile Include="Infrastructure\Language\ExtensionsForIBindingSyntax.cs" />
     <Compile Include="Infrastructure\Language\ExtensionsForMethodInfo.cs" />
     <Compile Include="LinFuModule.cs" />
     <Compile Include="Planning\Strategies\AutoNotifyInterceptorRegistrationStrategy.cs" />
@@ -127,9 +129,6 @@
     <Compile Include="Invocation\Invocation.cs" />
     <Compile Include="Request\ProxyRequestFactory.cs" />
     <Compile Include="Wrapper\StandardWrapper.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Ninject.Extensions.Interception.snk" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -8,7 +8,17 @@ using Xunit;
 
 namespace Ninject.Extensions.Interception.Tests
 {
-    public class MethodInterceptionContext : InterceptionTestContext
+    public class MethodInterceptionContextLinFu : MethodInterceptionContext<LinFuModule>
+    {
+        
+    }
+
+    public class MethodInterceptionContextDynamicProxy2 : MethodInterceptionContext<DynamicProxy2Module>
+    {
+
+    }
+
+    public abstract class MethodInterceptionContext<TInterceptionModule> : InterceptionTestContext<TInterceptionModule> where TInterceptionModule : InterceptionModule, new()
     {
         protected override StandardKernel CreateDefaultInterceptionKernel()
         {

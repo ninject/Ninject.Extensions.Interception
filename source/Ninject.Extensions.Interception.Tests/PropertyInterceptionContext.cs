@@ -2,13 +2,57 @@
 
 using Ninject.Extensions.Interception.Infrastructure.Language;
 using Ninject.Extensions.Interception.Tests.Fakes;
+using Ninject.Extensions.Interception.Tests.Interceptors;
 using Xunit;
 
 #endregion
 
 namespace Ninject.Extensions.Interception.Tests
 {
-    public class PropertyInterceptionContext : InterceptionTestContext
+    public class InterceptionSyntaxContextLinfFu : InterceptionSyntaxContext<LinFuModule>
+    {
+        
+    }
+
+    public class InterceptionSyntaxContextDynamicProxy2 : InterceptionSyntaxContext<DynamicProxy2Module>
+    {
+
+    }
+
+    public abstract class InterceptionSyntaxContext<TInterceptionModule> : InterceptionTestContext<TInterceptionModule> where TInterceptionModule : InterceptionModule, new()
+    {
+        protected override StandardKernel CreateDefaultInterceptionKernel()
+        {
+            var kernel = base.CreateDefaultInterceptionKernel();
+            kernel.Bind<ViewModel>().ToSelf().Intercept().With<FlagInterceptor>();
+            return kernel;
+        }
+
+        [Fact]
+        public void Doo()
+        {
+            FlagInterceptor.Reset();
+            Assert.False( FlagInterceptor.WasCalled );
+            using (StandardKernel kernel = CreateDefaultInterceptionKernel())
+            {
+                var mock = kernel.Get<ViewModel>();
+                mock.Address = "|ad";
+                Assert.True( FlagInterceptor.WasCalled );
+            }
+        }
+    }
+
+        public class PropertyInterceptionContextLinfFu : PropertyInterceptionContext<LinFuModule>
+    {
+        
+    }
+
+    public class PropertyInterceptionContextDynamicProxy2 : PropertyInterceptionContext<DynamicProxy2Module>
+    {
+
+    }
+
+    public abstract class PropertyInterceptionContext<TInterceptionModule> : InterceptionTestContext<TInterceptionModule> where TInterceptionModule : InterceptionModule, new()
     {
         protected override StandardKernel CreateDefaultInterceptionKernel()
         {

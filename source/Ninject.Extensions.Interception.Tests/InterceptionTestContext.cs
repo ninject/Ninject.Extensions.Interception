@@ -4,7 +4,7 @@
 
 namespace Ninject.Extensions.Interception.Tests
 {
-    public abstract class InterceptionTestContext
+    public abstract class InterceptionTestContext<TInterceptionModule> where TInterceptionModule : InterceptionModule, new()
     {
         protected virtual INinjectSettings GetSettings()
         {
@@ -14,7 +14,7 @@ namespace Ninject.Extensions.Interception.Tests
 
         protected virtual StandardKernel CreateDefaultInterceptionKernel()
         {
-            return new StandardKernel( GetSettings(), new LinFuModule() );
+            return new StandardKernel( GetSettings(), new TInterceptionModule());
         }
     }
 }

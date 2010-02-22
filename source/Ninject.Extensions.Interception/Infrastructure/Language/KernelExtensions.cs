@@ -13,15 +13,15 @@
 #region Using Directives
 
 using System;
+#if !NETCF
 using System.Linq.Expressions;
+#endif // !NETCF
 using System.Reflection;
 using Ninject.Extensions.Interception.Advice;
 using Ninject.Extensions.Interception.Advice.Builders;
 using Ninject.Extensions.Interception.Advice.Syntax;
 using Ninject.Extensions.Interception.Registry;
 using Ninject.Extensions.Interception.Request;
-#if !NETCF
-#endif // !NETCF
 
 #endregion
 
@@ -62,7 +62,7 @@ namespace Ninject.Extensions.Interception.Infrastructure.Language
         /// </summary>
         /// <param name="advice">The advice that will be built.</param>
         /// <returns>The created builder.</returns>
-        private static IAdviceTargetSyntax CreateAdviceBuilder( IAdvice advice )
+        internal static IAdviceTargetSyntax CreateAdviceBuilder( IAdvice advice )
         {
             return new AdviceBuilder( advice );
         }
@@ -81,7 +81,7 @@ namespace Ninject.Extensions.Interception.Infrastructure.Language
             kernel.Components.Get<IMethodInterceptorRegistry>().Add( method, interceptor );
         }
 
-        #if !NETCF
+#if !NETCF
 
         /// <summary>
         /// Intercepts the given method call and replaces it with the proxy action.
@@ -344,6 +344,6 @@ namespace Ninject.Extensions.Interception.Infrastructure.Language
             return (PropertyInfo) memberExpr.Member;
         }
 
-        #endif
+#endif
     }
 }

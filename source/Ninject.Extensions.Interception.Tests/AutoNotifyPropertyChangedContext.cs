@@ -9,6 +9,7 @@ using Xunit;
 
 namespace Ninject.Extensions.Interception.Tests
 {
+    /*
     public class AutoNotifyPropertyChangedContext : InterceptionTestContext
     {
         public AutoNotifyPropertyChangedContext()
@@ -105,4 +106,5 @@ namespace Ninject.Extensions.Interception.Tests
             Assert.Null( LastPropertyToChange );
         }
     }
+     * */
 }

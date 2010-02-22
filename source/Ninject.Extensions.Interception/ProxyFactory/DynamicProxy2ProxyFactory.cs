@@ -14,6 +14,9 @@
 
 #region Using Directives
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using Castle.Core.Interceptor;
 using Castle.DynamicProxy;
 using Ninject.Activation;
@@ -82,7 +85,29 @@ namespace Ninject.Extensions.Interception.ProxyFactory
         public override void Wrap( IContext context, InstanceReference reference )
         {
             var wrapper = new DynamicProxy2Wrapper( Kernel, context, reference.Instance );
-            reference.Instance = _generator.CreateClassProxy( reference.Instance.GetType(), wrapper );
+            var service = context.Binding.Service;
+            var interfaces = GetAllInterfaces( reference.Instance.GetType() );
+            if (service.IsInterface)
+            {
+                reference.Instance = _generator.CreateInterfaceProxyWithTarget(service, interfaces, wrapper.Instance, wrapper);
+            }
+            else
+            {
+                reference.Instance = _generator.CreateClassProxy( reference.Instance.GetType(), interfaces, wrapper );
+            }
+            //reference.Instance = _generator.CreateInterfaceProxyWithTargetInterface(reference.Instance.GetType(), wrapper);
+        }
+
+        private static Type[] GetAllInterfaces( Type type )
+        {
+           List<Type> interfaces = new List<Type>();
+            while(type != typeof(object))
+            {
+                interfaces.AddRange( type.GetInterfaces() );
+                type = type.BaseType;
+            }
+
+            return interfaces.Distinct().ToArray();
         }
 
         /// <summary>
