@@ -15,7 +15,6 @@
 #region Using Directives
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using Castle.Core.Interceptor;
 using Castle.DynamicProxy;
@@ -35,6 +34,7 @@ namespace Ninject.Extensions.Interception.ProxyFactory
     {
         #region Fields
 
+        private static readonly ProxyGenerationOptions ProxyOptions = ProxyGenerationOptions.Default;
         private ProxyGenerator _generator = new ProxyGenerator();
 
         #endregion
@@ -84,30 +84,16 @@ namespace Ninject.Extensions.Interception.ProxyFactory
         /// <param name="reference">The <see cref="InstanceReference"/> to wrap.</param>
         public override void Wrap( IContext context, InstanceReference reference )
         {
+            if ( reference.Instance is IInterceptor )
+            {
+                return;
+            }
             var wrapper = new DynamicProxy2Wrapper( Kernel, context, reference.Instance );
-            var service = context.Binding.Service;
-            var interfaces = GetAllInterfaces( reference.Instance.GetType() );
-            if (service.IsInterface)
-            {
-                reference.Instance = _generator.CreateInterfaceProxyWithTarget(service, interfaces, wrapper.Instance, wrapper);
-            }
-            else
-            {
-                reference.Instance = _generator.CreateClassProxy( reference.Instance.GetType(), interfaces, wrapper );
-            }
-            //reference.Instance = _generator.CreateInterfaceProxyWithTargetInterface(reference.Instance.GetType(), wrapper);
-        }
-
-        private static Type[] GetAllInterfaces( Type type )
-        {
-           List<Type> interfaces = new List<Type>();
-            while(type != typeof(object))
-            {
-                interfaces.AddRange( type.GetInterfaces() );
-                type = type.BaseType;
-            }
-
-            return interfaces.Distinct().ToArray();
+            Type targetType = reference.Instance.GetType();
+            object[] parameters = context.Parameters
+                .Select( parameter => parameter.GetValue( context ) )
+                .ToArray();
+            reference.Instance = _generator.CreateClassProxy( targetType, ProxyOptions, parameters, wrapper );
         }
 
         /// <summary>

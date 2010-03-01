@@ -1,4 +1,4 @@
-﻿#region Using Directives
+#region Using Directives
 
 using Ninject.Extensions.Interception.Infrastructure.Language;
 using Ninject.Extensions.Interception.Tests.Fakes;
@@ -10,19 +10,18 @@ namespace Ninject.Extensions.Interception.Tests
 {
     public class MethodInterceptionContextLinFu : MethodInterceptionContext<LinFuModule>
     {
-        
     }
 
     public class MethodInterceptionContextDynamicProxy2 : MethodInterceptionContext<DynamicProxy2Module>
     {
-
     }
 
-    public abstract class MethodInterceptionContext<TInterceptionModule> : InterceptionTestContext<TInterceptionModule> where TInterceptionModule : InterceptionModule, new()
+    public abstract class MethodInterceptionContext<TInterceptionModule> : InterceptionTestContext<TInterceptionModule>
+        where TInterceptionModule : InterceptionModule, new()
     {
         protected override StandardKernel CreateDefaultInterceptionKernel()
         {
-            var kernel = base.CreateDefaultInterceptionKernel();
+            StandardKernel kernel = base.CreateDefaultInterceptionKernel();
             kernel.Bind<Mock>().ToSelf().WithConstructorArgument( "myProperty", "start" );
             return kernel;
         }
@@ -37,7 +36,6 @@ namespace Ninject.Extensions.Interception.Tests
                 Assert.Equal( "start", mock.MyProperty );
                 Assert.Equal( "start", mock.GetMyProperty() );
             }
-
 
             using ( StandardKernel kernel = CreateDefaultInterceptionKernel() )
             {

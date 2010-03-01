@@ -1,10 +1,12 @@
 #region Using Directives
 
-
-
 #endregion
 
+#region Using Directives
+
 using Ninject.Extensions.Interception.Attributes;
+
+#endregion
 
 namespace Ninject.Extensions.Interception.Tests.Fakes
 {

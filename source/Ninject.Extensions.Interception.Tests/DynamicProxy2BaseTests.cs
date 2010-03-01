@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using Castle.Core.Interceptor;
-using LinFu.DynamicProxy;
 using Ninject.Extensions.Interception.Infrastructure.Language;
 using Ninject.Extensions.Interception.Tests.Fakes;
 using Ninject.Extensions.Interception.Tests.Interceptors;
@@ -23,16 +22,16 @@ namespace Ninject.Extensions.Interception.Tests
                 kernel.Bind<ObjectWithMethodInterceptor>().ToSelf();
                 var obj = kernel.Get<ObjectWithMethodInterceptor>();
                 Assert.NotNull( obj );
-                List<Type> baseTypes = new List<Type>();
-                var type = obj.GetType();
-                while(type != typeof(object))
+                var baseTypes = new List<Type>();
+                Type type = obj.GetType();
+                while ( type != typeof (object) )
                 {
                     baseTypes.Add( type );
-                    var interfaces = type.GetInterfaces();
+                    Type[] interfaces = type.GetInterfaces();
                     baseTypes.AddRange( interfaces );
                     type = type.BaseType;
                 }
-                Assert.IsAssignableFrom<IProxyTargetAccessor>(obj);
+                Assert.IsAssignableFrom<IProxyTargetAccessor>( obj );
             }
         }
 
@@ -56,7 +55,7 @@ namespace Ninject.Extensions.Interception.Tests
                 kernel.Bind<ObjectWithMethodInterceptor>().ToSelf();
                 var obj = kernel.Get<ObjectWithMethodInterceptor>();
                 Assert.NotNull( obj );
-                Assert.IsAssignableFrom<IProxyTargetAccessor>(obj);
+                Assert.IsAssignableFrom<IProxyTargetAccessor>( obj );
 
                 CountInterceptor.Reset();
 
@@ -75,7 +74,7 @@ namespace Ninject.Extensions.Interception.Tests
                 kernel.Bind<ObjectWithGenericMethod>().ToSelf();
                 var obj = kernel.Get<ObjectWithGenericMethod>();
                 Assert.NotNull( obj );
-                Assert.IsAssignableFrom<IProxyTargetAccessor>(obj);
+                Assert.IsAssignableFrom<IProxyTargetAccessor>( obj );
 
                 FlagInterceptor.Reset();
                 string result = obj.ConvertGeneric( 42 );
@@ -93,7 +92,7 @@ namespace Ninject.Extensions.Interception.Tests
                 kernel.Bind<IFoo>().To<ObjectWithMethodInterceptor>();
                 var obj = kernel.Get<IFoo>();
                 Assert.NotNull( obj );
-                Assert.IsAssignableFrom<IProxyTargetAccessor>(obj);
+                Assert.IsAssignableFrom<IProxyTargetAccessor>( obj );
             }
         }
 
@@ -117,7 +116,7 @@ namespace Ninject.Extensions.Interception.Tests
                 kernel.Bind<IFoo>().To<ObjectWithMethodInterceptor>();
                 var obj = kernel.Get<IFoo>();
                 Assert.NotNull( obj );
-                Assert.IsAssignableFrom<IProxyTargetAccessor>(obj);
+                Assert.IsAssignableFrom<IProxyTargetAccessor>( obj );
 
                 CountInterceptor.Reset();
 
@@ -135,7 +134,7 @@ namespace Ninject.Extensions.Interception.Tests
                 kernel.Bind<IGenericMethod>().To<ObjectWithGenericMethod>();
                 var obj = kernel.Get<IGenericMethod>();
                 Assert.NotNull( obj );
-                Assert.IsAssignableFrom<IProxyTargetAccessor>(obj);
+                Assert.IsAssignableFrom<IProxyTargetAccessor>( obj );
 
                 FlagInterceptor.Reset();
 
@@ -158,7 +157,7 @@ namespace Ninject.Extensions.Interception.Tests
                 var obj = kernel.Get<RequestsConstructorInjection>();
 
                 Assert.NotNull( obj );
-                Assert.IsAssignableFrom<IProxyTargetAccessor>(obj);
+                Assert.IsAssignableFrom<IProxyTargetAccessor>( obj );
                 Assert.NotNull( obj.Child );
             }
         }
@@ -175,7 +174,7 @@ namespace Ninject.Extensions.Interception.Tests
                 var obj = kernel.Get<RequestsConstructorInjection>();
 
                 Assert.NotNull( obj );
-                Assert.IsAssignableFrom<IProxyTargetAccessor>(obj);
+                Assert.IsAssignableFrom<IProxyTargetAccessor>( obj );
                 Assert.NotNull( obj.Child );
             }
         }
@@ -190,7 +189,7 @@ namespace Ninject.Extensions.Interception.Tests
                 var obj = kernel.Get<RequestsConstructorInjection>();
 
                 Assert.NotNull( obj );
-                Assert.IsAssignableFrom<IProxyTargetAccessor>(obj);
+                Assert.IsAssignableFrom<IProxyTargetAccessor>( obj );
                 FlagInterceptor.Reset();
                 Assert.False( FlagInterceptor.WasCalled );
                 Assert.NotNull( obj.Child );

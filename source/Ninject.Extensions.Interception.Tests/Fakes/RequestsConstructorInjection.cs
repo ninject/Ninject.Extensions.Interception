@@ -14,6 +14,9 @@ namespace Ninject.Extensions.Interception.Tests.Fakes
             _child = child;
         }
 
-        public virtual SimpleObject Child { get { return _child; } }
+        public virtual SimpleObject Child
+        {
+            get { return _child; }
+        }
     }
 }

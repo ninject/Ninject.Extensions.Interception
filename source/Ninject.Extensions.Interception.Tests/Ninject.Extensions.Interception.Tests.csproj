@@ -59,6 +59,9 @@
     <Compile Include="Fakes\DummyProxyFactory.cs" />
     <Compile Include="Fakes\ViewModelBase.cs" />
     <Compile Include="Fakes\ViewModelWithClassNotify.cs" />
+    <Compile Include="InterceptionSyntaxContext.cs" />
+    <Compile Include="InterceptionSyntaxContextDynamicProxy2.cs" />
+    <Compile Include="InterceptionSyntaxContextLinfFu.cs" />
     <Compile Include="InterceptionTestContext.cs" />
     <Compile Include="Interceptors\FlagInterceptor.cs" />
     <Compile Include="Fakes\IGenericMethod.cs" />
@@ -78,6 +81,8 @@
     <Compile Include="Fakes\SimpleObject.cs" />
     <Compile Include="PropertyInterceptionContext.cs" />
     <Compile Include="Fakes\ViewModel.cs" />
+    <Compile Include="PropertyInterceptionContextDynamicProxy2.cs" />
+    <Compile Include="PropertyInterceptionContextLinfFu.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Ninject.Extensions.Interception\Ninject.Extensions.Interception.csproj">

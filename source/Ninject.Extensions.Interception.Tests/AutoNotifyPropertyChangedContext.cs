@@ -1,9 +1,6 @@
 #region Using Directives
 
-using System.Collections.Generic;
-using LinFu.DynamicProxy;
-using Ninject.Extensions.Interception.Tests.Fakes;
-using Xunit;
+
 
 #endregion
 
