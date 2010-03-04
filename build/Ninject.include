@@ -13,8 +13,8 @@
 	<property name="path.tools.ncover" value="${path.tools}/ncover"/>
 
 	<property name="product.name" value="Ninject" overwrite="false"/>
-	<property name="product.company" value="Enkari, Ltd." overwrite="false"/>
-	<property name="product.duration" value="2007-2009" overwrite="false"/>
+	<property name="product.company" value="Innovatian Software, LLC" overwrite="false"/>
+	<property name="product.duration" value="2007-2010" overwrite="false"/>
 	<property name="product.description" value="Lightweight dependency injection for .NET" overwrite="false"/>
 	<property name="product.keyfile" value="${product.name}.snk" overwrite="false"/>
 	<property name="product.docfile" value="${product.name}.xml" overwrite="false"/>
@@ -33,12 +33,13 @@
 
 	<property name="package" value="false" readonly="false" overwrite="false"/>
 	<property name="skip.tests" value="false" readonly="false" overwrite="false"/>
+	<property name="build.outputfile" value=
+"${path.dist}\${product.name}-${build.version}-${build.config}-${build.platform}.zip" readonly="false" overwrite="false"/>
 
 	<target name="rebuild" depends="clean, all"/>
 
 	<target name="clean">
 		<delete dir="${path.build}" if="${directory::exists(path.build)}"/>
-		<delete dir="${path.dist}" if="${directory::exists(path.dist)}"/>
 	</target>
 
 	<target name="create-assembly-info">
@@ -131,7 +132,7 @@
 
 	<target name="package-bin" depends="all">
 		<mkdir dir="${path.dist}" if="${not(directory::exists(path.dist))}"/>
-		<zip zipfile="${path.dist}\${product.name}-${build.version}-${build.config}-${build.platform}.zip" ziplevel="9">
+		<zip zipfile="${build.outputfile}" ziplevel="9">
 			<fileset basedir="${current.path.build}">
 				<include name="**/*.*"/>
 			</fileset>

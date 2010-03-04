@@ -10,8 +10,8 @@
 	<target name="all" depends="core"/>
 
 	<property name="product.name" value="Ninject.Extensions.Interception"/>
-	<property name="product.company" value="Innovatian, LLC"/>
-	<property name="product.duration" value="2007-2009"/>
+	<property name="product.company" value="Innovatian Software, LLC"/>
+	<property name="product.duration" value="2007-2010"/>
 	<property name="product.description" value="Interception extension for Ninject"/>
 	<property name="product.keyfile" value="Ninject.snk"/>
 	<property name="product.docfile" value="${product.name}.xml"/>
@@ -19,7 +19,7 @@
 	<property name="product.assembly.test" value="${product.name}.Tests.dll"/>
 	
 	<target name="core" depends="initialize">
-		<csc noconfig="true" warnaserror="true" target="library" debug="${build.debug}" optimize="${build.optimize}" define="${build.defines}"
+		<csc noconfig="true" warnaserror="true" target="library" debug="${build.debug}" optimize="${build.optimize}" define="${build.defines},${build.proxy.defines}"
          keyfile="${path.base}/build/${product.keyfile}" output="${current.path.build}/${product.assembly}" doc="${current.path.build}/${product.docfile}">
 			<arg line="/filealign:512" unless="${build.platform == 'mono-2.0'}"/>
 			<sources basedir="${path.src}">
@@ -30,12 +30,13 @@
 				<include name="mscorlib.dll"/>
 				<include name="System.dll"/>
 				<include name="System.Core.dll"/>
+				<include name="System.Web.dll"/>
 				<include name="${path.lib}\Ninject\${nant.settings.currentframework}\release\Ninject.dll"/>
-				<include name="${path.lib}\LinFu.DynamicProxy\LinFu.DynamicProxy.dll" unless="${build.platform == 'silverlight-3.0'}"/>
-				<include name="${path.lib}\Castle-Windsor\bin\net-3.5\Castle.Core.dll" if="${build.platform == 'net-3.5'}"/>
-				<include name="${path.lib}\Castle-Windsor\bin\net-3.5\Castle.DynamicProxy2.dll" if="${build.platform == 'net-3.5'}"/>
-				<include name="${path.lib}\Castle-Windsor\bin\sl-3.0\Castle.Core.dll" if="${build.platform == 'silverlight-3.0'}"/>
-				<include name="${path.lib}\Castle-Windsor\bin\sl-3.0\Castle.DynamicProxy2.dll" if="${build.platform == 'silverlight-3.0'}"/>
+				<include name="${path.lib}\LinFu.DynamicProxy\LinFu.DynamicProxy.dll" if="${(not(property::exists('build.proxy')) or build.proxy == 'linfu')}"/>
+				<include name="${path.lib}\Castle-Windsor\bin\net-3.5\Castle.Core.dll" if="${(not(property::exists('build.proxy')) or build.proxy == 'cdp2') and build.platform == 'net-3.5'}"/>
+				<include name="${path.lib}\Castle-Windsor\bin\net-3.5\Castle.DynamicProxy2.dll" if="${(not(property::exists('build.proxy')) or build.proxy == 'cdp2') and build.platform == 'net-3.5'}"/>
+				<include name="${path.lib}\Castle-Windsor\bin\sl-3.0\Castle.Core.dll" if="${(not(property::exists('build.proxy')) or build.proxy == 'cdp2') and build.platform == 'silverlight-3.0'}"/>
+				<include name="${path.lib}\Castle-Windsor\bin\sl-3.0\Castle.DynamicProxy2.dll" if="${(not(property::exists('build.proxy')) or build.proxy == 'cdp2') and build.platform == 'silverlight-3.0'}"/>
 			</references>
 		</csc>
 	</target>
@@ -63,7 +64,7 @@
 				<include name="Ninject.Tests.TestModule.dll"/>
 			</fileset>
 		</copy>
-		<csc noconfig="true" warnaserror="true" target="library" debug="${build.debug}" optimize="${build.optimize}" define="${build.defines}"
+		<csc noconfig="true" warnaserror="true" target="library" debug="${build.debug}" optimize="${build.optimize}" define="${build.defines},${build.proxy.defines}"
          output="${current.path.test}/Ninject.Tests.dll">
 			<sources basedir="${path.src}">
 				<include name="Ninject.Tests/**/*.cs"/>
@@ -84,13 +85,29 @@
 		</csc>
 	</target>
 
+	<target name="config-platform-linfu">
+		<property name="build.proxy.defines" value="NO_CDP2"/>
+	</target>
+
+	<target name="config-platform-cdp2">
+		<property name="build.proxy.defines" value="NO_LINFU"/>
+	</target>
+
 	<target name="initialize" depends="create-assembly-info">
 		<mkdir dir="${path.build}" if="${not(directory::exists(path.build))}"/>
 		<mkdir dir="${path.dist}" if="${not(directory::exists(path.dist))}"/>
 
 		<call target="config-build-${build.config}"/>
 		<call target="config-platform-${build.platform}"/>
-
+		<if test="${property::exists('build.proxy')}">
+			<call target="config-platform-${build.proxy}"/>
+			<property name="build.outputfile" value="${path.dist}\${product.name}-${build.version}-${build.config}-${build.platform}-${build.proxy}.zip"/>
+		</if>
+		<if test="${not(property::exists('build.proxy.defines'))}">
+			<property name="build.proxy.defines" value=""/>
+			<property name="build.outputfile" value="${path.dist}\${product.name}-${build.version}-${build.config}-${build.platform}.zip"/>
+		</if>
+		
 		<property name="current.path.build" value="${path.build}/${build.platform}/${build.config}"/>
 		<property name="current.path.build.lib" value="${path.build}/${build.platform}/${build.config}/lib"/>
 		<property name="current.path.build.extensions" value="${path.build}/${build.platform}/${build.config}/extensions"/>
@@ -106,29 +123,33 @@
 				<include name="Ninject.xml"/>
 			</fileset>
 		</copy>
-		<copy todir="${current.path.build.lib}">
-			<fileset basedir="${path.lib}\LinFu.DynamicProxy">
-				<include name="LinFu.DynamicProxy.dll" unless="${build.platform == 'silverlight-3.0'}"/>
-				<include name="LinFu.License.txt" unless="${build.platform == 'silverlight-3.0'}"/>
-			</fileset>
-		</copy>
-		<copy todir="${current.path.build.lib}">
-			<fileset basedir="${path.lib}\Castle-Windsor\bin\net-3.5">
-				<include name="Castle.Core.*" if="${build.platform == 'net-3.5'}"/>
-				<include name="Castle.DynamicProxy2.*" if="${build.platform == 'net-3.5'}"/>
-			</fileset>
-		</copy>
-		<copy todir="${current.path.build.lib}">
-			<fileset basedir="${path.lib}\Castle-Windsor\bin\sl-3.0">
-				<include name="Castle.Core.*" if="${build.platform == 'silverlight-3.0'}"/>
-				<include name="Castle.DynamicProxy2.*" if="${build.platform == 'silverlight-3.0'}"/>
-			</fileset>
-		</copy>
-		<copy todir="${current.path.build.lib}">
-			<fileset basedir="${path.lib}\Castle-Windsor">
-				<include name="ASL - Apache Software Foundation License.txt" unless="${build.platform == 'mono-2.0'}"/>
-			</fileset>
-		</copy>
+		<if test="${not(property::exists('build.proxy')) or build.proxy == 'linfu'}">
+			<copy todir="${current.path.build.lib}">
+				<fileset basedir="${path.lib}\LinFu.DynamicProxy">
+					<include name="LinFu.DynamicProxy.dll" unless="${build.platform == 'silverlight-3.0'}"/>
+					<include name="LinFu.License.txt" unless="${build.platform == 'silverlight-3.0'}"/>
+				</fileset>
+			</copy>
+		</if>
+		<if test="${(not(property::exists('build.proxy')) or build.proxy == 'cdp2')}">
+			<copy todir="${current.path.build.lib}">
+				<fileset basedir="${path.lib}\Castle-Windsor\bin\net-3.5">
+					<include name="Castle.Core.*" if="${build.platform == 'net-3.5'}"/>
+					<include name="Castle.DynamicProxy2.*" if="${build.platform == 'net-3.5'}"/>
+				</fileset>
+			</copy>
+			<copy todir="${current.path.build.lib}">
+				<fileset basedir="${path.lib}\Castle-Windsor\bin\sl-3.0">
+					<include name="Castle.Core.*" if="${build.platform == 'silverlight-3.0'}"/>
+					<include name="Castle.DynamicProxy2.*" if="${build.platform == 'silverlight-3.0'}"/>
+				</fileset>
+			</copy>
+			<copy todir="${current.path.build.lib}">
+				<fileset basedir="${path.lib}\Castle-Windsor">
+					<include name="ASL - Apache Software Foundation License.txt"/>
+				</fileset>
+			</copy>
+		</if>
 	</target>
 
 </project>
