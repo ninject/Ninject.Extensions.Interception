@@ -16,7 +16,6 @@ using System;
 using Ninject.Extensions.Interception.Advice.Syntax;
 using Ninject.Extensions.Interception.Infrastructure;
 using Ninject.Extensions.Interception.Request;
-using Ninject.Interception;
 
 #endregion
 
@@ -48,6 +47,11 @@ namespace Ninject.Extensions.Interception.Advice.Builders
 
         #region IAdviceOrderSyntax Members
 
+        /// <summary>
+        /// Indicates that the interceptor should be called with the specified order. (Interceptors
+        /// with a lower order will be called first.)
+        /// </summary>
+        /// <param name="order">The order.</param>
         void IAdviceOrderSyntax.InOrder( int order )
         {
             Advice.Order = order;
@@ -57,24 +61,47 @@ namespace Ninject.Extensions.Interception.Advice.Builders
 
         #region IAdviceTargetSyntax Members
 
+        /// <summary>
+        /// Indicates that matching requests should be intercepted via an interceptor of the
+        /// specified type. The interceptor will be created via the kernel when the method is called.
+        /// </summary>
+        /// <typeparam name="T">The type of interceptor to call.</typeparam>
+        /// <returns></returns>
         IAdviceOrderSyntax IAdviceTargetSyntax.With<T>()
         {
             Advice.Callback = r => r.Kernel.Get<T>();
             return this;
         }
 
+        /// <summary>
+        /// Indicates that matching requests should be intercepted via an interceptor of the
+        /// specified type. The interceptor will be created via the kernel when the method is called.
+        /// </summary>
+        /// <param name="interceptorType">The type of interceptor to call.</param>
+        /// <returns></returns>
         IAdviceOrderSyntax IAdviceTargetSyntax.With( Type interceptorType )
         {
             Advice.Callback = r => r.Kernel.Get( interceptorType ) as IInterceptor;
             return this;
         }
 
+        /// <summary>
+        /// Indicates that matching requests should be intercepted via the specified interceptor.
+        /// </summary>
+        /// <param name="interceptor">The interceptor to call.</param>
+        /// <returns></returns>
         IAdviceOrderSyntax IAdviceTargetSyntax.With( IInterceptor interceptor )
         {
             Advice.Interceptor = interceptor;
             return this;
         }
 
+        /// <summary>
+        /// Indicates that matching requests should be intercepted via an interceptor created by
+        /// calling the specified callback.
+        /// </summary>
+        /// <param name="factoryMethod">The factory method that will create the interceptor.</param>
+        /// <returns></returns>
         IAdviceOrderSyntax IAdviceTargetSyntax.With( Func<IProxyRequest, IInterceptor> factoryMethod )
         {
             Advice.Callback = factoryMethod;

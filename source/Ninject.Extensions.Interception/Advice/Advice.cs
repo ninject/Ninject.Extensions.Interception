@@ -78,7 +78,10 @@ namespace Ninject.Extensions.Interception.Advice
         /// Gets a value indicating whether the advice is related to a condition instead of a
         /// specific method.
         /// </summary>
-        public bool IsDynamic { get { return Condition != null; } }
+        public bool IsDynamic
+        {
+            get { return Condition != null; }
+        }
 
         /// <summary>
         /// Determines whether the advice matches the specified request.

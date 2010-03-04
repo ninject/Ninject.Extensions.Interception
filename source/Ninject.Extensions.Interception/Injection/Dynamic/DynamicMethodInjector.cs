@@ -58,4 +58,5 @@ namespace Ninject.Extensions.Interception.Injection.Dynamic
     }
 }
 
-#endif //!NO_LCG
+#endif
+//!NO_LCG

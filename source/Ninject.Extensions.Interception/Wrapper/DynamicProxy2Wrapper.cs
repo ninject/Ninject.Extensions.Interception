@@ -1,4 +1,4 @@
-#if !MONO
+#if !MONO && !NO_CDP2
 
 #region License
 
@@ -80,4 +80,4 @@ namespace Ninject.Extensions.Interception.Wrapper
     }
 }
 
-#endif //!MONO
+#endif //!MONO && !NO_CDP2

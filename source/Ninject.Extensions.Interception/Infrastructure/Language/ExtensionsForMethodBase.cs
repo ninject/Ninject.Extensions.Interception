@@ -50,10 +50,7 @@ namespace Ninject.Extensions.Interception.Infrastructure.Language
             {
                 return mi.GetGenericMethodDefinition().MethodHandle;
             }
-            else
-            {
-                return method.MethodHandle;
-            }
+            return method.MethodHandle;
         }
     }
 }

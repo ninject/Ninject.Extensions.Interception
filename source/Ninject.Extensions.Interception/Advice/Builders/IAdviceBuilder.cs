@@ -1,11 +1,10 @@
 #region Using Directives
 
 using System;
-using Ninject.Extensions.Interception.Advice;
 
 #endregion
 
-namespace Ninject.Interception
+namespace Ninject.Extensions.Interception.Advice.Builders
 {
     /// <summary>
     /// Builds information associated with advice.

@@ -16,9 +16,7 @@ using Ninject.Activation.Strategies;
 using Ninject.Extensions.Interception.Activation.Strategies;
 using Ninject.Extensions.Interception.Advice;
 using Ninject.Extensions.Interception.Injection;
-#if !NO_LCG
 using Ninject.Extensions.Interception.Injection.Dynamic;
-#endif
 using Ninject.Extensions.Interception.Injection.Reflection;
 using Ninject.Extensions.Interception.Planning.Strategies;
 using Ninject.Extensions.Interception.ProxyFactory;
@@ -26,6 +24,8 @@ using Ninject.Extensions.Interception.Registry;
 using Ninject.Extensions.Interception.Request;
 using Ninject.Modules;
 using Ninject.Planning.Strategies;
+#if !NO_LCG
+#endif
 
 #endregion
 

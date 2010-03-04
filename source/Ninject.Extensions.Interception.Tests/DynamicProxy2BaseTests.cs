@@ -178,23 +178,5 @@ namespace Ninject.Extensions.Interception.Tests
                 Assert.NotNull( obj.Child );
             }
         }
-
-        [Fact]
-        public void SyntaxTestCurrentlyCausingStackOverflow()
-        {
-            return;
-            using ( StandardKernel kernel = CreateDefaultInterceptionKernel() )
-            {
-                kernel.Bind<RequestsConstructorInjection>().ToSelf().Intercept().With<FlagInterceptor>();
-                var obj = kernel.Get<RequestsConstructorInjection>();
-
-                Assert.NotNull( obj );
-                Assert.IsAssignableFrom<IProxyTargetAccessor>( obj );
-                FlagInterceptor.Reset();
-                Assert.False( FlagInterceptor.WasCalled );
-                Assert.NotNull( obj.Child );
-                Assert.True( FlagInterceptor.WasCalled );
-            }
-        }
     }
 }

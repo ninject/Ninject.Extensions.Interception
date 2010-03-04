@@ -77,7 +77,7 @@ namespace Ninject.Extensions.Interception.Planning.Strategies
                                                 new[]
                                                 {
                                                     new InternalInterceptAttribute( request => interceptor )
-                                                    { Order = order }
+                                                    {Order = order}
                                                 } );
                 }
             }

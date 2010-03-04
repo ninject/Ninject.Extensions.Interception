@@ -1,4 +1,4 @@
-#if !MONO
+#if !MONO && !NO_CDP2
 
 #region License
 
@@ -14,7 +14,6 @@
 
 #region Using Directives
 
-using System;
 using Ninject.Extensions.Interception.ProxyFactory;
 
 #endregion
@@ -32,19 +31,10 @@ namespace Ninject.Extensions.Interception
         /// </summary>
         public override void Load()
         {
-            //var proxyFactory = Kernel.Components.Get<IProxyFactory>();
-            //if(proxyFactory != null)
-            //{
-            //    string message =
-            //        string.Format(
-            //            "IProxyFactory already bound to kernel. Please only load a single interception module. The IProxyFactory found was of type {0}.",
-            //            proxyFactory.GetType().FullName );
-            //    throw new InvalidOperationException(message);
-            //}
             Kernel.Components.Add<IProxyFactory, DynamicProxy2ProxyFactory>();
             base.Load();
         }
     }
 }
 
-#endif //!MONO
+#endif //!MONO && !NO_CDP2

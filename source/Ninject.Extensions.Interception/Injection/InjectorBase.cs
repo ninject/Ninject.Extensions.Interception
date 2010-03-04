@@ -37,7 +37,11 @@ namespace Ninject.Extensions.Interception.Injection
         /// <summary>
         /// Gets the member associated with the injector.
         /// </summary>
-        public TMember Member { get { return _member; } set { _member = value; } }
+        public TMember Member
+        {
+            get { return _member; }
+            set { _member = value; }
+        }
 
         #endregion
 

@@ -13,15 +13,16 @@
 #region Using Directives
 
 using System;
-#if !NETCF
 using System.Linq.Expressions;
-#endif // !NETCF
 using System.Reflection;
 using Ninject.Extensions.Interception.Advice;
 using Ninject.Extensions.Interception.Advice.Builders;
 using Ninject.Extensions.Interception.Advice.Syntax;
 using Ninject.Extensions.Interception.Registry;
 using Ninject.Extensions.Interception.Request;
+#if !NETCF
+#endif
+    // !NETCF
 
 #endregion
 

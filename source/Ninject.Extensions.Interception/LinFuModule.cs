@@ -1,4 +1,4 @@
-#if !SILVERLIGHT
+#if !SILVERLIGHT && !NO_LINFU
 
 #region License
 
@@ -37,4 +37,4 @@ namespace Ninject.Extensions.Interception
     }
 }
 
-#endif //!SILVERLIGHT
+#endif //!SILVERLIGHT && !NO_LINFU

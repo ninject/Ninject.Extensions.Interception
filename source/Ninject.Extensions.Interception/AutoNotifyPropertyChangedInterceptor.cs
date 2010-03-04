@@ -12,6 +12,7 @@
 
 #region Using Directives
 
+using System.Collections.Generic;
 using System.Reflection;
 using Ninject.Extensions.Interception.Attributes;
 using Ninject.Extensions.Interception.Infrastructure.Language;
@@ -24,10 +25,10 @@ namespace Ninject.Extensions.Interception
     /// Provides interceptor capabilities for integration in the <see cref="IAutoNotifyPropertyChanged"/> interception scheme.
     /// </summary>
     /// <typeparam name="TViewModel">The type of the view model.</typeparam>
-    public class AutoNotifyPropertyChangedInterceptor<TViewModel> 
+    public class AutoNotifyPropertyChangedInterceptor<TViewModel>
         : IAutoNotifyPropertyChangedInterceptor<TViewModel> where TViewModel : IAutoNotifyPropertyChanged
     {
-        #region IInterceptor Members
+        #region IAutoNotifyPropertyChangedInterceptor<TViewModel> Members
 
         /// <summary>
         /// Intercepts the specified invocation.
@@ -54,7 +55,7 @@ namespace Ninject.Extensions.Interception
                 return;
             }
 
-            string[] properties = GetAdditionalPropertiesToNotifyOfChanges( methodInfo );
+            IEnumerable<string> properties = GetAdditionalPropertiesToNotifyOfChanges( methodInfo );
 
             foreach ( string propertyName in properties )
             {
@@ -68,7 +69,7 @@ namespace Ninject.Extensions.Interception
             return ( propertyInfo == null || propertyInfo.GetOneAttribute<NotifyOfChangesAttribute>() == null );
         }
 
-        private static string[] GetAdditionalPropertiesToNotifyOfChanges( MethodInfo methodInfo )
+        private static IEnumerable<string> GetAdditionalPropertiesToNotifyOfChanges( MethodInfo methodInfo )
         {
             PropertyInfo propertyInfo = methodInfo.GetPropertyFromMethod( methodInfo.DeclaringType );
             var attribute = propertyInfo.GetOneAttribute<NotifyOfChangesAttribute>();

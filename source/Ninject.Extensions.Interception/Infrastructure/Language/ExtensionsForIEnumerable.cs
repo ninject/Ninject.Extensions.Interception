@@ -14,21 +14,15 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 #endregion
 
 namespace Ninject.Extensions.Interception.Infrastructure.Language
 {
-
-#if MONO
     /// <summary>
-    /// 
+    /// Extension methods that enhance <see cref="System.Collections.IEnumerable"/>.
     /// </summary>
-#else
-    /// <summary>
-    /// Extension methods that enhance <see cref="IEnumerable{T}"/>.
-    /// </summary>
-#endif // mcs is crazy, error CS1580: Invalid type for parameter `1' in XML comment cref attribute `IEnumerable(T)'
     internal static class ExtensionsForIEnumerable
     {
         /// <summary>
@@ -42,10 +36,7 @@ namespace Ninject.Extensions.Interception.Infrastructure.Language
         public static IEnumerable<TOutput> Convert<TInput, TOutput>( this IEnumerable<TInput> items,
                                                                      Func<TInput, TOutput> converter )
         {
-            foreach ( TInput item in items )
-            {
-                yield return converter( item );
-            }
+            return items.Select( converter );
         }
     }
 }

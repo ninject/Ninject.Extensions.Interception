@@ -14,6 +14,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using Ninject.Components;
 using Ninject.Extensions.Interception.Advice;
@@ -164,13 +165,7 @@ namespace Ninject.Extensions.Interception.Planning.Strategies
         {
             MethodInfo[] methods = type.GetMethods( DefaultBindingFlags );
 
-            foreach ( MethodInfo method in methods )
-            {
-                if ( ShouldIntercept( method ) )
-                {
-                    yield return method;
-                }
-            }
+            return methods.Where( ShouldIntercept );
         }
 
         /// <summary>

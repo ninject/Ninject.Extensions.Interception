@@ -13,6 +13,7 @@
 #region Using Directives
 
 using System;
+using System.Linq;
 using System.Reflection;
 
 #endregion
@@ -35,15 +36,10 @@ namespace Ninject.Extensions.Interception.Infrastructure.Language
         {
             var attributes = member.GetCustomAttributes( typeof (T), true ) as T[];
 
-            if ( ( attributes == null ) ||
-                 ( attributes.Length == 0 ) )
-            {
-                return null;
-            }
-            else
-            {
-                return attributes[0];
-            }
+            return ( attributes == null ) ||
+                   ( attributes.Length == 0 )
+                       ? null
+                       : attributes[0];
         }
 
         /// <summary>
@@ -56,15 +52,10 @@ namespace Ninject.Extensions.Interception.Infrastructure.Language
         {
             object[] attributes = member.GetCustomAttributes( type, true );
 
-            if ( ( attributes == null ) ||
-                 ( attributes.Length == 0 ) )
-            {
-                return null;
-            }
-            else
-            {
-                return attributes[0];
-            }
+            return (attributes == null) ||
+                   (attributes.Length == 0)
+                       ? null
+                       : attributes[0];
         }
 
         /// <summary>
@@ -131,15 +122,7 @@ namespace Ninject.Extensions.Interception.Infrastructure.Language
                 return false;
             }
 
-            foreach ( T attribute in attributes )
-            {
-                if ( attribute.Match( attributeToMatch ) )
-                {
-                    return true;
-                }
-            }
-
-            return false;
+            return attributes.Any( attribute => attribute.Match( attributeToMatch ) );
         }
     }
 }

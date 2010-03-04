@@ -73,7 +73,8 @@ namespace Ninject.Extensions.Interception.Wrapper
         {
             IComponentContainer components = request.Context.Kernel.Components;
 
-            IEnumerable<IInterceptor> interceptors = components.Get<IAdviceRegistry>().GetInterceptors( request );
+            IEnumerable<IInterceptor> interceptors = 
+                components.Get<IAdviceRegistry>().GetInterceptors( request );
             IMethodInjector injector =
                 components.Get<IInjectorFactory>().GetInjector( request.Method );
 
