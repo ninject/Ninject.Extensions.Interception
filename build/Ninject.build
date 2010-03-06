@@ -150,6 +150,11 @@
 				</fileset>
 			</copy>
 		</if>
+		<copy todir="${current.path.build}">
+			<fileset basedir="${path.base}">
+				<include name="LICENSE.txt"/>
+			</fileset>
+		</copy>
 	</target>
 
 </project>
