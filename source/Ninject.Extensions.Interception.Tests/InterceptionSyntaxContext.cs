@@ -31,5 +31,24 @@ namespace Ninject.Extensions.Interception.Tests
                 Assert.True( FlagInterceptor.WasCalled );
             }
         }
+
+        [Fact]
+        public void CanAttachMultipleInterceptors()
+        {
+            using (StandardKernel kernel = CreateDefaultInterceptionKernel())
+            {
+                var binding = kernel.Bind<FooImpl>().ToSelf();
+                binding.Intercept().With<FlagInterceptor>();
+                binding.Intercept().With<CountInterceptor>();
+                var foo = kernel.Get<FooImpl>();
+
+                Assert.NotNull(foo);
+                Assert.False(FlagInterceptor.WasCalled);
+                Assert.Equal(0, CountInterceptor.Count);
+                foo.Foo();
+                Assert.True(FlagInterceptor.WasCalled);
+                Assert.Equal(1, CountInterceptor.Count);
+            }
+        }
     }
 }

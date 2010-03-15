@@ -6,6 +6,15 @@ namespace Ninject.Extensions.Interception.Tests.Interceptors
 {
     public class CountInterceptor : SimpleInterceptor
     {
+        public CountInterceptor() : this( 0 )
+        {
+        }
+
+        public CountInterceptor( int initialValue )
+        {
+            Count = initialValue;
+        }
+
         public static int Count { get; set; }
 
         protected override void BeforeInvoke( IInvocation invocation )

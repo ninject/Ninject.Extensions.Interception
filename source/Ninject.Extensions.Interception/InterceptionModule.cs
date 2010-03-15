@@ -12,6 +12,8 @@
 
 #region Using Directives
 
+using System;
+using System.Text;
 using Ninject.Activation.Strategies;
 using Ninject.Extensions.Interception.Activation.Strategies;
 using Ninject.Extensions.Interception.Advice;
@@ -66,6 +68,27 @@ namespace Ninject.Extensions.Interception
                 Kernel.Components.Add<IInjectorFactory, DynamicInjectorFactory>();
             }
 #endif
+        }
+
+        /// <summary>
+        /// Verifies that there are no proxy factories attached as kernel components.
+        /// </summary>
+        protected virtual void VerifyNoBoundProxyFactoriesExist()
+        {
+            IProxyFactory existingProxyFactory = Kernel.Components.Get<IProxyFactory>();
+
+            if ( existingProxyFactory != null )
+            {
+                StringBuilder builder = new StringBuilder();
+                builder.AppendFormat("The Ninject Kernel already has an implementation of IProxyFactory bound to {0}. ",
+                                   existingProxyFactory.GetType().Name );
+                builder.AppendLine();
+                builder.AppendLine(
+                    " Please verify that if you are using automatic extension loading that you only have one interception module." );
+                builder.AppendLine(
+                    " If you have more than one interception module, please disable automatic extension loading by passing an INinjectSettings object into your Kernel's .ctor with" );
+                throw new InvalidOperationException();
+            }
         }
     }
 }

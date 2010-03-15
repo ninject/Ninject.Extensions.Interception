@@ -1,9 +1,11 @@
 #region Using Directives
 
+using System;
 using LinFu.DynamicProxy;
 using Ninject.Extensions.Interception.Infrastructure.Language;
 using Ninject.Extensions.Interception.Tests.Fakes;
 using Ninject.Extensions.Interception.Tests.Interceptors;
+using Ninject.Syntax;
 using Xunit;
 
 #endregion
@@ -184,6 +186,14 @@ namespace Ninject.Extensions.Interception.Tests
                 Assert.NotNull( obj.Child );
                 Assert.True( FlagInterceptor.WasCalled );
             }
+        }
+    }
+
+    public class FooImpl : IFoo
+    {
+        public virtual void Foo()
+        {
+            
         }
     }
 }

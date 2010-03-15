@@ -93,6 +93,14 @@
     <Compile Include="PropertyInterceptionContextLinfFu.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Ninject.Extensions.Interception.DynamicProxy2\Ninject.Extensions.Interception.DynamicProxy2.csproj">
+      <Project>{A728460A-B97B-471C-B7C3-8010DA8EFB2A}</Project>
+      <Name>Ninject.Extensions.Interception.DynamicProxy2</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Ninject.Extensions.Interception.LinFu\Ninject.Extensions.Interception.LinFu.csproj">
+      <Project>{8E34CAFA-BAEB-4FCB-8A63-1266EB58F24E}</Project>
+      <Name>Ninject.Extensions.Interception.LinFu</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Ninject.Extensions.Interception\Ninject.Extensions.Interception.csproj">
       <Project>{C99A5FAE-C6AD-4F24-A938-EC8BDDB885A6}</Project>
       <Name>Ninject.Extensions.Interception</Name>
