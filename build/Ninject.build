@@ -11,6 +11,7 @@
 	<target name="linfu" depends="core core-linfu"/>
 	<target name="cdp2" depends="core core-cdp2"/>
 
+	<property name="version" value="2.0.1.0" overwrite="true"/>
 	<property name="product.name" value="Ninject.Extensions.Interception"/>
 	<property name="product.company" value="Innovatian Software, LLC"/>
 	<property name="product.duration" value="2007-2010"/>
@@ -48,7 +49,7 @@
 			<arg line="/filealign:512" unless="${build.platform == 'mono-2.0'}"/>
 			<sources basedir="${path.src}">
 				<include name="${build.asminfo}"/>
-				<include name="${product.name}/**/*.cs"/>
+				<include name="${product.name}.LinFu/**/*.cs"/>
 			</sources>
 			<references>
 				<include name="mscorlib.dll"/>
@@ -57,8 +58,8 @@
 				<include name="System.Web.dll"/>
 				<include name="${current.path.build}/${product.assembly}"/>
 				<include name="${path.lib}\Ninject\${nant.settings.currentframework}\release\Ninject.dll"/>
-				<include name="${path.lib}\LinFu.DynamicProxy\net-3.5\LinFu.DynamicProxy.dll" if="${(not(property::exists('build.proxy')) or build.proxy == 'linfu') and not(build.platform == 'silverlight-3.0') }"/>
-				<include name="${path.lib}\LinFu.DynamicProxy\sl-3.0\LinFu.DynamicProxy.dll" if="${(not(property::exists('build.proxy')) or build.proxy == 'linfu') and build.platform == 'silverlight-3.0'}"/>
+				<include name="${path.lib}\LinFu.DynamicProxy\net-3.5\LinFu.DynamicProxy.dll" if="${build.proxy == 'linfu' and not(build.platform == 'silverlight-3.0') }"/>
+				<include name="${path.lib}\LinFu.DynamicProxy\sl-3.0\LinFu.DynamicProxy.dll" if="${build.proxy == 'linfu' and build.platform == 'silverlight-3.0'}"/>
 			</references>
 		</csc>
 	</target>
@@ -69,7 +70,7 @@
 			<arg line="/filealign:512" unless="${build.platform == 'mono-2.0'}"/>
 			<sources basedir="${path.src}">
 				<include name="${build.asminfo}"/>
-				<include name="${product.name}/**/*.cs"/>
+				<include name="${product.name}.DynamicProxy2/**/*.cs"/>
 			</sources>
 			<references>
 				<include name="mscorlib.dll"/>
@@ -78,10 +79,10 @@
 				<include name="System.Web.dll"/>
 				<include name="${current.path.build}/${product.assembly}"/>
 				<include name="${path.lib}\Ninject\${nant.settings.currentframework}\release\Ninject.dll"/>
-				<include name="${path.lib}\Castle-Windsor\bin\net-3.5\Castle.Core.dll" if="${(not(property::exists('build.proxy')) or build.proxy == 'cdp2') and build.platform == 'net-3.5'}"/>
-				<include name="${path.lib}\Castle-Windsor\bin\net-3.5\Castle.DynamicProxy2.dll" if="${(not(property::exists('build.proxy')) or build.proxy == 'cdp2') and build.platform == 'net-3.5'}"/>
-				<include name="${path.lib}\Castle-Windsor\bin\sl-3.0\Castle.Core.dll" if="${(not(property::exists('build.proxy')) or build.proxy == 'cdp2') and build.platform == 'silverlight-3.0'}"/>
-				<include name="${path.lib}\Castle-Windsor\bin\sl-3.0\Castle.DynamicProxy2.dll" if="${(not(property::exists('build.proxy')) or build.proxy == 'cdp2') and build.platform == 'silverlight-3.0'}"/>
+				<include name="${path.lib}\Castle-Windsor\bin\net-3.5\Castle.Core.dll" if="${build.proxy == 'cdp2' and build.platform == 'net-3.5'}"/>
+				<include name="${path.lib}\Castle-Windsor\bin\net-3.5\Castle.DynamicProxy2.dll" if="${build.proxy == 'cdp2' and build.platform == 'net-3.5'}"/>
+				<include name="${path.lib}\Castle-Windsor\bin\sl-3.0\Castle.Core.dll" if="${build.proxy == 'cdp2' and build.platform == 'silverlight-3.0'}"/>
+				<include name="${path.lib}\Castle-Windsor\bin\sl-3.0\Castle.DynamicProxy2.dll" if="${build.proxy == 'cdp2' and build.platform == 'silverlight-3.0'}"/>
 			</references>
 		</csc>
 	</target>
@@ -168,7 +169,7 @@
 				<include name="Ninject.xml"/>
 			</fileset>
 		</copy>
-		<if test="${not(property::exists('build.proxy')) or build.proxy == 'linfu'}">
+		<if test="${build.proxy == 'linfu'}">
 			<copy todir="${current.path.build.lib}">
 				<fileset basedir="${path.lib}\LinFu.DynamicProxy\net-3.5">
 					<include name="LinFu.DynamicProxy.dll" unless="${build.platform == 'silverlight-3.0'}"/>
@@ -182,7 +183,7 @@
 				</fileset>
 			</copy>
 		</if>
-		<if test="${(not(property::exists('build.proxy')) or build.proxy == 'cdp2')}">
+		<if test="${build.proxy == 'cdp2'}">
 			<copy todir="${current.path.build.lib}">
 				<fileset basedir="${path.lib}\Castle-Windsor\bin\net-3.5">
 					<include name="Castle.Core.*" if="${build.platform == 'net-3.5'}"/>
