@@ -35,6 +35,8 @@ namespace Ninject.Extensions.Interception.Tests
         [Fact]
         public void CanAttachMultipleInterceptors()
         {
+            FlagInterceptor.Reset();
+            CountInterceptor.Reset();
             using (StandardKernel kernel = CreateDefaultInterceptionKernel())
             {
                 var binding = kernel.Bind<FooImpl>().ToSelf();

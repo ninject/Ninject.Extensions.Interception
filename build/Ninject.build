@@ -8,6 +8,8 @@
 	<property name="path.tools" value="${path.base}/contrib"/>
 	
 	<target name="all" depends="core"/>
+	<target name="linfu" depends="core core-linfu"/>
+	<target name="cdp2" depends="core core-cdp2"/>
 
 	<property name="product.name" value="Ninject.Extensions.Interception"/>
 	<property name="product.company" value="Innovatian Software, LLC"/>
@@ -15,11 +17,15 @@
 	<property name="product.description" value="Interception extension for Ninject"/>
 	<property name="product.keyfile" value="Ninject.snk"/>
 	<property name="product.docfile" value="${product.name}.xml"/>
-	<property name="product.assembly" value="${product.name}.dll"/>
+	<property name="product.linfu.docfile" value="${product.name}.LinFu.xml"/>
+	<property name="product.cdp2.docfile" value="${product.name}.DynamicProxy2.xml"/>
+	<property name="product.assembly" value="${product.name}.dll"/>'
+	<property name="product.linfu.assembly" value="${product.name}.LinFu.dll"/>
+	<property name="product.cdp2.assembly" value="${product.name}.DynamicProxy2.dll"/>
 	<property name="product.assembly.test" value="${product.name}.Tests.dll"/>
 	
 	<target name="core" depends="initialize">
-		<csc noconfig="true" warnaserror="true" target="library" debug="${build.debug}" optimize="${build.optimize}" define="${build.defines},${build.proxy.defines}"
+		<csc noconfig="true" warnaserror="true" target="library" debug="${build.debug}" optimize="${build.optimize}" define="${build.defines}}"
          keyfile="${path.base}/build/${product.keyfile}" output="${current.path.build}/${product.assembly}" doc="${current.path.build}/${product.docfile}">
 			<arg line="/filealign:512" unless="${build.platform == 'mono-2.0'}"/>
 			<sources basedir="${path.src}">
@@ -32,7 +38,46 @@
 				<include name="System.Core.dll"/>
 				<include name="System.Web.dll"/>
 				<include name="${path.lib}\Ninject\${nant.settings.currentframework}\release\Ninject.dll"/>
-				<include name="${path.lib}\LinFu.DynamicProxy\LinFu.DynamicProxy.dll" if="${(not(property::exists('build.proxy')) or build.proxy == 'linfu')}"/>
+			</references>
+		</csc>
+	</target>
+
+	<target name="core-linfu" depends="initialize">
+		<csc noconfig="true" warnaserror="true" target="library" debug="${build.debug}" optimize="${build.optimize}" define="${build.defines},${build.proxy.defines}"
+         keyfile="${path.base}/build/${product.keyfile}" output="${current.path.build}/${product.linfu.assembly}" doc="${current.path.build}/${product.linfu.docfile}">
+			<arg line="/filealign:512" unless="${build.platform == 'mono-2.0'}"/>
+			<sources basedir="${path.src}">
+				<include name="${build.asminfo}"/>
+				<include name="${product.name}/**/*.cs"/>
+			</sources>
+			<references>
+				<include name="mscorlib.dll"/>
+				<include name="System.dll"/>
+				<include name="System.Core.dll"/>
+				<include name="System.Web.dll"/>
+				<include name="${current.path.build}/${product.assembly}"/>
+				<include name="${path.lib}\Ninject\${nant.settings.currentframework}\release\Ninject.dll"/>
+				<include name="${path.lib}\LinFu.DynamicProxy\net-3.5\LinFu.DynamicProxy.dll" if="${(not(property::exists('build.proxy')) or build.proxy == 'linfu') and not(build.platform == 'silverlight-3.0') }"/>
+				<include name="${path.lib}\LinFu.DynamicProxy\sl-3.0\LinFu.DynamicProxy.dll" if="${(not(property::exists('build.proxy')) or build.proxy == 'linfu') and build.platform == 'silverlight-3.0'}"/>
+			</references>
+		</csc>
+	</target>
+
+	<target name="core-cdp2" depends="initialize">
+		<csc noconfig="true" warnaserror="true" target="library" debug="${build.debug}" optimize="${build.optimize}" define="${build.defines},${build.proxy.defines}"
+         keyfile="${path.base}/build/${product.keyfile}" output="${current.path.build}/${product.cdp2.assembly}" doc="${current.path.build}/${product.cdp2.docfile}">
+			<arg line="/filealign:512" unless="${build.platform == 'mono-2.0'}"/>
+			<sources basedir="${path.src}">
+				<include name="${build.asminfo}"/>
+				<include name="${product.name}/**/*.cs"/>
+			</sources>
+			<references>
+				<include name="mscorlib.dll"/>
+				<include name="System.dll"/>
+				<include name="System.Core.dll"/>
+				<include name="System.Web.dll"/>
+				<include name="${current.path.build}/${product.assembly}"/>
+				<include name="${path.lib}\Ninject\${nant.settings.currentframework}\release\Ninject.dll"/>
 				<include name="${path.lib}\Castle-Windsor\bin\net-3.5\Castle.Core.dll" if="${(not(property::exists('build.proxy')) or build.proxy == 'cdp2') and build.platform == 'net-3.5'}"/>
 				<include name="${path.lib}\Castle-Windsor\bin\net-3.5\Castle.DynamicProxy2.dll" if="${(not(property::exists('build.proxy')) or build.proxy == 'cdp2') and build.platform == 'net-3.5'}"/>
 				<include name="${path.lib}\Castle-Windsor\bin\sl-3.0\Castle.Core.dll" if="${(not(property::exists('build.proxy')) or build.proxy == 'cdp2') and build.platform == 'silverlight-3.0'}"/>
@@ -125,9 +170,15 @@
 		</copy>
 		<if test="${not(property::exists('build.proxy')) or build.proxy == 'linfu'}">
 			<copy todir="${current.path.build.lib}">
-				<fileset basedir="${path.lib}\LinFu.DynamicProxy">
+				<fileset basedir="${path.lib}\LinFu.DynamicProxy\net-3.5">
 					<include name="LinFu.DynamicProxy.dll" unless="${build.platform == 'silverlight-3.0'}"/>
 					<include name="LinFu.License.txt" unless="${build.platform == 'silverlight-3.0'}"/>
+				</fileset>
+			</copy>
+			<copy todir="${current.path.build.lib}">
+				<fileset basedir="${path.lib}\LinFu.DynamicProxy\sl-3.0">
+					<include name="LinFu.DynamicProxy.dll" if="${build.platform == 'silverlight-3.0'}"/>
+					<include name="LinFu.License.txt" if="${build.platform == 'silverlight-3.0'}"/>
 				</fileset>
 			</copy>
 		</if>
