@@ -89,8 +89,8 @@ namespace Ninject.Extensions.Interception.Infrastructure.Language
         private static IAdviceTargetSyntax DoIntercept( IBindingSyntax binding )
         {
             IKernel kernel = binding.Kernel;
-            IAdvice advice = kernel.Components.Get<IAdviceFactory>().Create(
-                request => binding.Binding.Matches( request.Context.Request ) );
+            IAdvice advice = kernel.Components.Get<IAdviceFactory>()
+                .Create( request => ReferenceEquals( binding.Binding, request.Context.Binding ) );
             kernel.Components.Get<IAdviceRegistry>().Register( advice );
 
             return new AdviceBuilder( advice );
