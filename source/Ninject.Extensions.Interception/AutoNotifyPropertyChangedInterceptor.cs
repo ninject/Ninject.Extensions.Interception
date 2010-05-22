@@ -34,54 +34,56 @@ namespace Ninject.Extensions.Interception
         /// Intercepts the specified invocation.
         /// </summary>
         /// <param name="invocation">The invocation to intercept.</param>
-        public void Intercept( IInvocation invocation )
+        public void Intercept(IInvocation invocation)
         {
-            MethodInfo methodInfo = invocation.Request.Method;
-            var getter = methodInfo.DeclaringType.GetMethod(methodInfo.Name.Replace("set_", "get_"),
-                                                            BindingFlags.Instance|BindingFlags.Public|BindingFlags.GetProperty);
-            object current = getter.Invoke(invocation.Request.Target, null);
-            object value = invocation.Request.Arguments[0];
-            if (object.Equals(current, value))
+            bool valuesAreEqual = ArePropertyValuesEqual(invocation);
+            invocation.Proceed();
+            if ( valuesAreEqual )
             {
-                invocation.Proceed();
                 return;
             }
-            invocation.Proceed();
-
-            
+            MethodInfo methodInfo = invocation.Request.Method;
             var model = (TViewModel) invocation.Request.Proxy;
-            model.OnPropertyChanged( methodInfo.GetPropertyFromMethod( methodInfo.DeclaringType ).Name );
+            model.OnPropertyChanged(methodInfo.GetPropertyFromMethod(methodInfo.DeclaringType).Name);
 
-            ChangeNotificationForDependentProperties( methodInfo, model );
+            ChangeNotificationForDependentProperties(methodInfo, model);
         }
 
         #endregion
 
-        private static void ChangeNotificationForDependentProperties( MethodInfo methodInfo,
-                                                                      IAutoNotifyPropertyChanged model )
+        private static bool ArePropertyValuesEqual(IInvocation invocation)
         {
-            if ( NoAdditionalProperties( methodInfo ) )
+            PropertyInfo getter = invocation.Request.Method.GetPropertyFromMethod();
+            object current = getter.GetValue(invocation.Request.Target, null);
+            object value = invocation.Request.Arguments[0];
+            return Equals(current, value);
+        }
+
+        private static void ChangeNotificationForDependentProperties(MethodInfo methodInfo,
+                                                                     IAutoNotifyPropertyChanged model)
+        {
+            if (NoAdditionalProperties(methodInfo))
             {
                 return;
             }
 
-            IEnumerable<string> properties = GetAdditionalPropertiesToNotifyOfChanges( methodInfo );
+            IEnumerable<string> properties = GetAdditionalPropertiesToNotifyOfChanges(methodInfo);
 
-            foreach ( string propertyName in properties )
+            foreach (string propertyName in properties)
             {
-                model.OnPropertyChanged( propertyName );
+                model.OnPropertyChanged(propertyName);
             }
         }
 
-        private static bool NoAdditionalProperties( MethodInfo methodInfo )
+        private static bool NoAdditionalProperties(MethodInfo methodInfo)
         {
-            PropertyInfo propertyInfo = methodInfo.GetPropertyFromMethod( methodInfo.DeclaringType );
-            return ( propertyInfo == null || propertyInfo.GetOneAttribute<NotifyOfChangesAttribute>() == null );
+            PropertyInfo propertyInfo = methodInfo.GetPropertyFromMethod(methodInfo.DeclaringType);
+            return (propertyInfo == null || propertyInfo.GetOneAttribute<NotifyOfChangesAttribute>() == null);
         }
 
-        private static IEnumerable<string> GetAdditionalPropertiesToNotifyOfChanges( MethodInfo methodInfo )
+        private static IEnumerable<string> GetAdditionalPropertiesToNotifyOfChanges(MethodInfo methodInfo)
         {
-            PropertyInfo propertyInfo = methodInfo.GetPropertyFromMethod( methodInfo.DeclaringType );
+            PropertyInfo propertyInfo = methodInfo.GetPropertyFromMethod(methodInfo.DeclaringType);
             var attribute = propertyInfo.GetOneAttribute<NotifyOfChangesAttribute>();
             return attribute.NotifyChangeFor;
         }

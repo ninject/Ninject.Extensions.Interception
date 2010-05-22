@@ -34,5 +34,14 @@ namespace Ninject.Extensions.Interception.Infrastructure.Language
             }
             return implementingType.GetProperty( method.Name.Substring( 4 ), DefaultBindingFlags );
         }
+
+        public static PropertyInfo GetPropertyFromMethod( this MethodInfo method )
+        {
+            if ( !method.IsSpecialName )
+            {
+                return null;
+            }
+            return method.DeclaringType.GetProperty( method.Name.Substring(4), DefaultBindingFlags );
+        }
     }
 }
