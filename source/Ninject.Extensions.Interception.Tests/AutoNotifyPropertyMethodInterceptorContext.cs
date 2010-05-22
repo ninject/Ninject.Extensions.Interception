@@ -30,7 +30,6 @@ namespace Ninject.Extensions.Interception.Tests
             Assert.Null( LastPropertyToChange );
         }
 
-
         [Fact]
         public void WhenValueChangesOnPropertyWithDependentProperties_ItShouldNotifyAllChanges()
         {

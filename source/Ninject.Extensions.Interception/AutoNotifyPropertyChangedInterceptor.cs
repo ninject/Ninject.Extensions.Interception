@@ -36,9 +36,19 @@ namespace Ninject.Extensions.Interception
         /// <param name="invocation">The invocation to intercept.</param>
         public void Intercept( IInvocation invocation )
         {
+            MethodInfo methodInfo = invocation.Request.Method;
+            var getter = methodInfo.DeclaringType.GetMethod(methodInfo.Name.Replace("set_", "get_"),
+                                                            BindingFlags.Instance|BindingFlags.Public|BindingFlags.GetProperty);
+            object current = getter.Invoke(invocation.Request.Target, null);
+            object value = invocation.Request.Arguments[0];
+            if (object.Equals(current, value))
+            {
+                invocation.Proceed();
+                return;
+            }
             invocation.Proceed();
 
-            MethodInfo methodInfo = invocation.Request.Method;
+            
             var model = (TViewModel) invocation.Request.Proxy;
             model.OnPropertyChanged( methodInfo.GetPropertyFromMethod( methodInfo.DeclaringType ).Name );
 
