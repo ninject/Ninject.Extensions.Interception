@@ -38,5 +38,13 @@ namespace Ninject.Extensions.Interception.Tests
             Assert.Equal( PropertyChanges[1], "City" );
             Assert.Equal( PropertyChanges[2], "State" );
         }
+
+        [Fact]
+        public void WhenPropertyGetterIsCalled_ItShouldNotBeIntercepted()
+        {
+            int zip = ViewModel.ZipCode;
+
+            Assert.Null(LastPropertyToChange);
+        }
     }
 }

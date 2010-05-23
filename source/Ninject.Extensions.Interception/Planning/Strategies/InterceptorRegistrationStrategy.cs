@@ -143,9 +143,9 @@ namespace Ninject.Extensions.Interception.Planning.Strategies
         /// <param name="attributes">The interception attributes that apply.</param>
         protected virtual void RegisterMethodInterceptors( Type type,
                                                            MethodInfo method,
-                                                           ICollection<InterceptAttribute> attributes )
+                                                           ICollection<InterceptAttributeBase> attributes )
         {
-            foreach ( InterceptAttribute attribute in attributes )
+            foreach ( InterceptAttributeBase attribute in attributes )
             {
                 IAdvice advice = AdviceFactory.Create( method );
 

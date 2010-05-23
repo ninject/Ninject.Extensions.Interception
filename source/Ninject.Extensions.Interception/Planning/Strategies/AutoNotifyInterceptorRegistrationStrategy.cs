@@ -95,10 +95,9 @@ namespace Ninject.Extensions.Interception.Planning.Strategies
 
             foreach ( MethodInfo method in candidates )
             {
-                PropertyInfo property = method.GetPropertyFromMethod( method.DeclaringType );
-                if ( !property.HasAttribute<DoNotNotifyOfChangesAttribute>() )
+                if ( !method.HasAttribute<DoNotNotifyOfChangesAttribute>() )
                 {
-                    RegisterMethodInterceptors( type, method, attributes );
+                    RegisterMethodInterceptors(type, method, attributes);
                 }
             }
 
@@ -114,7 +113,7 @@ namespace Ninject.Extensions.Interception.Planning.Strategies
         /// </summary>
         /// <param name="methodInfo">The method info.</param>
         /// <returns>
-        /// 	<c>true</c> if the method should be intercepted; <c>false</c> otherwise.
+        ///     <c>true</c> if the method should be intercepted; <c>false</c> otherwise.
         /// </returns>
         protected override bool ShouldIntercept( MethodInfo methodInfo )
         {

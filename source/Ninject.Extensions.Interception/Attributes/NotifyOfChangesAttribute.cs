@@ -24,7 +24,7 @@ namespace Ninject.Extensions.Interception.Attributes
     /// Provides interceptor's details on how this property or class should participate in <see cref="IAutoNotifyPropertyChanged"/> events.
     /// </summary>
     [AttributeUsage( AttributeTargets.Class | AttributeTargets.Property, AllowMultiple = false, Inherited = true )]
-    public class NotifyOfChangesAttribute : InterceptAttribute
+    public class NotifyOfChangesAttribute : InterceptAttributeBase
     {
         private static readonly Type DefaultInterceptorType = typeof (AutoNotifyPropertyChangedInterceptor<>);
         private static readonly Type DefaultServiceType = typeof (IAutoNotifyPropertyChangedInterceptor<>);

@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="ActionInterceptor.cs" />
     <Compile Include="Attributes\DoNotInterceptAttribute.cs" />
+    <Compile Include="Attributes\InterceptAttributeBase.cs" />
     <Compile Include="Attributes\InternalInterceptAttribute.cs" />
     <Compile Include="Attributes\DoNotNotifyOfChangesAttribute.cs" />
     <Compile Include="IAutoNotifyPropertyChanged.cs" />

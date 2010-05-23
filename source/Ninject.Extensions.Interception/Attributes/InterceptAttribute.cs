@@ -12,29 +12,21 @@
 
 #region Using Directives
 
-using System;
-using Ninject.Extensions.Interception.Request;
+
 
 #endregion
 
 namespace Ninject.Extensions.Interception.Attributes
 {
     /// <summary>
-    /// A baseline definition of an attribute that indicates one or more methods should be intercepted.
+    /// Base attribute used to mark methods for interception.
     /// </summary>
-    [AttributeUsage( AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true, Inherited = true )]
-    public abstract class InterceptAttribute : Attribute
+    /// <remarks>
+    /// This class should be extended in order to provide an <see cref="IInterceptor"/> reference.
+    /// If you are trying to create a cusom interception strategy, you should inherit from <see cref="InterceptAttributeBase"/>
+    /// instead.
+    /// </remarks>
+    public abstract class InterceptAttribute : InterceptAttributeBase
     {
-        /// <summary>
-        /// Gets or sets the interceptor's order number. Interceptors are invoked in ascending order.
-        /// </summary>
-        public int Order { get; set; }
-
-        /// <summary>
-        /// Creates the interceptor associated with the attribute.
-        /// </summary>
-        /// <param name="request">The request that is being intercepted.</param>
-        /// <returns>The interceptor.</returns>
-        public abstract IInterceptor CreateInterceptor( IProxyRequest request );
     }
 }
