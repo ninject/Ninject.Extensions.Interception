@@ -47,6 +47,9 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.ServiceModel">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
     <Reference Include="xunit, Version=1.1.0.1323, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\contrib\xunit.net\xunit.dll</HintPath>
@@ -66,10 +69,12 @@
     <Compile Include="AutoNotifyPropertyMethodInterceptorContextDynamicProxy2.cs" />
     <Compile Include="AutoNotifyPropertyMethodInterceptorContextLinFu.cs" />
     <Compile Include="DynamicProxy2BaseTests.cs" />
+    <Compile Include="DynamicProxy2ChannelFactoryProxyTest.cs" />
     <Compile Include="DynamicProxy2InterceptionContext.cs" />
     <Compile Include="Fakes\ComplexType.cs" />
     <Compile Include="Fakes\ComplexViewModel.cs" />
     <Compile Include="Fakes\DummyProxyFactory.cs" />
+    <Compile Include="Fakes\IFooService.cs" />
     <Compile Include="Fakes\SimpleType.cs" />
     <Compile Include="Fakes\ViewModelBase.cs" />
     <Compile Include="Fakes\ViewModelWithClassNotify.cs" />
