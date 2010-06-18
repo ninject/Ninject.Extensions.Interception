@@ -93,7 +93,15 @@ namespace Ninject.Extensions.Interception.ProxyFactory
             object[] parameters = context.Parameters
                 .Select( parameter => parameter.GetValue( context ) )
                 .ToArray();
-            reference.Instance = _generator.CreateClassProxy( targetType, ProxyOptions, parameters, wrapper );
+
+            if (targetType.IsInterface)
+            {
+                reference.Instance = _generator.CreateInterfaceProxyWithoutTarget(targetType, ProxyOptions, wrapper);
+            }
+            else
+            {
+                reference.Instance = _generator.CreateClassProxy(targetType, ProxyOptions, parameters, wrapper);
+            }
         }
 
         /// <summary>
