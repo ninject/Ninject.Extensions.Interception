@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ninject.Extensions.Interception", "..\source\Ninject.Extensions.Interception\Ninject.Extensions.Interception.csproj", "{C99A5FAE-C6AD-4F24-A938-EC8BDDB885A6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ninject.Extensions.Interception.Tests", "..\source\Ninject.Extensions.Interception.Tests\Ninject.Extensions.Interception.Tests.csproj", "{959234A6-9E16-4208-9311-0F0219EAF078}"
