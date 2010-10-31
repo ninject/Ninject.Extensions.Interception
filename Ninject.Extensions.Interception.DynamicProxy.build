@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<project name="Ninject.DynamicProxy" default="all">
+	<property name="product.assembly.DynamicProxy" value="${product.name}.DynamicProxy.dll" overwrite="false"/>
+
+	<target name="buildDynamicProxy">
+		<property name="current.path.lib.DynamicProxy" value="${path.lib}/Castle-Windsor/net-3.5" if="${string::contains(build.platform, 'net-3.5')}" />
+		<property name="current.path.lib.DynamicProxy" value="${path.lib}/Castle-Windsor/net-4.0" if="${string::contains(build.platform, 'net-4.0')}" />
+		<property name="current.path.lib.DynamicProxy" value="${path.lib}/Castle-Windsor/silverlight-3.0" if="${string::contains(build.platform, 'silverlight-3.0')}" />
+		<property name="current.path.lib.DynamicProxy" value="${path.lib}/Castle-Windsor/silverlight-4.0" if="${string::contains(build.platform, 'silverlight-4.0')}" />
+		<property name="current.path.lib.DynamicProxy" value="${path.lib}/Castle-Windsor/net-3.5" if="${string::contains(build.platform, 'mono')}" />
+		<copy todir="${current.path.build}/DynamicProxy/lib">
+			<fileset basedir="${current.path.lib.DynamicProxy}">
+				<include name="**/*.dll"/>
+				<include name="**/*.xml"/>
+			</fileset>
+		</copy>
+		
+		<csc noconfig="true" warnaserror="false" target="library" debug="${build.debug}" optimize="${build.optimize}" define="${build.defines}" 
+		     output="${current.path.build}/DynamicProxy/${product.assembly.DynamicProxy}" 
+			 doc="${current.path.build}/DynamicProxy/${product.name}.DynamicProxy.xml" keyfile="${path.src}/${product.keyfile}">
+			<arg line="/filealign:512" unless="${nant.settings.currentframework == 'mono-2.0'}"/>
+			<sources basedir="${path.src}">
+				<include name="${build.asminfo}"/>
+				<include name="${product.name}.DynamicProxy2/**/*.cs"/>
+			</sources>
+			<references>
+				<include name="mscorlib.dll"/>
+				<include name="System.dll"/>
+				<include name="System.Core.dll"/>
+				<include name="System.Web.dll" unless="${build.platform == 'silverlight-2.0'}"/>
+				<include name="${current.path.lib.DynamicProxy}/Castle.Core.dll"/>
+				<include name="${path.lib}/Ninject/${build.platform}/Ninject.dll"/>
+				<include name="${current.path.build}/${product.assembly}"/>
+			</references>
+		</csc>		
+	</target>
+</project>

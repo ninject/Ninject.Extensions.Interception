@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<project name="Ninject.LinFu" default="all">
+	<property name="product.assembly.LinFu" value="${product.name}.LinFu.dll" overwrite="false"/>
+
+	<target name="buildLinFu" if="${string::contains(build.platform, 'net-3.5')}" >
+		<property name="current.path.lib.LinFu" value="${path.lib}/LinFu.DynamicProxy/net-3.5" unless="${string::contains(build.platform, 'silverlight')}" />
+		<property name="LinFuTests" value="true"/>
+		<copy todir="${current.path.build}/LinFu/lib">
+			<fileset basedir="${current.path.lib.LinFu}">
+				<include name="**/*.dll"/>
+				<include name="**/*.xml"/>
+			</fileset>
+		</copy>
+		
+		<csc noconfig="true" warnaserror="true" target="library" debug="${build.debug}" optimize="${build.optimize}" define="${build.defines}" 
+		     output="${current.path.build}/LinFu/${product.assembly.LinFu}" 
+			 doc="${current.path.build}/LinFu/${product.name}.LinFu.xml" keyfile="${path.src}/${product.keyfile}">
+			<arg line="/filealign:512" unless="${nant.settings.currentframework == 'mono-2.0'}"/>
+			<sources basedir="${path.src}">
+				<include name="${build.asminfo}"/>
+				<include name="${product.name}.LinFu/**/*.cs"/>
+			</sources>
+			<references>
+				<include name="mscorlib.dll"/>
+				<include name="System.dll"/>
+				<include name="System.Core.dll"/>
+				<include name="System.Web.dll" unless="${build.platform == 'silverlight-2.0'}"/>
+				<include name="${current.path.lib.LinFu}/LinFu.DynamicProxy.dll"/>
+				<include name="${path.lib}/Ninject/${build.platform}/Ninject.dll"/>
+				<include name="${current.path.build}/${product.assembly}"/>
+			</references>
+		</csc>		
+	</target>
+</project>
