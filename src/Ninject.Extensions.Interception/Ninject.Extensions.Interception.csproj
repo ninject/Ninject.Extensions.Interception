@@ -1,0 +1,164 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{C99A5FAE-C6AD-4F24-A938-EC8BDDB885A6}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Ninject.Extensions.Interception</RootNamespace>
+    <AssemblyName>Ninject.Extensions.Interception</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\Ninject.snk</AssemblyOriginatorKeyFile>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\build\debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\build\release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>..\..\build\release\Ninject.Extensions.Interception.XML</DocumentationFile>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Ninject">
+      <HintPath>..\..\lib\Ninject\net-3.5\Ninject.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Web" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\SharedAssemblyInfo.cs">
+      <Link>Properties\SharedAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="ActionInterceptor.cs" />
+    <Compile Include="Attributes\DoNotInterceptAttribute.cs" />
+    <Compile Include="Attributes\InterceptAttributeBase.cs" />
+    <Compile Include="Attributes\InternalInterceptAttribute.cs" />
+    <Compile Include="Attributes\DoNotNotifyOfChangesAttribute.cs" />
+    <Compile Include="IAutoNotifyPropertyChanged.cs" />
+    <Compile Include="IAutoNotifyPropertyChangedInterceptor.cs" />
+    <Compile Include="Infrastructure\Language\ExtensionsForIBindingSyntax.cs" />
+    <Compile Include="Infrastructure\Language\ExtensionsForMethodInfo.cs" />
+    <Compile Include="Planning\Strategies\AutoNotifyInterceptorRegistrationStrategy.cs" />
+    <Compile Include="AutoNotifyPropertyChangedInterceptor.cs" />
+    <Compile Include="Attributes\NotifyOfChangesAttribute.cs" />
+    <Compile Include="Planning\Strategies\MethodInterceptorRegistrationStrategy.cs" />
+    <Compile Include="Registry\IMethodInterceptorRegistry.cs" />
+    <Compile Include="Infrastructure\Ensure.cs" />
+    <Compile Include="Infrastructure\Language\ExtensionsForICustomAttributeProvider.cs" />
+    <Compile Include="Infrastructure\Language\ExtensionsForIEnumerable.cs" />
+    <Compile Include="Infrastructure\Language\ExtensionsForMethodBase.cs" />
+    <Compile Include="Advice\IAdvice.cs" />
+    <Compile Include="Advice\Builders\IAdviceBuilder.cs" />
+    <Compile Include="Advice\IAdviceFactory.cs" />
+    <Compile Include="Advice\Syntax\IAdviceOrderSyntax.cs" />
+    <Compile Include="Registry\MethodInterceptorCollection.cs" />
+    <Compile Include="Registry\IAdviceRegistry.cs" />
+    <Compile Include="Advice\Syntax\IAdviceTargetSyntax.cs" />
+    <Compile Include="IInvocation.cs" />
+    <Compile Include="IInterceptor.cs" />
+    <Compile Include="Infrastructure\DisposableObject.cs" />
+    <Compile Include="Injection\Dynamic\DynamicInjectorFactory.cs" />
+    <Compile Include="Injection\Dynamic\DynamicMethodFactory.cs" />
+    <Compile Include="Injection\Dynamic\DynamicMethodInjector.cs" />
+    <Compile Include="Injection\FactoryMethod.cs" />
+    <Compile Include="Injection\Getter.cs" />
+    <Compile Include="Infrastructure\IDisposableEx.cs" />
+    <Compile Include="Injection\IInjector.cs" />
+    <Compile Include="Injection\IInjectorFactory.cs" />
+    <Compile Include="Injection\IMethodInjector.cs" />
+    <Compile Include="Injection\InjectorBase.cs" />
+    <Compile Include="Injection\InjectorFactoryBase.cs" />
+    <Compile Include="Injection\Invoker.cs" />
+    <Compile Include="Injection\Reflection\ReflectionInjectorFactory.cs" />
+    <Compile Include="Injection\Reflection\ReflectionMethodInjector.cs" />
+    <Compile Include="Injection\Setter.cs" />
+    <Compile Include="Attributes\InterceptAttribute.cs" />
+    <Compile Include="InterceptionModule.cs" />
+    <Compile Include="Planning\Strategies\InterceptorRegistrationStrategy.cs" />
+    <Compile Include="Invocation\InvocationBase.cs" />
+    <Compile Include="ProxyFactory\IProxyFactory.cs" />
+    <Compile Include="Request\IProxyRequest.cs" />
+    <Compile Include="Request\IProxyRequestFactory.cs" />
+    <Compile Include="Registry\MethodInterceptorRegistry.cs" />
+    <Compile Include="Wrapper\IWrapper.cs" />
+    <Compile Include="Infrastructure\Language\KernelExtensions.cs" />
+    <Compile Include="Activation\Strategies\ProxyActivationStrategy.cs" />
+    <Compile Include="Planning\Directives\ProxyDirective.cs" />
+    <Compile Include="ProxyFactory\ProxyFactoryBase.cs" />
+    <Compile Include="Request\ProxyRequest.cs" />
+    <Compile Include="SimpleInterceptor.cs" />
+    <Compile Include="Advice\Advice.cs" />
+    <Compile Include="Advice\Builders\AdviceBuilder.cs" />
+    <Compile Include="Advice\AdviceFactory.cs" />
+    <Compile Include="Registry\AdviceRegistry.cs" />
+    <Compile Include="Invocation\Invocation.cs" />
+    <Compile Include="Request\ProxyRequestFactory.cs" />
+    <Compile Include="Wrapper\StandardWrapper.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
