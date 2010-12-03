@@ -81,16 +81,17 @@ namespace Ninject.Extensions.Interception.ProxyFactory
         /// </summary>
         /// <param name="context">The context in which the instance was activated.</param>
         /// <param name="reference">The <see cref="InstanceReference"/> to wrap.</param>
-        public override void Wrap( IContext context, InstanceReference reference )
+        public override void Wrap(IContext context, InstanceReference reference)
         {
-            if ( reference.Instance is IInterceptor )
+            if (reference.Instance is IInterceptor)
             {
                 return;
             }
-            var wrapper = new DynamicProxy2Wrapper( Kernel, context, reference.Instance );
+
+            var wrapper = new DynamicProxy2Wrapper(Kernel, context, reference.Instance);
             Type targetType = reference.Instance.GetType();
             object[] parameters = context.Parameters
-                .Select( parameter => parameter.GetValue( context ) )
+                .Select(parameter => parameter.GetValue(context, null))
                 .ToArray();
 
             if (targetType.IsInterface)
@@ -112,21 +113,21 @@ namespace Ninject.Extensions.Interception.ProxyFactory
         {
             var accessor = reference.Instance as IProxyTargetAccessor;
 
-            if ( accessor == null )
+            if (accessor == null)
             {
                 return;
             }
 
             Castle.DynamicProxy.IInterceptor[] interceptors = accessor.GetInterceptors();
 
-            if ( ( interceptors == null ) || ( interceptors.Length == 0 ) )
+            if ((interceptors == null) || (interceptors.Length == 0))
             {
                 return;
             }
 
             var wrapper = interceptors[0] as IWrapper;
 
-            if ( wrapper == null )
+            if (wrapper == null)
             {
                 return;
             }
