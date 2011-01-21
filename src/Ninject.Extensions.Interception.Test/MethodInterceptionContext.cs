@@ -30,7 +30,7 @@ namespace Ninject.Extensions.Interception
         public void MethodInterceptedWithReplace()
         {
             
-            using (StandardKernel kernel = this.CreateDefaultInterceptionKernel())
+            using (StandardKernel kernel = CreateDefaultInterceptionKernel())
             {
                 var mock = kernel.Get<Mock>();
 
@@ -38,7 +38,7 @@ namespace Ninject.Extensions.Interception
                 mock.GetMyProperty().ShouldBe("start");
             }
 
-            using (StandardKernel kernel = this.CreateDefaultInterceptionKernel())
+            using (StandardKernel kernel = CreateDefaultInterceptionKernel())
             {
                 kernel.InterceptReplace<Mock>(o => o.GetMyProperty(), i => i.ReturnValue = "intercepted");
 
@@ -53,7 +53,7 @@ namespace Ninject.Extensions.Interception
         {
             string testString = "empty";
 
-            using (StandardKernel kernel = this.CreateDefaultInterceptionKernel())
+            using (StandardKernel kernel = CreateDefaultInterceptionKernel())
             {
                 kernel.InterceptBefore<Mock>(
                     o => o.SetMyProperty(string.Empty), 
@@ -75,7 +75,7 @@ namespace Ninject.Extensions.Interception
         {
             string testString = "empty";
 
-            using (StandardKernel kernel = this.CreateDefaultInterceptionKernel())
+            using (StandardKernel kernel = CreateDefaultInterceptionKernel())
             {
                 kernel.InterceptAfter<Mock>(
                     o => o.SetMyProperty(string.Empty), 
@@ -90,6 +90,45 @@ namespace Ninject.Extensions.Interception
 
                 mock.MyProperty.ShouldBe("end");
                 testString.ShouldBe("end");
+            }
+        }
+
+        [Fact]
+        public void MethodCanBeInterceptedWithAddMethodInterceptor()
+        {
+            string testString = "empty";
+
+            using (StandardKernel kernel = CreateDefaultInterceptionKernel())
+            {
+                kernel.AddMethodInterceptor(typeof(Mock).GetMethod("SetMyProperty"),
+                    i => testString = "intercepted");
+                var mock = kernel.Get<Mock>();
+
+                mock.SetMyProperty( "dummy" );
+
+                mock.MyProperty.ShouldBe("start");
+                testString.ShouldBe("intercepted");
+            }
+        }
+
+        [Fact]
+        public void MethodInterceptedWithAddMethodInterceptorCanBeResumed()
+        {
+            string testString = "empty";
+
+            using (StandardKernel kernel = CreateDefaultInterceptionKernel())
+            {
+                kernel.AddMethodInterceptor( typeof (Mock).GetMethod( "SetMyProperty" ),
+                                             i => { 
+                                                 testString = "intercepted";  
+                                                 i.Proceed();
+                                             } );
+                var mock = kernel.Get<Mock>();
+
+                mock.SetMyProperty("dummy");
+
+                mock.MyProperty.ShouldBe("dummy");
+                testString.ShouldBe("intercepted");
             }
         }
     }
