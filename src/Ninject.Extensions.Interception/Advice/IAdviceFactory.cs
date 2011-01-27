@@ -21,6 +21,8 @@ using Ninject.Extensions.Interception.Request;
 
 namespace Ninject.Extensions.Interception.Advice
 {
+    using Ninject.Activation;
+
     /// <summary>
     /// Creates <see cref="IAdvice"/> objects, which hold information about interception.
     /// </summary>
@@ -38,6 +40,6 @@ namespace Ninject.Extensions.Interception.Advice
         /// </summary>
         /// <param name="condition">The condition that will be evaluated to determine whether a request should be intercepted.</param>
         /// <returns>The created advice.</returns>
-        IAdvice Create( Predicate<IProxyRequest> condition );
+        IAdvice Create( Predicate<IContext> condition );
     }
 }

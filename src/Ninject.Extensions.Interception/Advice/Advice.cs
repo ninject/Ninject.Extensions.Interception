@@ -22,6 +22,8 @@ using Ninject.Extensions.Interception.Request;
 
 namespace Ninject.Extensions.Interception.Advice
 {
+    using Ninject.Activation;
+
     /// <summary>
     /// A declaration of advice, which is called for matching requests.
     /// </summary>
@@ -41,7 +43,7 @@ namespace Ninject.Extensions.Interception.Advice
         /// Initializes a new instance of the <see cref="Advice"/> class.
         /// </summary>
         /// <param name="condition">The condition that will be evaluated for a request.</param>
-        public Advice( Predicate<IProxyRequest> condition )
+        public Advice(Predicate<IContext> condition)
         {
             Ensure.ArgumentNotNull( condition, "condition" );
             Condition = condition;
@@ -57,7 +59,7 @@ namespace Ninject.Extensions.Interception.Advice
         /// <summary>
         /// Gets or sets the condition for the advice, if it is dynamic.
         /// </summary>
-        public Predicate<IProxyRequest> Condition { get; set; }
+        public Predicate<IContext> Condition { get; set; }
 
         /// <summary>
         /// Gets or sets the interceptor associated with the advice, if applicable.
@@ -90,7 +92,7 @@ namespace Ninject.Extensions.Interception.Advice
         /// <returns><see langword="True"/> if the request matches, otherwise <see langword="false"/>.</returns>
         public bool Matches( IProxyRequest request )
         {
-            return IsDynamic ? Condition( request ) : request.Method.GetMethodHandle().Equals( MethodHandle );
+            return IsDynamic ? Condition( request.Context ) : request.Method.GetMethodHandle().Equals( MethodHandle );
         }
 
         /// <summary>

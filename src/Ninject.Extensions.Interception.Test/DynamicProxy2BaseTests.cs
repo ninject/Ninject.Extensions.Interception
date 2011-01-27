@@ -153,7 +153,7 @@ namespace Ninject.Extensions.Interception
             {
                 kernel.Bind<RequestsConstructorInjection>().ToSelf();
                 // This is just here to trigger proxying, but we won't intercept any calls
-                kernel.Intercept(request => false).With<FlagInterceptor>();
+                kernel.Intercept(request => true).With<FlagInterceptor>();
 
                 var obj = kernel.Get<RequestsConstructorInjection>();
 
@@ -170,7 +170,7 @@ namespace Ninject.Extensions.Interception
             {
                 kernel.Bind<RequestsConstructorInjection>().ToSelf().InSingletonScope();
                 // This is just here to trigger proxying, but we won't intercept any calls
-                kernel.Intercept((request) => false).With<FlagInterceptor>();
+                kernel.Intercept((request) => true).With<FlagInterceptor>();
 
                 var obj = kernel.Get<RequestsConstructorInjection>();
 

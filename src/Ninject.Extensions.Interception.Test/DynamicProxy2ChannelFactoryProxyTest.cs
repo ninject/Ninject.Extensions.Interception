@@ -32,7 +32,7 @@ namespace Ninject.Extensions.Interception
                     context =>
                     ChannelFactory<IFooService>.CreateChannel(new NetTcpBinding(), new EndpointAddress("net.tcp://localhost/FooService")));
 
-                kernel.Intercept((request) => false).With<FlagInterceptor>();
+                kernel.Intercept((request) => true).With<FlagInterceptor>();
 
                 var obj = kernel.Get<IFooService>();
 

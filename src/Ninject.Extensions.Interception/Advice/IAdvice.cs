@@ -19,6 +19,8 @@ using Ninject.Extensions.Interception.Request;
 
 namespace Ninject.Extensions.Interception.Advice
 {
+    using Ninject.Activation;
+
     /// <summary>
     /// A declaration of advice, which relates a method or condition with an interceptor.
     /// </summary>
@@ -32,7 +34,7 @@ namespace Ninject.Extensions.Interception.Advice
         /// <summary>
         /// Gets or sets the condition for the advice, if it is dynamic.
         /// </summary>
-        Predicate<IProxyRequest> Condition { get; set; }
+        Predicate<IContext> Condition { get; set; }
 
         /// <summary>
         /// Gets or sets the interceptor associated with the advice, if one was defined during
