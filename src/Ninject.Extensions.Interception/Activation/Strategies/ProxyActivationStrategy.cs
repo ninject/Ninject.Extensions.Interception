@@ -22,11 +22,6 @@ using Ninject.Extensions.Interception.Registry;
 
 namespace Ninject.Extensions.Interception.Activation.Strategies
 {
-    using System;
-    using System.Reflection;
-
-    using Ninject.Extensions.Interception.Request;
-
     /// <summary>
     /// Activates and deactivates proxied instances in the activation pipeline attaching and detaching proxies.
     /// </summary>

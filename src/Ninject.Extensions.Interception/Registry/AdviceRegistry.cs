@@ -52,7 +52,7 @@ namespace Ninject.Extensions.Interception.Registry
         /// </returns>
         public bool HasAdvice(IContext context)
         {
-            return this._advice.Any(a => a.IsDynamic && (a.Condition == null || a.Condition(context)));
+            return this._advice.Any(a => a.IsDynamic && a.Condition(context));
         }
 
         /// <summary>
