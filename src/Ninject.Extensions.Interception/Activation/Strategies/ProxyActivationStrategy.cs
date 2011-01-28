@@ -63,9 +63,7 @@ namespace Ninject.Extensions.Interception.Activation.Strategies
         /// <returns><see langword="True"/> if the instance should be proxied, otherwise <see langword="false"/>.</returns>
         protected virtual bool ShouldProxy( IContext context )
         {
-            // If dynamic interceptors have been defined, all types will be proxied, regardless
-            // of whether or not they request interceptors.
-            if ( context.Kernel.Components.Get<IAdviceRegistry>().HasDynamicAdvice )
+            if (context.Kernel.Components.Get<IAdviceRegistry>().HasAdvice(context))
             {
                 return true;
             }

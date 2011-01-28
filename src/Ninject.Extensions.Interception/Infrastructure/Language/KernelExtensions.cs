@@ -28,6 +28,8 @@ using Ninject.Extensions.Interception.Request;
 
 namespace Ninject.Extensions.Interception.Infrastructure.Language
 {
+    using Ninject.Activation;
+
     /// <summary>
     /// Provides extensions methods on the <see cref="IKernel"/> interface.
     /// </summary>
@@ -39,7 +41,7 @@ namespace Ninject.Extensions.Interception.Infrastructure.Language
         /// <param name="kernel">The kernel.</param>
         /// <param name="predicate">The predicate to run when determining whether to intercept the method call.</param>
         /// <returns></returns>
-        public static IAdviceTargetSyntax Intercept( this IKernel kernel, Predicate<IProxyRequest> predicate )
+        public static IAdviceTargetSyntax Intercept( this IKernel kernel, Predicate<IContext> predicate )
         {
             return DoIntercept( kernel, predicate );
         }
@@ -50,7 +52,7 @@ namespace Ninject.Extensions.Interception.Infrastructure.Language
         /// <param name="kernel"></param>
         /// <param name="condition">The condition to evaluate to determine if a request should be intercepted.</param>
         /// <returns>An advice builder.</returns>
-        private static IAdviceTargetSyntax DoIntercept( IKernel kernel, Predicate<IProxyRequest> condition )
+        private static IAdviceTargetSyntax DoIntercept( IKernel kernel, Predicate<IContext> condition )
         {
             IAdvice advice = kernel.Components.Get<IAdviceFactory>().Create( condition );
             kernel.Components.Get<IAdviceRegistry>().Register( advice );
