@@ -22,6 +22,8 @@ using Ninject.Extensions.Interception.Request;
 
 namespace Ninject.Extensions.Interception.Registry
 {
+    using Ninject.Activation;
+
     /// <summary>
     /// Collects advice defined for methods.
     /// </summary>
@@ -32,6 +34,15 @@ namespace Ninject.Extensions.Interception.Registry
         /// </summary>
         bool HasDynamicAdvice { get; }
 
+        /// <summary>
+        /// Determines whether an advice for the specified context exists.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <returns>
+        /// 	<c>true</c> if an advice for the specified context exists.; otherwise, <c>false</c>.
+        /// </returns>
+        bool HasAdvice(IContext context);
+        
         /// <summary>
         /// Registers the specified advice.
         /// </summary>
