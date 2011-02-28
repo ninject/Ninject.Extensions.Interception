@@ -21,7 +21,7 @@ using System.Linq;
 namespace Ninject.Extensions.Interception.Infrastructure.Language
 {
     /// <summary>
-    /// Extension methods that enhance <see cref="System.Collections.IEnumerable"/>.
+    /// Extension methods that enhance System.Collections.IEnumerable.
     /// </summary>
     internal static class ExtensionsForIEnumerable
     {
