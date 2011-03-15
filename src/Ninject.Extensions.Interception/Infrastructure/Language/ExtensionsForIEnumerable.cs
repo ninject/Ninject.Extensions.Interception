@@ -38,5 +38,28 @@ namespace Ninject.Extensions.Interception.Infrastructure.Language
         {
             return items.Select( converter );
         }
+
+        /// <summary>
+        /// Skips the last items where the count of skipped items is given by count.
+        /// </summary>
+        /// <typeparam name="T">The type of the enumerable.</typeparam>
+        /// <param name="source">The source.</param>
+        /// <param name="count">The count of skipped items.</param>
+        /// <returns>An enumerable that skippes the last items from the source enumerable.</returns>
+        public static IEnumerable<T> SkipLast<T>(this IEnumerable<T> source, int count)
+        {
+            var enumerator = source.GetEnumerator();
+            Queue<T> items = new Queue<T>();
+
+            while (enumerator.MoveNext())
+            {
+                if (count-- <= 0)
+                {
+                    yield return items.Dequeue();
+                }
+
+                items.Enqueue(enumerator.Current);
+            }
+        }
     }
 }

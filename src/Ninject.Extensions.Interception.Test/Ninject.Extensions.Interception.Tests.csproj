@@ -96,6 +96,8 @@
     <Compile Include="Fakes\ComplexViewModel.cs" />
     <Compile Include="Fakes\DummyProxyFactory.cs" />
     <Compile Include="Fakes\IFooService.cs" />
+    <Compile Include="Fakes\SameNameProperty.cs" />
+    <Compile Include="Fakes\SameNamePropertyBase.cs" />
     <Compile Include="Fakes\SimpleType.cs" />
     <Compile Include="Fakes\ViewModelBase.cs" />
     <Compile Include="Fakes\ViewModelWithClassNotify.cs" />

@@ -81,12 +81,6 @@
     <Compile Include="DynamicProxy2Wrapper.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Ninject.Extensions.Interception\Ninject.Extensions.Interception.csproj">
-      <Project>{C99A5FAE-C6AD-4F24-A938-EC8BDDB885A6}</Project>
-      <Name>Ninject.Extensions.Interception</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
       <Visible>False</Visible>
       <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
@@ -102,6 +96,12 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Ninject.Extensions.Interception\Ninject.Extensions.Interception.csproj">
+      <Project>{C99A5FAE-C6AD-4F24-A938-EC8BDDB885A6}</Project>
+      <Name>Ninject.Extensions.Interception</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

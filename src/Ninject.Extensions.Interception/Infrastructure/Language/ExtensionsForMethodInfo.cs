@@ -14,6 +14,7 @@
 
 using System;
 using System.Reflection;
+using System.Linq;
 
 #endregion
 
@@ -32,7 +33,12 @@ namespace Ninject.Extensions.Interception.Infrastructure.Language
             {
                 return null;
             }
-            return implementingType.GetProperty( method.Name.Substring( 4 ), DefaultBindingFlags );
+
+            var isGetMethod = method.Name.Substring(0, 3) == "get";
+            var returnType = isGetMethod ? method.ReturnType : method.GetParameterTypes().Last();
+            var indexerTypes = isGetMethod ? method.GetParameterTypes() : method.GetParameterTypes().SkipLast(1);
+
+            return implementingType.GetProperty( method.Name.Substring( 4 ), DefaultBindingFlags, null, returnType, indexerTypes.ToArray(), null);
         }
 
         public static PropertyInfo GetPropertyFromMethod( this MethodInfo method )

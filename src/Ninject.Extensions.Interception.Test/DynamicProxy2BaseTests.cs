@@ -6,7 +6,6 @@ namespace Ninject.Extensions.Interception
     using Ninject.Extensions.Interception.Fakes;
     using Ninject.Extensions.Interception.Infrastructure.Language;
     using Ninject.Extensions.Interception.Interceptors;
-    using Ninject.Extensions.Interception.Tests;
 #if SILVERLIGHT
 #if SILVERLIGHT_MSTEST
     using MsTest.Should;
@@ -55,6 +54,17 @@ namespace Ninject.Extensions.Interception
             {
                 kernel.Bind<ObjectWithMethodInterceptor>().ToSelf();
                 var obj = kernel.Get<ObjectWithMethodInterceptor>();
+                obj.ShouldNotBeNull();
+            }
+        }
+
+        [Fact]
+        public void ClassesWithMultiplePropertiesWithTheSameNameCanBeInjected()
+        {
+            using (var kernel = CreateDefaultInterceptionKernel())
+            {
+                kernel.Bind<SameNameProperty>().ToSelf();
+                var obj = kernel.Get<SameNameProperty>();
                 obj.ShouldNotBeNull();
             }
         }

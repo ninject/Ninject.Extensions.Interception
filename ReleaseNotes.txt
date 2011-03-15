@@ -1,0 +1,3 @@
+Version 2.2.1.0
+---------------
+Bugfix: An AmbiguousMatchExcpetion was trown for classes that have multiple properties with the same name.
