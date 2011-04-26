@@ -34,4 +34,16 @@
 			</references>
 		</csc>		
 	</target>
+	
+	<target name="nuget-dp2">
+		<property name="nuget.sourcedir" value="${path.base}/nuget-dp2" />
+		<property name="nuget.basedir" value="${path.base}/build/nuget-dp2" />
+		<property name="nuget.platforms" value="${product.platforms}" />
+		<property name="nuget.name" value="${product.name}.DynamicProxy" />
+		<property name="nuget.releaseDirectory" value="${path.build}\${build.platform}\release\DynamicProxy" dynamic="true"/>
+		<property name="nuget.dependencies" value="${product.name}" />
+		<property name="nuget.additionalFiles" value="-" />
+		
+		<call target="nuget-run"/>
+	</target>	
 </project>

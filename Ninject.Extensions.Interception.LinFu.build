@@ -31,4 +31,16 @@
 			</references>
 		</csc>		
 	</target>
+	
+	<target name="nuget-linfu">
+		<property name="nuget.sourcedir" value="${path.base}/nuget-linfu" />
+		<property name="nuget.basedir" value="${path.base}/build/nuget-linfu" />
+		<property name="nuget.platforms" value="net-3.5,net-3.5-no-web" />
+		<property name="nuget.name" value="${product.name}.LinFu" />
+		<property name="nuget.releaseDirectory" value="${path.build}\${build.platform}\release\LinFu" dynamic="true"/>
+		<property name="nuget.dependencies" value="${product.name}" />
+		<property name="nuget.additionalFiles" value="lib\LinFu.DynamicProxy.dll" />
+		
+		<call target="nuget-run"/>
+	</target>
 </project>

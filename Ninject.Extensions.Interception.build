@@ -5,7 +5,7 @@
 	<property name="product.company" value="Innovatian Software, LLC" overwrite="false"/>
 	<property name="product.duration" value="2008-2011" overwrite="false"/>
 	<property name="product.description" value="Interception extension for Ninject" overwrite="false"/>
-	<property name="product.platforms" value="net-3.5,net-4.0,silverlight-4.0,silverlight-4.0,silverlight-3.0,mono-2.0"  overwrite="false"/>
+	<property name="product.platforms" value="net-3.5,net-4.0,silverlight-4.0,silverlight-3.0,mono-2.0"  overwrite="false"/>
 	<property name="product.buildserverPlatforms" value="net-3.5,net-4.0,silverlight-4.0,silverlight-3.0,mono-2.0"  overwrite="false"/>
 	<property name="dependencies" value="Ninject"  overwrite="false"/>
 
@@ -14,6 +14,7 @@
 	<include buildfile="Ninject.Extensions.Interception.LinFu.build" />
 	
 	<target name="all" depends="core buildDynamicProxy buildLinFu test silverlight-test"/>
+	<target name="nuget-all" depends="nuget nuget-dp2 nuget-linfu"/>
 
 	<target name="core" depends="init">
 	    <property name="LinFuTests" value="false"/>
