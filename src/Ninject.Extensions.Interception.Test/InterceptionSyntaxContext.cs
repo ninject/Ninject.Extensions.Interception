@@ -3,19 +3,8 @@ namespace Ninject.Extensions.Interception
     using Ninject.Extensions.Interception.Fakes;
     using Ninject.Extensions.Interception.Infrastructure.Language;
     using Ninject.Extensions.Interception.Interceptors;
-#if SILVERLIGHT
-#if SILVERLIGHT_MSTEST
-    using MsTest.Should;
-    using Fact = Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute;
-#else
-    using UnitDriven;
-    using UnitDriven.Should;
-    using Fact = UnitDriven.TestMethodAttribute;
-#endif
-#else
     using Xunit;
     using Xunit.Should;
-#endif
 
     public abstract class InterceptionSyntaxContext<TInterceptionModule> : InterceptionTestContext<TInterceptionModule>
         where TInterceptionModule : InterceptionModule, new()

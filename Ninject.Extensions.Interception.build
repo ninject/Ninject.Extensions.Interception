@@ -43,7 +43,6 @@
 		<copy todir="${current.path.test}">
 			<fileset basedir="${path.tools.xunit}">
 				<include name="xunit.dll"/>
-                <include name="xunit.should.dll"/>
 			</fileset>
 		</copy>
 		<copy todir="${current.path.test}">
@@ -65,7 +64,6 @@
 				<include name="System.ServiceModel.dll"/>
 				<include name="Moq.dll"/>
 				<include name="xunit.dll"/>
-                <include name="xunit.should.dll"/>
 				<include name="${product.assembly}"/>
 				<include name="${product.assembly.DynamicProxy}"/>
 				<include name="${product.assembly.LinFu}"/>
@@ -81,23 +79,30 @@
 	
     <target name="compile-silverlight-tests" depends="core" unless="${skip.tests or skip.silverlightTests}" if="${string::contains(build.platform, 'silverlight')}">
         <mkdir dir="${current.path.test}"/>
-        <copy todir="${current.path.test}" flatten="true">
-            <fileset basedir="${current.path.build}">
-                <include name="**/*.dll"/>
-            </fileset>
-        </copy>
-        <copy todir="${current.path.test}">
-            <fileset basedir="${path.tools.moq}/silverlight">
-                <include name="Moq.Silverlight.dll"/>
-                <include name="Castle.DynamicProxy-Silverlight.dll"/>
-                <include name="Castle.Core-Silverlight.dll"/>
-            </fileset>
-        </copy>
-        <copy todir="${current.path.test}">
-            <fileset basedir="${path.tools.unitdriven}">
-                <include name="UnitDrivenLight.dll"/>
-            </fileset>
-        </copy>
+		<copy todir="${current.path.test}" flatten="true">
+			<fileset basedir="${current.path.build}">
+				<include name="**/*.dll"/>
+			</fileset>
+		</copy>
+		<copy todir="${current.path.test}" if="${string::contains(build.platform, 'silverlight-4.0')}">
+			<fileset basedir="${path.tools.moq}/silverlight4">
+				<include name="Moq.Silverlight.dll"/>
+				<include name="Castle.Core.dll"/>
+			</fileset>
+		</copy>
+		<copy todir="${current.path.test}" unless="${string::contains(build.platform, 'silverlight-4.0')}">
+			<fileset basedir="${path.tools.moq}/silverlight3">
+				<include name="Moq.Silverlight.dll"/>
+				<include name="Castle.Core-Silverlight.dll"/>
+				<include name="Castle.DynamicProxy-Silverlight.dll"/>
+			</fileset>
+		</copy>
+		<copy todir="${current.path.test}">
+			<fileset basedir="${path.tools.xunit.sl}${build.platform}">
+				<include name="*.dll"/>
+			</fileset>
+		</copy>
+		
         <csc noconfig="true" warnaserror="true" target="library" debug="${build.debug}" optimize="${build.optimize}" define="${build.defines}"
          output="${current.path.test}/${product.assembly.silverlighttestdll}">
             <sources basedir="${path.src}">
@@ -112,10 +117,11 @@
                 <include name="System.Windows.dll"/>
                 <include name="System.Windows.Browser.dll"/>
                 <include name="System.Net.dll"/>
-                <include name="Moq.Silverlight.dll"/>
-                <include name="Castle.DynamicProxy-Silverlight.dll"/>
-                <include name="Castle.Core-Silverlight.dll"/>
-                <include name="UnitDrivenLight.dll"/>
+				<include name="Microsoft.Phone.dll" if="${string::contains(build.platform, 'wp7')}"/>
+				<include name="Microsoft.Phone.Interop.dll" if="${string::contains(build.platform, 'wp7')}"/>
+				<include name="Moq.Silverlight.dll" unless="${string::contains(build.platform, 'wp7')}"/>
+				<include name="xunit.runner.silverlight.dll"/>
+				<include name="xunit-silverlight.dll"/>
 				<include name="${product.assembly}"/>
 				<include name="${product.assembly.DynamicProxy}"/>
 				<include name="${current.path.lib.DynamicProxy}/Castle.Core.dll"/>

@@ -1,23 +1,9 @@
 namespace Ninject.Extensions.Interception
 {
     using Castle.DynamicProxy;
-#if SILVERLIGHT
-#if SILVERLIGHT_MSTEST
-    using MsTest.Should;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Fact = Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute;
-#else
-    using UnitDriven;
-    using UnitDriven.Should;
-    using Fact = UnitDriven.TestMethodAttribute; 
-#endif
-#else
-    using Ninject.Extensions.Interception.MSTestAttributes;
     using Xunit;
     using Xunit.Should;
-#endif
 
-    [TestClass]
     public class AutoNotifyPropertyClassProxyContextDynamicProxy2 :
         AutoNotifyPropertyClassProxyContext<DynamicProxy2Module>
     {

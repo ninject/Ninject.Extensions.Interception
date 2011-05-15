@@ -1,33 +1,14 @@
 namespace Ninject.Extensions.Interception
 {
-    using Ninject.Extensions.Interception.Fakes; 
-#if SILVERLIGHT
-#if SILVERLIGHT_MSTEST
-    using MsTest.Should;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Fact = Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute;
-#else
-    using UnitDriven;
-    using UnitDriven.Should;
-    using Fact = UnitDriven.TestMethodAttribute;
-#endif
-#else
-    using Ninject.Extensions.Interception.MSTestAttributes;
+    using Ninject.Extensions.Interception.Fakes;
     using Xunit;
     using Xunit.Should;
-#endif
 
     public abstract class AutoNotifyPropertyMethodInterceptorContext<TInterceptionModule>
         : AutoNotifyPropertyChangedContext<TInterceptionModule>
         where TInterceptionModule : InterceptionModule, new()
     {
         public AutoNotifyPropertyMethodInterceptorContext()
-        {
-            this.SetUp();
-        }
-
-        [TestInitialize]
-        public virtual void SetUp()
         {
             LastPropertyToChange = null;
             ViewModel = Kernel.Get<ViewModel>();
