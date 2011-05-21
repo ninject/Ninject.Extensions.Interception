@@ -119,6 +119,7 @@
     <Compile Include="Fakes\Mock.cs" />
     <Compile Include="MethodInterceptionContextDynamicProxy2.cs" />
     <Compile Include="MethodInterceptionContextLinFu.cs" />
+    <Compile Include="Fakes\NoneVirtualFooImplementation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Fakes\RequestsConstructorInjection.cs" />
     <Compile Include="Fakes\SimpleObject.cs" />

@@ -89,7 +89,7 @@ namespace Ninject.Extensions.Interception.ProxyFactory
             }
 
             var wrapper = new DynamicProxy2Wrapper(Kernel, context, reference.Instance);
-            Type targetType = reference.Instance.GetType();
+            Type targetType = context.Request.Service;
             object[] parameters = context.Parameters
                 .Select(parameter => parameter.GetValue(context, null))
                 .ToArray();

@@ -1,5 +1,11 @@
 namespace Ninject.Extensions.Interception
 {
+    using Ninject.Extensions.Interception.Fakes;
+    using Ninject.Extensions.Interception.Infrastructure.Language;
+    using Ninject.Extensions.Interception.Interceptors;
+    using Xunit;
+    using Xunit.Should;
+
     public abstract class InterceptionTestContext<TInterceptionModule>
         where TInterceptionModule : InterceptionModule, new()
     {

@@ -17,8 +17,7 @@ namespace Ninject.Extensions.Interception
 
         [Fact]
         public void MethodInterceptedWithReplace()
-        {
-            
+        {  
             using (StandardKernel kernel = CreateDefaultInterceptionKernel())
             {
                 var mock = kernel.Get<Mock>();

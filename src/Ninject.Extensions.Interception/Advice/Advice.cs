@@ -29,6 +29,8 @@ namespace Ninject.Extensions.Interception.Advice
     /// </summary>
     public class Advice : IAdvice
     {
+        private MethodInfo method;
+        
         /// <summary>
         /// Initializes a new instance of the <see cref="Advice"/> class.
         /// </summary>
@@ -37,6 +39,7 @@ namespace Ninject.Extensions.Interception.Advice
         {
             Ensure.ArgumentNotNull( method, "method" );
             MethodHandle = method.GetMethodHandle();
+            this.method = method;
         }
 
         /// <summary>
@@ -92,8 +95,32 @@ namespace Ninject.Extensions.Interception.Advice
         /// <returns><see langword="True"/> if the request matches, otherwise <see langword="false"/>.</returns>
         public bool Matches( IProxyRequest request )
         {
-            return IsDynamic ? Condition( request.Context ) : request.Method.GetMethodHandle().Equals( MethodHandle );
+            return IsDynamic ? Condition( request.Context ) : MatchesMethod(request);
         }
+
+        private bool MatchesMethod(IProxyRequest request)
+        {
+            if (request.Method.GetMethodHandle().Equals(this.MethodHandle))
+            {
+                return true;
+            }
+
+            var requestType = request.Target.GetType();
+            if (!request.Method.DeclaringType.IsInterface || !this.method.DeclaringType.IsAssignableFrom(requestType))
+            {
+                return false;
+            }
+
+            var map = this.method.DeclaringType.GetInterfaceMap(request.Method.DeclaringType);
+            var index = Array.IndexOf(map.InterfaceMethods, request.Method.IsGenericMethod ? request.Method.GetGenericMethodDefinition() : request.Method);
+
+            if (index == -1)
+            {
+                return false;
+            }
+
+            return map.TargetMethods[index].GetMethodHandle() == this.method.GetMethodHandle();
+         }
 
         /// <summary>
         /// Gets the interceptor associated with the advice for the specified request.

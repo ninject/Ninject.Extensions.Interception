@@ -71,7 +71,7 @@ namespace Ninject.Extensions.Interception.ProxyFactory
         public override void Wrap( IContext context, InstanceReference reference )
         {
             var wrapper = new LinFuWrapper( Kernel, context, reference.Instance );
-            reference.Instance = _factory.CreateProxy( reference.Instance.GetType(), wrapper );
+            reference.Instance = _factory.CreateProxy(context.Request.Service, wrapper);
         }
 
         /// <summary>

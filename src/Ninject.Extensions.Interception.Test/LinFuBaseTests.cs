@@ -157,6 +157,57 @@ namespace Ninject.Extensions.Interception
                 FlagInterceptor.WasCalled.ShouldBeTrue();
             }
         }
+
+        [Fact]
+        public void NoneVirtualFunctionIntercepted_WhenResolveByInterface_ThenInterceptabe()
+        {
+            using (var kernel = CreateDefaultInterceptionKernel())
+            {
+                CountInterceptor.Reset();
+
+                kernel.Bind<IFoo>().To<NoneVirtualFooImplementation>().Intercept().With<CountInterceptor>();
+                var obj = kernel.Get<IFoo>();
+                obj.Foo();
+
+                CountInterceptor.Count.ShouldBe(1);
+            }
+        }
+
+        [Fact]
+        public void NoneVirtualFunctionIntercepted_WhenResolveByInterfaceAndInterceptionByContext_ThenInterceptabe()
+        {
+            using (var kernel = CreateDefaultInterceptionKernel())
+            {
+                CountInterceptor.Reset();
+
+                kernel.Bind<IFoo>().To<NoneVirtualFooImplementation>();
+                kernel.Intercept(ctx => ctx.Request.Service == typeof(IFoo)).With<CountInterceptor>();
+                var obj = kernel.Get<IFoo>();
+                obj.Foo();
+
+                CountInterceptor.Count.ShouldBe(1);
+            }
+        }
+
+        [Fact]
+        public void NoneVirtualPropertyIntercepted_WhenResolveByInterface_ThenInterceptabe()
+        {
+            using (var kernel = CreateDefaultInterceptionKernel())
+            {
+                CountInterceptor.Reset();
+
+                const bool OriginalValue = true;
+                kernel.Bind<IFoo>().To<NoneVirtualFooImplementation>();
+                kernel.Intercept(ctx => ctx.Request.Service == typeof(IFoo)).With<CountInterceptor>();
+                var obj = kernel.Get<IFoo>();
+
+                obj.TestProperty = OriginalValue;
+                var value = obj.TestProperty;
+
+                CountInterceptor.Count.ShouldBe(1);
+                value.ShouldBe(OriginalValue);
+            }
+        }
     }
 }
 #endif

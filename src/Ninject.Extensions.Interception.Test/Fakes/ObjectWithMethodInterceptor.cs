@@ -6,6 +6,8 @@ namespace Ninject.Extensions.Interception.Fakes
     {
         #region IFoo Members
 
+        public bool TestProperty { get; set; }
+
         [Count]
         public virtual void Foo()
         {
