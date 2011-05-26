@@ -1,6 +1,7 @@
 Version 2.4.0.0
 ---------------
 Removed: No web builds. All builds are have not reference to web anymore
+Changed: Interface Proxies are created for bound interfaces rather than a class proxy for its implementation.
 
 
 Version 2.2.1.0
