@@ -2,12 +2,14 @@ namespace Ninject.Extensions.Interception
 {
     using System.ServiceModel;
     using Castle.DynamicProxy;
+
+    using FluentAssertions;
+
     using Ninject.Extensions.Interception.Fakes;
     using Ninject.Extensions.Interception.Infrastructure.Language;
     using Ninject.Extensions.Interception.Interceptors;
     using Xunit;
-    using Xunit.Should;
-
+    
     public class DynamicProxy2ChannelFactoryProxyTest : DynamicProxy2BaseTests
     {
 #if !SILVERLIGHT
@@ -24,8 +26,8 @@ namespace Ninject.Extensions.Interception
 
                 var obj = kernel.Get<IFooService>();
 
-                obj.ShouldNotBeNull();
-                typeof(IProxyTargetAccessor).IsAssignableFrom(obj.GetType()).ShouldBeTrue();
+                obj.Should().NotBeNull();
+                typeof(IProxyTargetAccessor).IsAssignableFrom(obj.GetType()).Should().BeTrue();
             }
         }
 #endif

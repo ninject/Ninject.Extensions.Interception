@@ -57,6 +57,9 @@
     <Reference Include="Castle.Core">
       <HintPath>..\..\lib\Castle-Windsor\net-3.5\Castle.Core.dll</HintPath>
     </Reference>
+    <Reference Include="FluentAssertions">
+      <HintPath>..\..\tools\FluentAssertions\Net-3.5\FluentAssertions.dll</HintPath>
+    </Reference>
     <Reference Include="LinFu.DynamicProxy">
       <HintPath>..\..\lib\LinFu.DynamicProxy\net-3.5\LinFu.DynamicProxy.dll</HintPath>
     </Reference>
@@ -127,7 +130,6 @@
     <Compile Include="Fakes\ViewModel.cs" />
     <Compile Include="PropertyInterceptionContextDynamicProxy2.cs" />
     <Compile Include="PropertyInterceptionContextLinFu.cs" />
-    <Compile Include="XUnitShould.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Ninject.Extensions.Interception.DynamicProxy2\Ninject.Extensions.Interception.DynamicProxy2.csproj">

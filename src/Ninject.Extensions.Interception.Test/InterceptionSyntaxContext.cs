@@ -1,11 +1,12 @@
 namespace Ninject.Extensions.Interception
 {
+    using FluentAssertions;
+
     using Ninject.Extensions.Interception.Fakes;
     using Ninject.Extensions.Interception.Infrastructure.Language;
     using Ninject.Extensions.Interception.Interceptors;
     using Xunit;
-    using Xunit.Should;
-
+    
     public abstract class InterceptionSyntaxContext<TInterceptionModule> : InterceptionTestContext<TInterceptionModule>
         where TInterceptionModule : InterceptionModule, new()
     {
@@ -24,7 +25,7 @@ namespace Ninject.Extensions.Interception
             {
                 var mock = kernel.Get<ViewModel>();
                 mock.Address = "|ad";
-                FlagInterceptor.WasCalled.ShouldBeTrue();
+                FlagInterceptor.WasCalled.Should().BeTrue();
             }
         }
 
@@ -42,8 +43,8 @@ namespace Ninject.Extensions.Interception
 
                 foo.Foo();
 
-                FlagInterceptor.WasCalled.ShouldBeTrue();
-                CountInterceptor.Count.ShouldBe(1);
+                FlagInterceptor.WasCalled.Should().BeTrue();
+                CountInterceptor.Count.Should().Be(1);
             }
         }
     }

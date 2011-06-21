@@ -1,9 +1,10 @@
 ﻿namespace Ninject.Extensions.Interception
 {
+    using FluentAssertions;
+
     using Ninject.Extensions.Interception.Fakes;
     using Xunit;
-    using Xunit.Should;
-
+    
     public abstract class AutoNotifyPropertyDetectChangesInterceptorContext<TInterceptionModule>
         : AutoNotifyPropertyChangedContext<TInterceptionModule>
         where TInterceptionModule : InterceptionModule, new()
@@ -33,7 +34,7 @@
         public void WhenValueAssignedIsTheSameAsTheCurrentValue_ItShouldNotNotify()
         {
             ViewModel.ZipCode = 0;
-            LastPropertyToChange.ShouldBeNull();
+            LastPropertyToChange.Should().BeNull();
         }
 
         [Fact]
@@ -41,11 +42,11 @@
         {
             var value = new ComplexType();
             ComplexViewModel.Complex = value; // initialize
-            LastPropertyToChange.ShouldBe("Complex");
+            LastPropertyToChange.Should().Be("Complex");
             LastPropertyToChange = null;
             var newValue = new ComplexType();
             ComplexViewModel.Complex = newValue; // test
-            LastPropertyToChange.ShouldBeNull();
+            LastPropertyToChange.Should().BeNull();
         }
 
         [Fact]
@@ -53,11 +54,11 @@
         {
             var value = new ComplexType();
             ComplexViewModel.Complex = value; // initialize
-            LastPropertyToChange.ShouldBe("Complex");
+            LastPropertyToChange.Should().Be("Complex");
             LastPropertyToChange = null;
             var newValue = new ComplexType {Name = "Foo"};
             ComplexViewModel.Complex = newValue; // test
-            LastPropertyToChange.ShouldBe("Complex");
+            LastPropertyToChange.Should().Be("Complex");
         }
 
         [Fact]
@@ -65,11 +66,11 @@
         {
             var value = new ComplexType();
             ComplexViewModel.Complex = value; // initialize
-            LastPropertyToChange.ShouldBe("Complex");
+            LastPropertyToChange.Should().Be("Complex");
             LastPropertyToChange = null;
             var newValue = new ComplexType {Simple = new SimpleType {Id = 5}};
             ComplexViewModel.Complex = newValue; // test
-            LastPropertyToChange.ShouldBe("Complex");
+            LastPropertyToChange.Should().Be("Complex");
         }
     }
 }

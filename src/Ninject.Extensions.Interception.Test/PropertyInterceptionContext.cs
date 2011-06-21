@@ -1,10 +1,11 @@
 namespace Ninject.Extensions.Interception
 {
+    using FluentAssertions;
+
     using Ninject.Extensions.Interception.Fakes;
     using Ninject.Extensions.Interception.Infrastructure.Language;
     using Xunit;
-    using Xunit.Should;
-
+    
     public abstract class PropertyInterceptionContext<TInterceptionModule> :
         InterceptionTestContext<TInterceptionModule> where TInterceptionModule : InterceptionModule, new()
     {
@@ -22,8 +23,8 @@ namespace Ninject.Extensions.Interception
             {
                 var obj = kernel.Get<Mock>();
 
-                obj.GetMyProperty().ShouldBe("start");
-                obj.MyProperty.ShouldBe("start");
+                obj.GetMyProperty().Should().Be("start");
+                obj.MyProperty.Should().Be("start");
             }
 
             using (StandardKernel kernel = this.CreateDefaultInterceptionKernel())
@@ -33,8 +34,8 @@ namespace Ninject.Extensions.Interception
                     i => i.ReturnValue = "intercepted");
                 var obj = kernel.Get<Mock>();
 
-                obj.GetMyProperty().ShouldBe("start");
-                obj.MyProperty.ShouldBe("intercepted");
+                obj.GetMyProperty().Should().Be("start");
+                obj.MyProperty.Should().Be("intercepted");
             }
         }
 
@@ -45,11 +46,11 @@ namespace Ninject.Extensions.Interception
             {
                 var obj = kernel.Get<Mock>();
 
-                obj.MyProperty.ShouldBe("start");
+                obj.MyProperty.Should().Be("start");
 
                 obj.MyProperty = "end";
                 
-                obj.MyProperty.ShouldBe("end");
+                obj.MyProperty.Should().Be("end");
             }
 
             using (StandardKernel kernel = this.CreateDefaultInterceptionKernel())
@@ -58,11 +59,11 @@ namespace Ninject.Extensions.Interception
 
                 var obj = kernel.Get<Mock>();
 
-                obj.MyProperty.ShouldBe("start");
+                obj.MyProperty.Should().Be("start");
 
                 obj.MyProperty = "end";
 
-                obj.MyProperty.ShouldBe("start");
+                obj.MyProperty.Should().Be("start");
             }
         }
 
@@ -85,9 +86,9 @@ namespace Ninject.Extensions.Interception
 
                 var obj = kernel.Get<Mock>();
 
-                testString.ShouldBe("empty");
-                obj.MyProperty.ShouldBe("start");
-                testString.ShouldBe("null");
+                testString.Should().Be("empty");
+                obj.MyProperty.Should().Be("start");
+                testString.Should().Be("null");
             }
         }
 
@@ -103,9 +104,9 @@ namespace Ninject.Extensions.Interception
                     i => testString = i.ReturnValue.ToString());
                 var obj = kernel.Get<Mock>();
 
-                testString.ShouldBe("empty");
-                obj.MyProperty.ShouldBe("start");
-                testString.ShouldBe("start");
+                testString.Should().Be("empty");
+                obj.MyProperty.Should().Be("start");
+                testString.Should().Be("start");
             }
         }
     }

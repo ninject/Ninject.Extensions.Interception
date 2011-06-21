@@ -1,9 +1,10 @@
 namespace Ninject.Extensions.Interception
 {
+    using FluentAssertions;
+
     using Ninject.Extensions.Interception.Fakes;
     using Xunit;
-    using Xunit.Should;
-
+    
     public abstract class AutoNotifyPropertyMethodInterceptorContext<TInterceptionModule>
         : AutoNotifyPropertyChangedContext<TInterceptionModule>
         where TInterceptionModule : InterceptionModule, new()
@@ -26,16 +27,16 @@ namespace Ninject.Extensions.Interception
         {
             ViewModel.Address = "123 Main Street";
 
-            LastPropertyToChange.ShouldBeNull();
+            LastPropertyToChange.Should().BeNull();
         }
 
         [Fact]
         public void WhenValueChangesOnPropertyWithDependentProperties_ItShouldNotifyAllChanges()
         {
             ViewModel.ZipCode = 9700;
-            PropertyChanges[0].ShouldBe("ZipCode");
-            PropertyChanges[1].ShouldBe("City");
-            PropertyChanges[2].ShouldBe("State");
+            PropertyChanges[0].Should().Be("ZipCode");
+            PropertyChanges[1].Should().Be("City");
+            PropertyChanges[2].Should().Be("State");
         }
 
         [Fact]
@@ -43,8 +44,8 @@ namespace Ninject.Extensions.Interception
         {
             int zip = ViewModel.ZipCode;
 
-            zip.ShouldBe(0);
-            LastPropertyToChange.ShouldBeNull();
+            zip.Should().Be(0);
+            LastPropertyToChange.Should().BeNull();
         }
     }
 }

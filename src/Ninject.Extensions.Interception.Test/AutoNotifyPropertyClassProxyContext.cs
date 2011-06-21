@@ -1,9 +1,10 @@
 namespace Ninject.Extensions.Interception
 {
+    using FluentAssertions;
+
     using Ninject.Extensions.Interception.Fakes;
     using Xunit;
-    using Xunit.Should;
-
+    
     public abstract class AutoNotifyPropertyClassProxyContext<TInterceptionModule>
         : AutoNotifyPropertyChangedContext<TInterceptionModule>
         where TInterceptionModule : InterceptionModule, new()
@@ -24,23 +25,23 @@ namespace Ninject.Extensions.Interception
         public void WhenValueChangesOnPropertyWithoutNotifyAttribute_ItShouldNotifyChanges()
         {
             this.ViewModel.Address = "123 Main Street";
-            LastPropertyToChange.ShouldBe("Address");
+            LastPropertyToChange.Should().Be("Address");
         }
 
         [Fact]
         public void WhenValueChangesOnPropertyWithDependentProperties_ItShouldNotifyAllChanges()
         {
             this.ViewModel.ZipCode = 9700;
-            PropertyChanges[0].ShouldBe("ZipCode");
-            PropertyChanges[1].ShouldBe("City");
-            PropertyChanges[2].ShouldBe("State");
+            PropertyChanges[0].Should().Be("ZipCode");
+            PropertyChanges[1].Should().Be("City");
+            PropertyChanges[2].Should().Be("State");
         }
 
         [Fact]
         public void WhenPropertyHasDoNotNotifyAttribute_ChangNotificationIsSuppressed()
         {
             this.ViewModel.DoNotNotifyChanges = "...";
-            LastPropertyToChange.ShouldBeNull();
+            LastPropertyToChange.Should().BeNull();
         }
     }
 }

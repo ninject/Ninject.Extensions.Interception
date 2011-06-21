@@ -1,11 +1,12 @@
 #if !SILVERLIGHT
 namespace Ninject.Extensions.Interception
 {
+    using FluentAssertions;
+
     using Ninject.Extensions.Interception.Fakes;
     using Ninject.Extensions.Interception.Infrastructure.Language;
     using Xunit;
-    using Xunit.Should;
-
+    
     public class PropertyInterceptionContextLinfFu : PropertyInterceptionContext<LinFuModule>
     {
         [Fact]
@@ -18,11 +19,11 @@ namespace Ninject.Extensions.Interception
                     i => i.Request.Arguments[0] = "intercepted");
                 var obj = kernel.Get<Mock>();
 
-                obj.MyProperty.ShouldBe("start");
+                obj.MyProperty.Should().Be("start");
  
                 obj.MyProperty = "end";
 
-                obj.MyProperty.ShouldBe("intercepted");
+                obj.MyProperty.Should().Be("intercepted");
             }
         }
 
@@ -38,12 +39,12 @@ namespace Ninject.Extensions.Interception
                     i => testString = ((Mock)i.Request.Target).MyProperty);
                 var obj = kernel.Get<Mock>();
 
-                obj.MyProperty.ShouldBe("start");
+                obj.MyProperty.Should().Be("start");
 
                 obj.MyProperty = "end";
 
-                obj.MyProperty.ShouldBe("end");
-                testString.ShouldBe("end");
+                obj.MyProperty.Should().Be("end");
+                testString.Should().Be("end");
             }
         }
     }

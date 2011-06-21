@@ -1,13 +1,13 @@
 #if !SILVERLIGHT
 namespace Ninject.Extensions.Interception
 {
+    using FluentAssertions;
     using LinFu.DynamicProxy;
     using Ninject.Extensions.Interception.Fakes;
     using Ninject.Extensions.Interception.Infrastructure.Language;
     using Ninject.Extensions.Interception.Interceptors;
     using Xunit;
-    using Xunit.Should;
-
+    
     public class LinFuBaseTests : LinFuInterceptionContext
     {
         [Fact]
@@ -17,8 +17,8 @@ namespace Ninject.Extensions.Interception
             {
                 kernel.Bind<ObjectWithMethodInterceptor>().ToSelf();
                 var obj = kernel.Get<ObjectWithMethodInterceptor>();
-                obj.ShouldNotBeNull();
-                typeof(IProxy).IsAssignableFrom(obj.GetType()).ShouldBeTrue();
+                obj.Should().NotBeNull();
+                typeof(IProxy).IsAssignableFrom(obj.GetType()).Should().BeTrue();
             }
         }
 
@@ -29,15 +29,15 @@ namespace Ninject.Extensions.Interception
             {
                 kernel.Bind<ObjectWithMethodInterceptor>().ToSelf();
                 var obj = kernel.Get<ObjectWithMethodInterceptor>();
-                obj.ShouldNotBeNull();
-                typeof(IProxy).IsAssignableFrom(obj.GetType()).ShouldBeTrue();
+                obj.Should().NotBeNull();
+                typeof(IProxy).IsAssignableFrom(obj.GetType()).Should().BeTrue();
 
                 CountInterceptor.Reset();
 
                 obj.Foo();
                 obj.Bar();
 
-                CountInterceptor.Count.ShouldBe(1);
+                CountInterceptor.Count.Should().Be(1);
             }
         }
 
@@ -48,14 +48,14 @@ namespace Ninject.Extensions.Interception
             {
                 kernel.Bind<ObjectWithGenericMethod>().ToSelf();
                 var obj = kernel.Get<ObjectWithGenericMethod>();
-                obj.ShouldNotBeNull();
-                typeof(IProxy).IsAssignableFrom(obj.GetType()).ShouldBeTrue();
+                obj.Should().NotBeNull();
+                typeof(IProxy).IsAssignableFrom(obj.GetType()).Should().BeTrue();
 
                 FlagInterceptor.Reset();
                 string result = obj.ConvertGeneric(42);
 
-                result.ShouldBe("42");
-                FlagInterceptor.WasCalled.ShouldBeTrue();
+                result.Should().Be("42");
+                FlagInterceptor.WasCalled.Should().BeTrue();
             }
         }
 
@@ -66,8 +66,8 @@ namespace Ninject.Extensions.Interception
             {
                 kernel.Bind<IFoo>().To<ObjectWithMethodInterceptor>();
                 var obj = kernel.Get<IFoo>();
-                obj.ShouldNotBeNull();
-                typeof(IProxy).IsAssignableFrom(obj.GetType()).ShouldBeTrue();
+                obj.Should().NotBeNull();
+                typeof(IProxy).IsAssignableFrom(obj.GetType()).Should().BeTrue();
             }
         }
 
@@ -78,14 +78,14 @@ namespace Ninject.Extensions.Interception
             {
                 kernel.Bind<IFoo>().To<ObjectWithMethodInterceptor>();
                 var obj = kernel.Get<IFoo>();
-                obj.ShouldNotBeNull();
-                typeof(IProxy).IsAssignableFrom(obj.GetType()).ShouldBeTrue();
+                obj.Should().NotBeNull();
+                typeof(IProxy).IsAssignableFrom(obj.GetType()).Should().BeTrue();
 
                 CountInterceptor.Reset();
 
                 obj.Foo();
 
-                CountInterceptor.Count.ShouldBe(1);
+                CountInterceptor.Count.Should().Be(1);
             }
         }
 
@@ -96,15 +96,15 @@ namespace Ninject.Extensions.Interception
             {
                 kernel.Bind<IGenericMethod>().To<ObjectWithGenericMethod>();
                 var obj = kernel.Get<IGenericMethod>();
-                obj.ShouldNotBeNull();
-                typeof(IProxy).IsAssignableFrom(obj.GetType()).ShouldBeTrue();
+                obj.Should().NotBeNull();
+                typeof(IProxy).IsAssignableFrom(obj.GetType()).Should().BeTrue();
 
                 FlagInterceptor.Reset();
 
                 string result = obj.ConvertGeneric(42);
 
-                result.ShouldBe("42");
-                FlagInterceptor.WasCalled.ShouldBeTrue();
+                result.Should().Be("42");
+                FlagInterceptor.WasCalled.Should().BeTrue();
             }
         }
 
@@ -119,8 +119,8 @@ namespace Ninject.Extensions.Interception
 
                 var obj = kernel.Get<RequestsConstructorInjection>();
 
-                typeof(IProxy).IsAssignableFrom(obj.GetType()).ShouldBeTrue();
-                obj.Child.ShouldNotBeNull();
+                typeof(IProxy).IsAssignableFrom(obj.GetType()).Should().BeTrue();
+                obj.Child.Should().NotBeNull();
             }
         }
 
@@ -135,9 +135,9 @@ namespace Ninject.Extensions.Interception
 
                 var obj = kernel.Get<RequestsConstructorInjection>();
 
-                obj.ShouldNotBeNull();
-                typeof(IProxy).IsAssignableFrom(obj.GetType()).ShouldBeTrue();
-                obj.Child.ShouldNotBeNull();
+                obj.Should().NotBeNull();
+                typeof(IProxy).IsAssignableFrom(obj.GetType()).Should().BeTrue();
+                obj.Child.Should().NotBeNull();
             }
         }
 
@@ -149,12 +149,12 @@ namespace Ninject.Extensions.Interception
                 kernel.Bind<RequestsConstructorInjection>().ToSelf().InSingletonScope().Intercept().With<FlagInterceptor>();
                 var obj = kernel.Get<RequestsConstructorInjection>();
 
-                obj.ShouldNotBeNull();
-                typeof(IProxy).IsAssignableFrom(obj.GetType()).ShouldBeTrue();
+                obj.Should().NotBeNull();
+                typeof(IProxy).IsAssignableFrom(obj.GetType()).Should().BeTrue();
                 FlagInterceptor.Reset();
 
-                obj.Child.ShouldNotBeNull();
-                FlagInterceptor.WasCalled.ShouldBeTrue();
+                obj.Child.Should().NotBeNull();
+                FlagInterceptor.WasCalled.Should().BeTrue();
             }
         }
 
@@ -169,7 +169,7 @@ namespace Ninject.Extensions.Interception
                 var obj = kernel.Get<IFoo>();
                 obj.Foo();
 
-                CountInterceptor.Count.ShouldBe(1);
+                CountInterceptor.Count.Should().Be(1);
             }
         }
 
@@ -185,7 +185,7 @@ namespace Ninject.Extensions.Interception
                 var obj = kernel.Get<IFoo>();
                 obj.Foo();
 
-                CountInterceptor.Count.ShouldBe(1);
+                CountInterceptor.Count.Should().Be(1);
             }
         }
 
@@ -204,8 +204,8 @@ namespace Ninject.Extensions.Interception
                 obj.TestProperty = OriginalValue;
                 var value = obj.TestProperty;
 
-                CountInterceptor.Count.ShouldBe(1);
-                value.ShouldBe(OriginalValue);
+                CountInterceptor.Count.Should().Be(1);
+                value.Should().Be(OriginalValue);
             }
         }
     }
