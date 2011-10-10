@@ -96,6 +96,7 @@
     <Compile Include="Fakes\ComplexType.cs" />
     <Compile Include="Fakes\ComplexViewModel.cs" />
     <Compile Include="Fakes\DummyProxyFactory.cs" />
+    <Compile Include="Fakes\FooWithNoDefaultConstructor.cs" />
     <Compile Include="Fakes\IFooService.cs" />
     <Compile Include="Fakes\SameNameProperty.cs" />
     <Compile Include="Fakes\SameNamePropertyBase.cs" />

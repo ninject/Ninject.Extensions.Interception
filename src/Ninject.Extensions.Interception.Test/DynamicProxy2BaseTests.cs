@@ -229,5 +229,22 @@ namespace Ninject.Extensions.Interception
                 value.Should().Be(OriginalValue);
             }
         }
+
+        [Fact]
+        public void ClassesWithNoDefaultConstructorCanBeIntercepted()
+        {
+            using (var kernel = CreateDefaultInterceptionKernel())
+            {
+                CountInterceptor.Reset();
+
+                kernel.Bind<IFoo>().To<FooWithNoDefaultConstructor>().Intercept().With<CountInterceptor>();
+                kernel.Bind<IMock>().To<SimpleObject>();
+
+                var obj = kernel.Get<IFoo>();
+                obj.Foo();
+
+                CountInterceptor.Count.Should().Be(1);
+            }
+        }
     }
 }
