@@ -512,6 +512,12 @@
 				<include name="FluentAssertions.dll"/>
 			</fileset>
 		</copy>
+		<!-- This will overwrite the 3.5 dll if mono, otherwise leave 3.5 as the default. -->
+		<copy todir="${current.path.test}" if="${string::contains(build.platform, 'mono-2.0')}">
+			<fileset basedir="${path.tools.fluentassertions}/mono-2.0">
+				<include name="FluentAssertions.dll"/>
+			</fileset>
+		</copy>
 	</target>
 	
 	<target name="CopyMoq">

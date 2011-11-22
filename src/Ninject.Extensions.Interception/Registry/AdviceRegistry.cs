@@ -52,7 +52,10 @@ namespace Ninject.Extensions.Interception.Registry
         /// </returns>
         public bool HasAdvice(IContext context)
         {
-            return this._advice.Any(a => a.IsDynamic && a.Condition(context));
+            lock (_advice)
+            {
+                return _advice.Any( a => a.IsDynamic && a.Condition( context ) );
+            }
         }
 
         /// <summary>
@@ -64,10 +67,16 @@ namespace Ninject.Extensions.Interception.Registry
             if ( advice.IsDynamic )
             {
                 HasDynamicAdvice = true;
-                _cache.Clear();
+                lock( _cache )
+                {
+                    _cache.Clear();
+                }
             }
 
-            _advice.Add( advice );
+            lock ( _advice )
+            {
+                _advice.Add(advice);
+            }
         }
 
         /// <summary>
@@ -107,19 +116,18 @@ namespace Ninject.Extensions.Interception.Registry
                 }
             }
 
-            if ( interceptors == null )
-            {
-                interceptors = GetInterceptorsForRequest( request );
-            }
-
-            return interceptors;
+            return interceptors ?? GetInterceptorsForRequest( request );
         }
 
         #endregion
 
         private ICollection<IInterceptor> GetInterceptorsForRequest( IProxyRequest request )
         {
-            List<IAdvice> matches = _advice.Where( advice => advice.Matches( request ) ).ToList();
+            List<IAdvice> matches;
+            lock (_advice)
+            {
+                matches = _advice.Where( advice => advice.Matches( request ) ).ToList();
+            }
             matches.Sort( ( lhs, rhs ) => lhs.Order - rhs.Order );
 
             List<IInterceptor> interceptors = matches.Convert( a => a.GetInterceptor( request ) ).ToList();
