@@ -1,9 +1,6 @@
-#region Using Directives
-
 using System.Reflection;
 using System.Runtime.InteropServices;
-
-#endregion
+using System.Security;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
@@ -19,3 +16,7 @@ using System.Runtime.InteropServices;
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 
 [assembly : Guid( "9c3f8b57-2bbf-4bb8-bdc2-cd0989fef52d" )]
+
+#if !NO_PARTIAL_TRUST
+[assembly: AllowPartiallyTrustedCallers]
+#endif
