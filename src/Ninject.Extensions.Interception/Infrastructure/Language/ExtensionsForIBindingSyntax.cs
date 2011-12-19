@@ -90,7 +90,7 @@ namespace Ninject.Extensions.Interception.Infrastructure.Language
         {
             IKernel kernel = binding.Kernel;
             IAdvice advice = kernel.Components.Get<IAdviceFactory>()
-                .Create(context => ReferenceEquals(binding.Binding, context.Binding));
+                .Create(context => ReferenceEquals(binding.BindingConfiguration, context.Binding.BindingConfiguration));
             kernel.Components.Get<IAdviceRegistry>().Register( advice );
 
             return new AdviceBuilder( advice );
