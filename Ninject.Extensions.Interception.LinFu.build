@@ -40,10 +40,11 @@
 		<property name="nuget.releaseDirectory" value="${path.build}\${build.platform}\release\LinFu" dynamic="true"/>
 		<property name="nuget.dependencies" value="${product.name}" />
 		<property name="nuget.additionalFiles" value="lib\LinFu.DynamicProxy.dll" />
-		<property name="nuget.packageName" value="${nuget.name}${product.packagePostfix}.${build.version}" />	
+		<property name="nuget.packageName" value="${nuget.name}${product.packagePostfix}" />	
 		<property name="nuget.symbol.basedir" value="${path.base}/build/nuget-linfu_symbol" />
 		<property name="nuget.project" value="${path.src}/${product.name}.LinFu/${product.name}.LinFu.csproj" />
 
+		<msbuild project="${nuget.project}" />
 		<call target="nuget-run"/>
 	</target>
 </project>
