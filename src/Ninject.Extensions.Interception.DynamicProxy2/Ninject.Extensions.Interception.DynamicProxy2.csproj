@@ -62,7 +62,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Castle.Core">
-      <HintPath>..\..\lib\Castle-Windsor\net-3.5\Castle.Core.dll</HintPath>
+      <HintPath>..\..\lib\Castle-DynamicProxy\net-3.5\Castle.Core.dll</HintPath>
     </Reference>
     <Reference Include="Ninject">
       <HintPath>..\..\lib\Ninject\net-3.5\Ninject.dll</HintPath>

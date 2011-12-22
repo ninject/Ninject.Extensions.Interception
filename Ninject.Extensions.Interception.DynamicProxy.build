@@ -3,11 +3,11 @@
 	<property name="product.assembly.DynamicProxy" value="${product.name}.DynamicProxy.dll" overwrite="false"/>
 
 	<target name="buildDynamicProxy">
-		<property name="current.path.lib.DynamicProxy" value="${path.lib}/Castle-Windsor/net-3.5" if="${string::contains(build.platform, 'net-3.5')}" />
-		<property name="current.path.lib.DynamicProxy" value="${path.lib}/Castle-Windsor/net-4.0" if="${string::contains(build.platform, 'net-4.0')}" />
-		<property name="current.path.lib.DynamicProxy" value="${path.lib}/Castle-Windsor/silverlight-3.0" if="${string::contains(build.platform, 'silverlight-3.0')}" />
-		<property name="current.path.lib.DynamicProxy" value="${path.lib}/Castle-Windsor/silverlight-4.0" if="${string::contains(build.platform, 'silverlight-4.0')}" />
-		<property name="current.path.lib.DynamicProxy" value="${path.lib}/Castle-Windsor/net-3.5" if="${string::contains(build.platform, 'mono')}" />
+		<property name="current.path.lib.DynamicProxy" value="${path.lib}/Castle-DynamicProxy/net-3.5" if="${string::contains(build.platform, 'net-3.5')}" />
+		<property name="current.path.lib.DynamicProxy" value="${path.lib}/Castle-DynamicProxy/net-4.0" if="${string::contains(build.platform, 'net-4.0')}" />
+		<property name="current.path.lib.DynamicProxy" value="${path.lib}/Castle-DynamicProxy/silverlight-3.0" if="${string::contains(build.platform, 'silverlight-3.0')}" />
+		<property name="current.path.lib.DynamicProxy" value="${path.lib}/Castle-DynamicProxy/silverlight-4.0" if="${string::contains(build.platform, 'silverlight-4.0')}" />
+		<property name="current.path.lib.DynamicProxy" value="${path.lib}/Castle-DynamicProxy/net-3.5" if="${string::contains(build.platform, 'mono')}" />
 		<copy todir="${current.path.build}/DynamicProxy/lib">
 			<fileset basedir="${current.path.lib.DynamicProxy}">
 				<include name="**/*.dll"/>
