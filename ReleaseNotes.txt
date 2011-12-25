@@ -1,7 +1,8 @@
-Version 2.4.0.0
+Version 3.0.0.0
 ---------------
 Removed: No web builds. All builds are have not reference to web anymore
 Changed: Interface Proxies are created for bound interfaces rather than a class proxy for its implementation.
+Bugfix: Fixing multithreading issue with advice registry. Updating nuget. Fixing fluent assertions build task.
 
 
 Version 2.2.1.0

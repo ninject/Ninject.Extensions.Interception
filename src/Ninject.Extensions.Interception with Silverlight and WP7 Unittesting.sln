@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ninject.Extensions.Intercep
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ninject.Extensions.Interception.Tests", "Ninject.Extensions.Interception.Test\Ninject.Extensions.Interception.Tests.csproj", "{959234A6-9E16-4208-9311-0F0219EAF078}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ninject.Extensions.Interception.SilverlightTests", "Ninject.Extensions.Interception.SilverlightTests\Ninject.Extensions.Interception.SilverlightTests.csproj", "{F9E74F42-F165-4F9B-A43B-2AB1CD6E847F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +33,10 @@ Global
 		{959234A6-9E16-4208-9311-0F0219EAF078}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{959234A6-9E16-4208-9311-0F0219EAF078}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{959234A6-9E16-4208-9311-0F0219EAF078}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9E74F42-F165-4F9B-A43B-2AB1CD6E847F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9E74F42-F165-4F9B-A43B-2AB1CD6E847F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9E74F42-F165-4F9B-A43B-2AB1CD6E847F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9E74F42-F165-4F9B-A43B-2AB1CD6E847F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
