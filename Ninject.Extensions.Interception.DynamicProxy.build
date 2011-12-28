@@ -47,6 +47,7 @@
 		<property name="nuget.symbol.basedir" value="${path.base}/build/nuget-dp2_symbol" />
 		<property name="nuget.project" value="${path.src}/${product.name}.DynamicProxy2/${product.name}.DynamicProxy2.csproj" />
 
+		<property name="nant.settings.currentframework" value="net-4.0"/>
 		<msbuild project="${nuget.project}" />
 		<call target="nuget-run"/>
 	</target>	
