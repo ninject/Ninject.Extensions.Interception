@@ -83,6 +83,7 @@
     <Compile Include="AutoNotifyPropertyChangedInterceptor.cs" />
     <Compile Include="Attributes\NotifyOfChangesAttribute.cs" />
     <Compile Include="Planning\Strategies\MethodInterceptorRegistrationStrategy.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Registry\IMethodInterceptorRegistry.cs" />
     <Compile Include="Infrastructure\Ensure.cs" />
     <Compile Include="Infrastructure\Language\ExtensionsForICustomAttributeProvider.cs" />

@@ -79,6 +79,7 @@
     <Compile Include="DynamicProxy2Module.cs" />
     <Compile Include="DynamicProxy2ProxyFactory.cs" />
     <Compile Include="DynamicProxy2Wrapper.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

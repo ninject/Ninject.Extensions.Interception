@@ -80,6 +80,7 @@
     <Compile Include="LinFuModule.cs" />
     <Compile Include="LinFuProxyFactory.cs" />
     <Compile Include="LinFuWrapper.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Ninject.Extensions.Interception\Ninject.Extensions.Interception.csproj">

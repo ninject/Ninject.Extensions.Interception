@@ -5,8 +5,8 @@ using System.Security;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Ninject.Extensions.Interception.DynamicProxy2")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("Interception extension for Ninject with DP2")]
+[assembly: AssemblyDescription("Adds support for interception to Ninject using Castle Dynamic Proxy 2")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
