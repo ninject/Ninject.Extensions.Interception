@@ -1,27 +1,34 @@
+//-------------------------------------------------------------------------------
+// <copyright file="DynamicMethodFactory.cs" company="Ninject Project Contributors">
+//   Copyright (c) 2007-2009, Enkari, Ltd.
+//   Copyright (c) 2009-2011 Ninject Project Contributors
+//   Authors: Nate Kohari (nate@enkari.com)
+//            Remo Gloor (remo.gloor@gmail.com)
+//           
+//   Dual-licensed under the Apache License, Version 2.0, and the Microsoft Public License (Ms-PL).
+//   you may not use this file except in compliance with one of the Licenses.
+//   You may obtain a copy of the License at
+//
+//       http://www.apache.org/licenses/LICENSE-2.0
+//   or
+//       http://www.microsoft.com/opensource/licenses.mspx
+//
+//   Unless required by applicable law or agreed to in writing, software
+//   distributed under the License is distributed on an "AS IS" BASIS,
+//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//   See the License for the specific language governing permissions and
+//   limitations under the License.
+// </copyright>
+//-------------------------------------------------------------------------------
+
 #if !NO_LCG
-
-#region License
-
-// 
-// Author: Nate Kohari <nate@enkari.com>
-// Copyright (c) 2007-2010, Enkari, Ltd.
-// 
-// Dual-licensed under the Apache License, Version 2.0, and the Microsoft Public License (Ms-PL).
-// See the file LICENSE.txt for details.
-// 
-
-#endregion
-
-#region Using Directives
-
-using System;
-using System.Reflection;
-using System.Reflection.Emit;
-
-#endregion
-
 namespace Ninject.Extensions.Interception.Injection.Dynamic
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Reflection;
+    using System.Reflection.Emit;
+
     /// <summary>
     /// A helper class that uses lightweight code generation to create dynamic methods.
     /// </summary>
@@ -46,7 +53,7 @@ namespace Ninject.Extensions.Interception.Injection.Dynamic
             ILGenerator il = callable.GetILGenerator();
 
             EmitCheckParameters(info, il, 1);
-            EmitLoadParameters(info, il, 1);
+            var locals = EmitLoadParameters(info, il, 1);
 
             il.EmitCall(method.IsStatic ? OpCodes.Call : OpCodes.Callvirt, method, null);
 
@@ -62,8 +69,9 @@ namespace Ninject.Extensions.Interception.Injection.Dynamic
                 }
             }
 
-            il.Emit(OpCodes.Ret);
+            EmitReturnRefValues(info, il, locals);
 
+            il.Emit(OpCodes.Ret);
             return callable.CreateDelegate(typeof(Invoker)) as Invoker;
         }
 
@@ -92,7 +100,6 @@ namespace Ninject.Extensions.Interception.Injection.Dynamic
             }
 
             il.Emit(OpCodes.Ret);
-
             return callable.CreateDelegate(typeof(FactoryMethod)) as FactoryMethod;
         }
 
@@ -248,7 +255,7 @@ namespace Ninject.Extensions.Interception.Injection.Dynamic
 #endif
         }
 
-        private static void EmitCheckParameters( DelegateBuildInfo info, ILGenerator il, int argumentArrayIndex )
+        private static void EmitCheckParameters(DelegateBuildInfo info, ILGenerator il, int argumentArrayIndex)
         {
             Label beginLabel = il.DefineLabel();
 
@@ -263,7 +270,7 @@ namespace Ninject.Extensions.Interception.Injection.Dynamic
             il.MarkLabel(beginLabel);
         }
 
-        private static void EmitLoadParameters( DelegateBuildInfo info, ILGenerator il, int argumentArrayIndex )
+        private static LocalBuilder[] EmitLoadParameters(DelegateBuildInfo info, ILGenerator il, int argumentArrayIndex)
         {
             if (!info.Method.IsStatic && !(info.Method is ConstructorInfo))
             {
@@ -271,26 +278,39 @@ namespace Ninject.Extensions.Interception.Injection.Dynamic
                 EmitUnboxOrCast(il, info.Method.DeclaringType);
             }
 
+            var locals = new LocalBuilder[info.RefParameterIndexes.Count];
+            var localIndex = 0;
             for (int index = 0; index < info.Parameters.Length; index++)
             {
                 EmitLoadArg(il, argumentArrayIndex);
                 EmitLoadInt(il, index);
                 il.Emit(OpCodes.Ldelem_Ref);
                 EmitUnboxOrCast(il, info.ParameterTypes[index]);
+                if (info.Parameters[index].ParameterType.IsByRef)
+                {
+                    locals[localIndex] = il.DeclareLocal(info.ParameterTypes[index], true);
+                    il.Emit(OpCodes.Stloc, locals[localIndex]);
+                    il.Emit(OpCodes.Ldloca_S, locals[localIndex++]);
+                }
             }
+
+            return locals;
         }
 
-        private static Type[] GetActualParameterTypes( ParameterInfo[] parameters )
+        private static void EmitReturnRefValues(DelegateBuildInfo info, ILGenerator il, LocalBuilder[] locals)
         {
-            var types = new Type[parameters.Length];
-
-            for (int index = 0; index < parameters.Length; index++)
+            for (int i = 0; i < locals.Length; i++)
             {
-                Type type = parameters[index].ParameterType;
-                types[index] = type.IsByRef ? type.GetElementType() : type;
-            }
+                il.Emit(OpCodes.Ldarg_1);
+                EmitLoadInt(il, info.RefParameterIndexes[i]);
+                il.Emit(OpCodes.Ldloc, locals[i]);
+                if (locals[i].LocalType.IsValueType)
+                {
+                    il.Emit(OpCodes.Box, locals[i].LocalType);
+                }
 
-            return types;
+                il.Emit(OpCodes.Stelem_Ref);
+            }
         }
 
         private static void EmitUnboxOrCast(ILGenerator il, Type type)
@@ -345,7 +365,7 @@ namespace Ninject.Extensions.Interception.Injection.Dynamic
             }
         }
 
-        private static void EmitLoadArg( ILGenerator il, int index )
+        private static void EmitLoadArg(ILGenerator il, int index)
         {
             switch (index)
             {
@@ -390,8 +410,11 @@ namespace Ninject.Extensions.Interception.Injection.Dynamic
             {
                 this.Method = method;
                 this.ReturnType = method.ReturnType;
+                this.RefParameterIndexes = new List<int>();
                 this.InitParameters();
             }
+
+            public IList<int> RefParameterIndexes { get; private set; } 
 
             public MethodBase Method { get; private set; }
 
@@ -404,7 +427,26 @@ namespace Ninject.Extensions.Interception.Injection.Dynamic
             private void InitParameters()
             {
                 this.Parameters = this.Method.GetParameters();
-                this.ParameterTypes = GetActualParameterTypes( this.Parameters );
+                this.GetActualParameterTypes(this.Parameters);
+            }
+
+            private void GetActualParameterTypes(ParameterInfo[] parameters)
+            {
+                this.ParameterTypes = new Type[parameters.Length];
+
+                for (int index = 0; index < parameters.Length; index++)
+                {
+                    Type type = parameters[index].ParameterType;
+                    if (type.IsByRef)
+                    {
+                        this.ParameterTypes[index] = type.GetElementType();
+                        this.RefParameterIndexes.Add(index);
+                    }
+                    else
+                    {
+                        this.ParameterTypes[index] = type;                        
+                    }
+                }
             }
         }
 
