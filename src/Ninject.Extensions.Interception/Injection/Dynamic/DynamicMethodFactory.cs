@@ -282,15 +282,23 @@ namespace Ninject.Extensions.Interception.Injection.Dynamic
             var localIndex = 0;
             for (int index = 0; index < info.Parameters.Length; index++)
             {
-                EmitLoadArg(il, argumentArrayIndex);
-                EmitLoadInt(il, index);
-                il.Emit(OpCodes.Ldelem_Ref);
-                EmitUnboxOrCast(il, info.ParameterTypes[index]);
-                if (info.Parameters[index].ParameterType.IsByRef)
+                if (!info.Parameters[index].IsOut)
+                {
+                    EmitLoadArg(il, argumentArrayIndex);
+                    EmitLoadInt(il, index);
+                    il.Emit(OpCodes.Ldelem_Ref);
+                    EmitUnboxOrCast(il, info.ParameterTypes[index]);
+                    if (info.Parameters[index].ParameterType.IsByRef)
+                    {
+                        locals[localIndex] = il.DeclareLocal(info.ParameterTypes[index], true);
+                        il.Emit(OpCodes.Stloc, locals[localIndex]);
+                        il.Emit(OpCodes.Ldloca_S, locals[localIndex++]);
+                    }
+                }
+                else
                 {
                     locals[localIndex] = il.DeclareLocal(info.ParameterTypes[index], true);
-                    il.Emit(OpCodes.Stloc, locals[localIndex]);
-                    il.Emit(OpCodes.Ldloca_S, locals[localIndex++]);
+                    il.Emit(OpCodes.Ldloca_S, locals[localIndex++]);                    
                 }
             }
 

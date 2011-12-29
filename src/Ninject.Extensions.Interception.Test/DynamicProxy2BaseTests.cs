@@ -246,41 +246,5 @@ namespace Ninject.Extensions.Interception
                 CountInterceptor.Count.Should().Be(1);
             }
         }
-
-        [Fact]
-        public void CanInterceptMethodsWithRefValue()
-        {
-            CountInterceptor.Reset();
-            using (StandardKernel kernel = this.CreateDefaultInterceptionKernel())
-            {
-                var binding = kernel.Bind<RefAndOutValues>().ToSelf();
-                binding.Intercept().With<CountInterceptor>();
-                var foo = kernel.Get<RefAndOutValues>();
-                int x = 2;
-
-                foo.Add(1, ref x, 2);
-
-                CountInterceptor.Count.Should().Be(1);
-                x.Should().Be(3);
-            }
-        }
-
-        [Fact]
-        public void CanInterceptMethodsWithOutValue()
-        {
-            CountInterceptor.Reset();
-            using (StandardKernel kernel = this.CreateDefaultInterceptionKernel())
-            {
-                var binding = kernel.Bind<RefAndOutValues>().ToSelf();
-                binding.Intercept().With<CountInterceptor>();
-                var foo = kernel.Get<RefAndOutValues>();
-                int x;
-
-                foo.Multiply(2, out x, 3);
-
-                CountInterceptor.Count.Should().Be(1);
-                x.Should().Be(6);
-            }
-        }
     }
 }
