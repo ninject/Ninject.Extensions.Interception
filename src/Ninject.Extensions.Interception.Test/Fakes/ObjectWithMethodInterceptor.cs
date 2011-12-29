@@ -6,7 +6,10 @@ namespace Ninject.Extensions.Interception.Fakes
     {
         #region IFoo Members
 
-        public bool TestProperty { get; set; }
+        public virtual bool TestProperty { get; set; }
+
+        [Count]
+        public virtual bool TestProperty2 { get; set; }
 
         [Count]
         public virtual void Foo()
@@ -15,11 +18,11 @@ namespace Ninject.Extensions.Interception.Fakes
 
         #endregion
 
-        public void Bar()
+        public virtual void Bar()
         {
         }
 
-        public void Baz()
+        public virtual void Baz()
         {
         }
     }

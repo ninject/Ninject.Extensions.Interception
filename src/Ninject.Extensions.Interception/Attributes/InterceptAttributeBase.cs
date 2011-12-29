@@ -22,7 +22,7 @@ namespace Ninject.Extensions.Interception.Attributes
     /// <summary>
     /// A baseline definition of an attribute that indicates one or more methods should be intercepted.
     /// </summary>
-    [AttributeUsage( AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true, Inherited = true )]
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method | AttributeTargets.Property, AllowMultiple = true, Inherited = true)]
     public abstract class InterceptAttributeBase : Attribute
     {
         /// <summary>
