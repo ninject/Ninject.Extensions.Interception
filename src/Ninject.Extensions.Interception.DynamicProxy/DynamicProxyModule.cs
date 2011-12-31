@@ -24,14 +24,14 @@ namespace Ninject.Extensions.Interception
     /// Extends the functionality of the kernel, providing a proxy factory that uses Castle DynamicProxy2
     /// to generate dynamic proxies.
     /// </summary>
-    public class DynamicProxy2Module : InterceptionModule
+    public class DynamicProxyModule : InterceptionModule
     {
         /// <summary>
         /// Loads the module into the kernel.
         /// </summary>
         public override void Load()
         {
-            Kernel.Components.Add<IProxyFactory, DynamicProxy2ProxyFactory>();
+            Kernel.Components.Add<IProxyFactory, DynamicProxyProxyFactory>();
             base.Load();
         }
     }

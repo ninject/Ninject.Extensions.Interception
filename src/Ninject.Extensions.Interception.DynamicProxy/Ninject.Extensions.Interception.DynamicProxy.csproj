@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{A728460A-B97B-471C-B7C3-8010DA8EFB2A}</ProjectGuid>
+    <ProjectGuid>{403F7CC5-2AC1-496A-96E2-1AC6D562EAB2}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Ninject.Extensions.Interception.DynamicProxy2</RootNamespace>
-    <AssemblyName>Ninject.Extensions.Interception.DynamicProxy2</AssemblyName>
+    <RootNamespace>Ninject.Extensions.Interception.DynamicProxy</RootNamespace>
+    <AssemblyName>Ninject.Extensions.Interception.DynamicProxy</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <FileUpgradeFlags>
@@ -52,7 +52,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <DocumentationFile>..\..\build\release\Ninject.Extensions.Interception.DynamicProxy2.XML</DocumentationFile>
+    <DocumentationFile>..\..\build\release\Ninject.Extensions.Interception.DynamicProxy.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -76,9 +76,9 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="DynamicProxy2Module.cs" />
-    <Compile Include="DynamicProxy2ProxyFactory.cs" />
-    <Compile Include="DynamicProxy2Wrapper.cs" />
+    <Compile Include="DynamicProxyModule.cs" />
+    <Compile Include="DynamicProxyProxyFactory.cs" />
+    <Compile Include="DynamicProxyWrapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

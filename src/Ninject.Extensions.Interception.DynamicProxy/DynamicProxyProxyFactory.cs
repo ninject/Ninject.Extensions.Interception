@@ -27,9 +27,9 @@ namespace Ninject.Extensions.Interception.ProxyFactory
 {
     /// <summary>
     /// An implementation of a proxy factory that uses a Castle DynamicProxy2 <see cref="ProxyGenerator"/>
-    /// and <see cref="DynamicProxy2Wrapper"/>s to create wrapped instances.
+    /// and <see cref="DynamicProxyWrapper"/>s to create wrapped instances.
     /// </summary>
-    public class DynamicProxy2ProxyFactory : ProxyFactoryBase, IHaveKernel
+    public class DynamicProxyProxyFactory : ProxyFactoryBase, IHaveKernel
     {
         #region Fields
 
@@ -39,10 +39,10 @@ namespace Ninject.Extensions.Interception.ProxyFactory
         #endregion
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DynamicProxy2ProxyFactory"/> class.
+        /// Initializes a new instance of the <see cref="DynamicProxyProxyFactory"/> class.
         /// </summary>
         /// <param name="kernel">The kernel.</param>
-        public DynamicProxy2ProxyFactory( IKernel kernel )
+        public DynamicProxyProxyFactory( IKernel kernel )
         {
             Kernel = kernel;
         }
@@ -88,7 +88,7 @@ namespace Ninject.Extensions.Interception.ProxyFactory
                 return;
             }
 
-            var wrapper = new DynamicProxy2Wrapper(Kernel, context, reference.Instance);
+            var wrapper = new DynamicProxyWrapper(Kernel, context, reference.Instance);
             Type targetType = context.Request.Service;
             object[] parameters = context.Parameters
                 .Select(parameter => parameter.GetValue(context, null))

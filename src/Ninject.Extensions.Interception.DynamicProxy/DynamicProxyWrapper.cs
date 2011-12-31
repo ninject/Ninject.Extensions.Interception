@@ -21,17 +21,17 @@ namespace Ninject.Extensions.Interception.Wrapper
     /// Defines an interception wrapper that can convert a Castle DynamicProxy2 <see cref="Castle.Core.Interceptor.IInvocation"/>
     /// into a Ninject <see cref="IRequest"/> for interception.
     /// </summary>
-    public class DynamicProxy2Wrapper : StandardWrapper, Castle.DynamicProxy.IInterceptor
+    public class DynamicProxyWrapper : StandardWrapper, Castle.DynamicProxy.IInterceptor
     {
         #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DynamicProxy2Wrapper"/> class.
+        /// Initializes a new instance of the <see cref="DynamicProxyWrapper"/> class.
         /// </summary>
         /// <param name="kernel">The kernel associated with the wrapper.</param>
         /// <param name="context">The context in which the instance was activated.</param>
         /// <param name="instance">The wrapped instance.</param>
-        public DynamicProxy2Wrapper( IKernel kernel, IContext context, object instance )
+        public DynamicProxyWrapper( IKernel kernel, IContext context, object instance )
             : base( kernel, context, instance )
         {
         }

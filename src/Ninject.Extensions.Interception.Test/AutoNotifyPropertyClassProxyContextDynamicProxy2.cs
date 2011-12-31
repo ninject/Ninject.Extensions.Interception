@@ -7,7 +7,7 @@ namespace Ninject.Extensions.Interception
     using Xunit;
     
     public class AutoNotifyPropertyClassProxyContextDynamicProxy2 :
-        AutoNotifyPropertyClassProxyContext<DynamicProxy2Module>
+        AutoNotifyPropertyClassProxyContext<DynamicProxyModule>
     {
         [Fact]
         public void WhenAutoNotifyAttributeIsAttachedToAClass_TheObjectIsProxied()
