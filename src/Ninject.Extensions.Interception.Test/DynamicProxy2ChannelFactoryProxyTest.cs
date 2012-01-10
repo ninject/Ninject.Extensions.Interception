@@ -1,6 +1,8 @@
 namespace Ninject.Extensions.Interception
 {
+#if !SILVERLIGHT
     using System.ServiceModel;
+#endif
     using Castle.DynamicProxy;
 
     using FluentAssertions;

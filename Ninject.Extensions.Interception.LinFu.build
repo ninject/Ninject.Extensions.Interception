@@ -12,7 +12,7 @@
 			</fileset>
 		</copy>
 		
-		<csc noconfig="true" warnaserror="true" target="library" debug="${build.debug}" optimize="${build.optimize}" define="${build.defines}" 
+		<csc noconfig="true" nostdlib="true" warnaserror="true" target="library" debug="${build.debug}" optimize="${build.optimize}" define="${build.defines}" 
 		     output="${current.path.build}/LinFu/${product.assembly.LinFu}" 
 			 doc="${current.path.build}/LinFu/${product.name}.LinFu.xml" keyfile="${path.src}/${product.keyfile}">
 			<arg line="/filealign:512" unless="${nant.settings.currentframework == 'mono-2.0'}"/>

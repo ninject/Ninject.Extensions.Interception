@@ -7,6 +7,7 @@
 		<property name="current.path.lib.DynamicProxy" value="${path.lib}/Castle-DynamicProxy/net-4.0" if="${string::contains(build.platform, 'net-4.0')}" />
 		<property name="current.path.lib.DynamicProxy" value="${path.lib}/Castle-DynamicProxy/silverlight-3.0" if="${string::contains(build.platform, 'silverlight-3.0')}" />
 		<property name="current.path.lib.DynamicProxy" value="${path.lib}/Castle-DynamicProxy/silverlight-4.0" if="${string::contains(build.platform, 'silverlight-4.0')}" />
+		<property name="current.path.lib.DynamicProxy" value="${path.lib}/Castle-DynamicProxy/silverlight-4.0" if="${string::contains(build.platform, 'silverlight-5.0')}" />
 		<property name="current.path.lib.DynamicProxy" value="${path.lib}/Castle-DynamicProxy/net-3.5" if="${string::contains(build.platform, 'mono')}" />
 		<copy todir="${current.path.build}/DynamicProxy/lib">
 			<fileset basedir="${current.path.lib.DynamicProxy}">
@@ -15,7 +16,7 @@
 			</fileset>
 		</copy>
 		
-		<csc noconfig="true" warnaserror="false" target="library" debug="${build.debug}" optimize="${build.optimize}" define="${build.defines}" 
+		<csc noconfig="true" nostdlib="true" warnaserror="false" target="library" debug="${build.debug}" optimize="${build.optimize}" define="${build.defines}" 
 		     output="${current.path.build}/DynamicProxy/${product.assembly.DynamicProxy}" 
 			 doc="${current.path.build}/DynamicProxy/${product.name}.DynamicProxy.xml" keyfile="${path.src}/${product.keyfile}">
 			<arg line="/filealign:512" unless="${nant.settings.currentframework == 'mono-2.0'}"/>
