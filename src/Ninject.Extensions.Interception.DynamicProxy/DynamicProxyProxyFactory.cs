@@ -20,6 +20,7 @@ using Castle.DynamicProxy;
 using Ninject.Activation;
 using Ninject.Extensions.Interception.Wrapper;
 using Ninject.Infrastructure;
+using Ninject.Parameters;
 
 #endregion
 
@@ -90,7 +91,7 @@ namespace Ninject.Extensions.Interception.ProxyFactory
 
             var wrapper = new DynamicProxyWrapper(Kernel, context, reference.Instance);
             Type targetType = context.Request.Service;
-            object[] parameters = context.Parameters
+            object[] parameters = context.Parameters.OfType<ConstructorArgument>()
                 .Select(parameter => parameter.GetValue(context, null))
                 .ToArray();
 
