@@ -12,7 +12,7 @@
 			</fileset>
 		</copy>
 		
-		<csc noconfig="true" nostdlib="true" warnaserror="true" target="library" debug="${build.debug}" optimize="${build.optimize}" define="${build.defines}" 
+		<csc noconfig="true" warnaserror="true" target="library" debug="${build.debug}" optimize="${build.optimize}" define="${build.defines}" 
 		     output="${current.path.build}/LinFu/${product.assembly.LinFu}" 
 			 doc="${current.path.build}/LinFu/${product.name}.LinFu.xml" keyfile="${path.src}/${product.keyfile}">
 			<arg line="/filealign:512" unless="${nant.settings.currentframework == 'mono-2.0'}"/>
@@ -35,7 +35,7 @@
 	<target name="nuget-linfu">
 		<property name="nuget.sourcedir" value="${path.base}/nuget-linfu" />
 		<property name="nuget.basedir" value="${path.base}/build/nuget-linfu" />
-		<property name="nuget.platforms" value="net-3.5" />
+		<property name="nuget.platforms" value="net-3.5-client" />
 		<property name="nuget.name" value="${product.name}.LinFu" />
 		<property name="nuget.releaseDirectory" value="${path.build}\${build.platform}\release\LinFu" dynamic="true"/>
 		<property name="nuget.dependencies" value="${product.name}" />
