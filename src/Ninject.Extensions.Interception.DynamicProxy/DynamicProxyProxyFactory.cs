@@ -91,9 +91,6 @@ namespace Ninject.Extensions.Interception.ProxyFactory
 
             var wrapper = new DynamicProxyWrapper(Kernel, context, reference.Instance);
             Type targetType = context.Request.Service;
-            object[] parameters = context.Parameters.OfType<ConstructorArgument>()
-                .Select(parameter => parameter.GetValue(context, null))
-                .ToArray();
 
             if (targetType.IsInterface)
             {
@@ -101,6 +98,9 @@ namespace Ninject.Extensions.Interception.ProxyFactory
             }
             else
             {
+                object[] parameters = context.Parameters.OfType<ConstructorArgument>()
+                    .Select(parameter => parameter.GetValue(context, null))
+                    .ToArray();
                 reference.Instance = this.generator.CreateClassProxy(targetType, ProxyOptions, parameters, wrapper);
             }
         }
