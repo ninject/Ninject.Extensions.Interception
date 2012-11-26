@@ -29,7 +29,7 @@ namespace Ninject.Extensions.Interception.Infrastructure.Language
 
         public static PropertyInfo GetPropertyFromMethod( this MethodInfo method, Type implementingType )
         {
-            if ( !method.IsSpecialName )
+            if ( !method.IsSpecialName||method.Name.Length<4)
             {
                 return null;
             }
