@@ -1,3 +1,8 @@
+Version 3.0.2
+-------------
+- Bugfix: Don't crash if there's a special method that is less than 4 characters long, some obvuscated code has this
+
+
 Version 3.0.0.0
 ---------------
 Added: Support for out and ref values on the intercepted methods
