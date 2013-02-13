@@ -178,8 +178,8 @@ namespace Ninject.Extensions.Interception.Planning.Strategies
         protected virtual bool ShouldIntercept( MethodInfo methodInfo )
         {
             return methodInfo.DeclaringType != typeof (object) &&
-                   !methodInfo.IsPrivate &&
-                   !methodInfo.IsFinal;
+                   !methodInfo.IsPrivate;// &&
+                   //!methodInfo.IsFinal;
         }
     }
 }

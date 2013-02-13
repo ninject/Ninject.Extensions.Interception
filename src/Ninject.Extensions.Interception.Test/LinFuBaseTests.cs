@@ -230,6 +230,21 @@ namespace Ninject.Extensions.Interception
         }
 
         [Fact]
+        public void NoneVirtualFunctionIntercepted_WhenResolveByInterface_ThenInterceptabeByAttribute()
+        {
+            using (var kernel = CreateDefaultInterceptionKernel())
+            {
+                CountInterceptor.Reset();
+
+                kernel.Bind<IFoo>().To<NoneVirtualFooImplementation>();
+                var obj = kernel.Get<IFoo>();
+                obj.Baz();
+
+                CountInterceptor.Count.Should().Be(1);
+            }
+        }
+
+        [Fact]
         public void ClassesWithNoDefaultConstructorCanBeIntercepted()
         {
             using (var kernel = CreateDefaultInterceptionKernel())
