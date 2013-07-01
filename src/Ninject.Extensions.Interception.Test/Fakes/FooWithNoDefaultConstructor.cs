@@ -25,5 +25,9 @@ namespace Ninject.Extensions.Interception.Fakes
         public void Bar()
         {
         }
+
+        public void Baz()
+        {
+        }
     }
 }

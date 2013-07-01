@@ -11,11 +11,14 @@
 
         public virtual void Foo()
         {
-            
         }
 
-        public void Bar()        {
-            throw new NotImplementedException();
+        public void Bar()        
+        {
+        }
+
+        public void Baz()
+        {
         }
     }
 }
