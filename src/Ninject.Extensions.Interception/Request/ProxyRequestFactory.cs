@@ -45,6 +45,11 @@ namespace Ninject.Extensions.Interception.Request
                                      object[] arguments,
                                      Type[] genericArguments )
         {
+            if (method.IsGenericMethodDefinition)
+            {
+                method = method.MakeGenericMethod(genericArguments);
+            }
+
             return new ProxyRequest( context, proxy, target, method, arguments, genericArguments );
         }
 

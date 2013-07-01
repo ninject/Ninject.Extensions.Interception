@@ -3,16 +3,19 @@
 	<property name="product.assembly.DynamicProxy" value="${product.name}.DynamicProxy.dll" overwrite="false"/>
 
 	<target name="buildDynamicProxy">
-		<property name="current.path.lib.DynamicProxy" value="${path.lib}/Castle-DynamicProxy/net-3.5" if="${string::contains(build.platform, 'net-3.5')}" />
-		<property name="current.path.lib.DynamicProxy" value="${path.lib}/Castle-DynamicProxy/net-4.0" if="${string::contains(build.platform, 'net-4.0')}" />
-		<property name="current.path.lib.DynamicProxy" value="${path.lib}/Castle-DynamicProxy/silverlight-3.0" if="${string::contains(build.platform, 'silverlight-3.0')}" />
-		<property name="current.path.lib.DynamicProxy" value="${path.lib}/Castle-DynamicProxy/silverlight-4.0" if="${string::contains(build.platform, 'silverlight-4.0')}" />
-		<property name="current.path.lib.DynamicProxy" value="${path.lib}/Castle-DynamicProxy/silverlight-4.0" if="${string::contains(build.platform, 'silverlight-5.0')}" />
-		<property name="current.path.lib.DynamicProxy" value="${path.lib}/Castle-DynamicProxy/net-3.5" if="${string::contains(build.platform, 'mono')}" />
+		<property name="packagepath.DynamicProxy" value="Castle.Core.*/lib/net35" if="${string::contains(build.platform, 'net-3.5')}" />
+		<property name="packagepath.DynamicProxy" value="Castle.Core.*/lib/net40-client" if="${string::contains(build.platform, 'net-4.0')}" />
+		<property name="packagepath.DynamicProxy" value="Castle.Core.*/lib/net45" if="${string::contains(build.platform, 'net-4.5')}" />
+		<property name="packagepath.DynamicProxy" value="Castle.Core.*/lib/sl4" if="${string::contains(build.platform, 'silverlight-4.0')}" />
+		<property name="packagepath.DynamicProxy" value="Castle.Core.*/lib/sl5" if="${string::contains(build.platform, 'silverlight-5.0')}" />
+		<property name="packagepath.DynamicProxy" value="Castle.Core.*/lib/net35" if="${string::contains(build.platform, 'mono')}" />
+		
+		<property name="current.path.lib.DynamicProxy" value="${path.packages}/${packagepath.DynamicProxy}" />
+		
 		<copy todir="${current.path.build}/DynamicProxy/lib">
-			<fileset basedir="${current.path.lib.DynamicProxy}">
-				<include name="**/*.dll"/>
-				<include name="**/*.xml"/>
+			<fileset basedir="${path.packages}">
+				<include name="${packagepath.DynamicProxy}/*.dll"/>
+				<include name="${packagepath.DynamicProxy}/*.xml"/>
 			</fileset>
 		</copy>
 		
@@ -48,7 +51,7 @@
 		<property name="nuget.symbol.basedir" value="${path.base}/build/nuget-dp2_symbol" />
 		<property name="nuget.project" value="${path.src}/${product.name}.DynamicProxy/${product.name}.DynamicProxy.csproj" />
 
-		<property name="nant.settings.currentframework" value="net-4.0"/>
+		<property name="nant.settings.currentframework" value="net-3.5"/>
 		<msbuild project="${nuget.project}" />
 		<call target="nuget-run" verbose="true"/>
 	</target>	

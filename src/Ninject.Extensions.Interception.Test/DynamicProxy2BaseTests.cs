@@ -105,7 +105,7 @@ namespace Ninject.Extensions.Interception
                 var obj = kernel.Get<ObjectWithGenericMethod>();
 
                 FlagInterceptor.Reset();
-                string result = obj.ConvertGeneric(42);
+                string result = obj.ConvertGeneric("", 42);
 
                 result.Should().Be("42");
                 FlagInterceptor.WasCalled.Should().BeTrue();
@@ -158,7 +158,7 @@ namespace Ninject.Extensions.Interception
 
                 FlagInterceptor.Reset();
 
-                string result = obj.ConvertGeneric(42);
+                string result = obj.ConvertGeneric("", 42);
 
                 result.Should().Be("42");
                 FlagInterceptor.WasCalled.Should().BeTrue();

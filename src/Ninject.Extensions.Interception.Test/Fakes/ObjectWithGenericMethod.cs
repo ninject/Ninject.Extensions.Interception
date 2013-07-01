@@ -5,7 +5,7 @@ namespace Ninject.Extensions.Interception.Fakes
     public class ObjectWithGenericMethod : IGenericMethod
     {
         [Flag]
-        public virtual string ConvertGeneric<T>( T obj )
+        public virtual string ConvertGeneric<T>( string s, T obj )
         {
             return obj.ToString();
         }

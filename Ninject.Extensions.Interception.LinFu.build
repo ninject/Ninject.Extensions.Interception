@@ -2,16 +2,20 @@
 <project name="Ninject.LinFu" default="all">
 	<property name="product.assembly.LinFu" value="${product.name}.LinFu.dll" overwrite="false"/>
 
-	<target name="buildLinFu" if="${string::contains(build.platform, 'net-3.5')}" >
-		<property name="current.path.lib.LinFu" value="${path.lib}/LinFu.DynamicProxy/net-3.5" unless="${string::contains(build.platform, 'silverlight')}" />
+	<target name="buildLinFu">
 		<property name="LinFuTests" value="true"/>
+
+		<property name="packagepath.LinFu" value="LinFu.DynamicProxy.OfficialRelease.*/lib/net" unless="${string::contains(build.platform, 'silverlight')}" />
+		<property name="packagepath.LinFu" value="LinFu.DynamicProxy.OfficialRelease.*/lib/sl" if="${string::contains(build.platform, 'silverlight')}" />		
+		<property name="current.path.lib.LinFu" value="${path.packages}/${packagepath.LinFu}" />
+		
 		<copy todir="${current.path.build}/LinFu/lib">
-			<fileset basedir="${current.path.lib.LinFu}">
-				<include name="**/*.dll"/>
-				<include name="**/*.xml"/>
+			<fileset basedir="${path.packages}">
+				<include name="${packagepath.LinFu}/*.dll"/>
+				<include name="${packagepath.LinFu}/*.xml"/>
 			</fileset>
 		</copy>
-		
+				
 		<csc noconfig="true" warnaserror="true" target="library" debug="${build.debug}" optimize="${build.optimize}" define="${build.defines}" 
 		     output="${current.path.build}/LinFu/${product.assembly.LinFu}" 
 			 doc="${current.path.build}/LinFu/${product.name}.LinFu.xml" keyfile="${path.src}/${product.keyfile}">
@@ -35,7 +39,7 @@
 	<target name="nuget-linfu">
 		<property name="nuget.sourcedir" value="${path.base}/nuget-linfu" />
 		<property name="nuget.basedir" value="${path.base}/build/nuget-linfu" />
-		<property name="nuget.platforms" value="net-3.5-client" />
+		<property name="nuget.platforms" value="${product.platforms}" />
 		<property name="nuget.name" value="${product.name}.LinFu" />
 		<property name="nuget.releaseDirectory" value="${path.build}\${build.platform}\release\LinFu" dynamic="true"/>
 		<property name="nuget.dependencies" value="${product.name}" />
