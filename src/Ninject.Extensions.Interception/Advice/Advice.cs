@@ -105,8 +105,10 @@ namespace Ninject.Extensions.Interception.Advice
                 return true;
             }
 
-            var requestType = request.Target.GetType();
-            if (!request.Method.DeclaringType.IsInterface || !this.method.DeclaringType.IsAssignableFrom(requestType))
+            var requestType = request.Method.DeclaringType;
+            if (requestType == null || 
+                !requestType.IsInterface ||
+                !requestType.IsAssignableFrom(this.method.DeclaringType))
             {
                 return false;
             }
