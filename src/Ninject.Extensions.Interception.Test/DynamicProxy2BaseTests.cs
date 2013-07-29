@@ -281,24 +281,5 @@ namespace Ninject.Extensions.Interception
                 CountInterceptor.Count.Should().Be(1);
             }
         }
-
-        [Fact]
-        public void MethodsFromDerivedClassesCanBeIntercepted()
-        {
-            using (var kernel = CreateDefaultInterceptionKernel())
-            {
-                CountInterceptor.Reset();
-
-                kernel.Bind<IDerived>().To<Derived>();
-
-                var obj = kernel.Get<IDerived>();
-
-                obj.DoBase();
-                CountInterceptor.Count.Should().Be(1);
-
-                obj.DoDerived();
-                CountInterceptor.Count.Should().Be(1);
-            }
-        }
     }
 }
