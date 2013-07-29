@@ -11,18 +11,6 @@ namespace Ninject.Extensions.Interception
     public class LinFuBaseTests : LinFuInterceptionContext
     {
         [Fact]
-        public void SelfBoundTypesDeclaringMethodInterceptorsAreProxied()
-        {
-            using (var kernel = CreateDefaultInterceptionKernel())
-            {
-                kernel.Bind<ObjectWithMethodInterceptor>().ToSelf();
-                var obj = kernel.Get<ObjectWithMethodInterceptor>();
-                obj.Should().NotBeNull();
-                typeof(IProxy).IsAssignableFrom(obj.GetType()).Should().BeTrue();
-            }
-        }
-
-        [Fact]
         public void SelfBoundTypesDeclaringMethodInterceptorsAreIntercepted()
         {
             using (var kernel = CreateDefaultInterceptionKernel())

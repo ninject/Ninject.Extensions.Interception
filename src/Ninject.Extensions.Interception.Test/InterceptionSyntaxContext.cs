@@ -1,5 +1,7 @@
 namespace Ninject.Extensions.Interception
 {
+    using System;
+
     using FluentAssertions;
 
     using Ninject.Extensions.Interception.Fakes;
@@ -10,6 +12,8 @@ namespace Ninject.Extensions.Interception
     public abstract class InterceptionSyntaxContext<TInterceptionModule> : InterceptionTestContext<TInterceptionModule>
         where TInterceptionModule : InterceptionModule, new()
     {
+        protected abstract Type ProxyType { get; }
+
         protected override StandardKernel CreateDefaultInterceptionKernel()
         {
             StandardKernel kernel = base.CreateDefaultInterceptionKernel();
@@ -47,5 +51,18 @@ namespace Ninject.Extensions.Interception
                 CountInterceptor.Count.Should().Be(1);
             }
         }
+
+        [Fact]
+        public void SelfBoundTypesDeclaringMethodInterceptorsAreProxied()
+        {
+            using (var kernel = CreateDefaultInterceptionKernel())
+            {
+                kernel.Bind<ObjectWithMethodInterceptor>().ToSelf();
+                var obj = kernel.Get<ObjectWithMethodInterceptor>();
+                obj.Should().NotBeNull();
+                this.ProxyType.IsAssignableFrom(obj.GetType()).Should().BeTrue();
+            }
+        }
+
     }
 }

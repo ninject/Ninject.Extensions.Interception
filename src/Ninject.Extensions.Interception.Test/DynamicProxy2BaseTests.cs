@@ -14,28 +14,6 @@ namespace Ninject.Extensions.Interception
     public class DynamicProxy2BaseTests : DynamicProxy2InterceptionContext
     {
         [Fact]
-        public void SelfBoundTypesDeclaringMethodInterceptorsAreProxied()
-        {
-            using (var kernel = CreateDefaultInterceptionKernel())
-            {
-                kernel.Bind<ObjectWithMethodInterceptor>().ToSelf();
-                var obj = kernel.Get<ObjectWithMethodInterceptor>();
-                obj.Should().NotBeNull();
-                var baseTypes = new List<Type>();
-                Type type = obj.GetType();
-                while (type != typeof(object))
-                {
-                    baseTypes.Add(type);
-                    Type[] interfaces = type.GetInterfaces();
-                    baseTypes.AddRange(interfaces);
-                    type = type.BaseType;
-                }
-
-                typeof(IProxyTargetAccessor).IsAssignableFrom(obj.GetType()).Should().BeTrue();
-            }
-        }
-
-        [Fact]
         public void SelfBoundTypesDeclaringMethodInterceptorsAreIntercepted()
         {
             using (var kernel = CreateDefaultInterceptionKernel())
