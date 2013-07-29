@@ -240,5 +240,21 @@ namespace Ninject.Extensions.Interception
                 CountInterceptor.Count.Should().Be(1);
             }
         }
+
+        [Fact]
+        public void SelfBoundTypesDeclaringInterceptorsOnGenericMethodsAreIntercepted()
+        {
+            using (var kernel = CreateDefaultInterceptionKernel())
+            {
+                kernel.Bind<ObjectWithGenericMethod>().ToSelf();
+                var obj = kernel.Get<ObjectWithGenericMethod>();
+
+                FlagInterceptor.Reset();
+                string result = obj.ConvertGeneric("", 42);
+
+                result.Should().Be("42");
+                FlagInterceptor.WasCalled.Should().BeTrue();
+            }
+        }
     }
 }
