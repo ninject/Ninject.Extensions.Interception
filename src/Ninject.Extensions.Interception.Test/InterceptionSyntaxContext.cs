@@ -136,5 +136,22 @@ namespace Ninject.Extensions.Interception
                 FlagInterceptor.WasCalled.Should().BeTrue();
             }
         }
+
+        [Fact]
+        public void SingletonTests()
+        {
+            using (var kernel = CreateDefaultInterceptionKernel())
+            {
+                kernel.Bind<RequestsConstructorInjection>().ToSelf().InSingletonScope();
+                // This is just here to trigger proxying, but we won't intercept any calls
+                kernel.Intercept(request => true).With<FlagInterceptor>();
+
+                var obj = kernel.Get<RequestsConstructorInjection>();
+
+                obj.Should().NotBeNull();
+                this.ProxyType.IsAssignableFrom(obj.GetType()).Should().BeTrue();
+                obj.Child.Should().NotBeNull();
+            }
+        }
     }
 }

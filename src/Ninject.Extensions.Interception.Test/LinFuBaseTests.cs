@@ -45,23 +45,6 @@ namespace Ninject.Extensions.Interception
         }
 
         [Fact]
-        public void SingletonTests()
-        {
-            using (var kernel = CreateDefaultInterceptionKernel())
-            {
-                kernel.Bind<RequestsConstructorInjection>().ToSelf().InSingletonScope();
-                // This is just here to trigger proxying, but we won't intercept any calls
-                kernel.Intercept(request => true).With<FlagInterceptor>();
-
-                var obj = kernel.Get<RequestsConstructorInjection>();
-
-                obj.Should().NotBeNull();
-                typeof(IProxy).IsAssignableFrom(obj.GetType()).Should().BeTrue();
-                obj.Child.Should().NotBeNull();
-            }
-        }
-
-        [Fact]
         public void SinsgletonTests()
         {
             using (var kernel = CreateDefaultInterceptionKernel())
