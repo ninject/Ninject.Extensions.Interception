@@ -117,5 +117,24 @@ namespace Ninject.Extensions.Interception
             }
         }
 
+        [Fact]
+        public void ServiceBoundTypesDeclaringInterceptorsOnGenericMethodsAreIntercepted()
+        {
+            using (StandardKernel kernel = CreateDefaultInterceptionKernel())
+            {
+                kernel.Bind<IGenericMethod>().To<ObjectWithGenericMethod>();
+                var obj = kernel.Get<IGenericMethod>();
+
+                obj.Should().NotBeNull();
+                this.ProxyType.IsAssignableFrom(obj.GetType()).Should().BeTrue();
+
+                FlagInterceptor.Reset();
+
+                string result = obj.ConvertGeneric("", 42);
+
+                result.Should().Be("42");
+                FlagInterceptor.WasCalled.Should().BeTrue();
+            }
+        }
     }
 }

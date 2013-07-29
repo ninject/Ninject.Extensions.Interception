@@ -27,25 +27,6 @@ namespace Ninject.Extensions.Interception
                 FlagInterceptor.WasCalled.Should().BeTrue();
             }
         }
-        
-        [Fact]
-        public void ServiceBoundTypesDeclaringInterceptorsOnGenericMethodsAreIntercepted()
-        {
-            using (var kernel = CreateDefaultInterceptionKernel())
-            {
-                kernel.Bind<IGenericMethod>().To<ObjectWithGenericMethod>();
-                var obj = kernel.Get<IGenericMethod>();
-                obj.Should().NotBeNull();
-                typeof(IProxy).IsAssignableFrom(obj.GetType()).Should().BeTrue();
-
-                FlagInterceptor.Reset();
-
-                string result = obj.ConvertGeneric("", 42);
-
-                result.Should().Be("42");
-                FlagInterceptor.WasCalled.Should().BeTrue();
-            }
-        }
 
         [Fact]
         public void SelfBoundTypesThatAreProxiedReceiveConstructorInjections()
