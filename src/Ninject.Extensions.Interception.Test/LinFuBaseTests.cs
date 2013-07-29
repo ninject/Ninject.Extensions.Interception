@@ -27,22 +27,6 @@ namespace Ninject.Extensions.Interception
                 FlagInterceptor.WasCalled.Should().BeTrue();
             }
         }
-
-        [Fact]
-        public void SelfBoundTypesThatAreProxiedReceiveConstructorInjections()
-        {
-            using (var kernel = CreateDefaultInterceptionKernel())
-            {
-                kernel.Bind<RequestsConstructorInjection>().ToSelf();
-                // This is just here to trigger proxying, but we won't intercept any calls
-                kernel.Intercept( ( request ) => true ).With<FlagInterceptor>();
-
-                var obj = kernel.Get<RequestsConstructorInjection>();
-
-                typeof(IProxy).IsAssignableFrom(obj.GetType()).Should().BeTrue();
-                obj.Child.Should().NotBeNull();
-            }
-        }
     }
 }
 #endif
