@@ -4,6 +4,8 @@ namespace Ninject.Extensions.Interception
 
     using Ninject.Extensions.Interception.Fakes;
     using Ninject.Extensions.Interception.Infrastructure.Language;
+    using Ninject.Extensions.Interception.Interceptors;
+
     using Xunit;
     
     public abstract class PropertyInterceptionContext<TInterceptionModule> :
@@ -107,6 +109,27 @@ namespace Ninject.Extensions.Interception
                 testString.Should().Be("empty");
                 obj.MyProperty.Should().Be("start");
                 testString.Should().Be("start");
+            }
+        }
+
+
+        [Fact]
+        public void NoneVirtualPropertyIntercepted_WhenResolveByInterface_ThenInterceptabe()
+        {
+            using (var kernel = CreateDefaultInterceptionKernel())
+            {
+                CountInterceptor.Reset();
+
+                const bool OriginalValue = true;
+                kernel.Bind<IFoo>().To<NoneVirtualFooImplementation>();
+                kernel.Intercept(ctx => ctx.Request.Service == typeof(IFoo)).With<CountInterceptor>();
+                var obj = kernel.Get<IFoo>();
+
+                obj.TestProperty = OriginalValue;
+                var value = obj.TestProperty;
+
+                CountInterceptor.Count.Should().Be(1);
+                value.Should().Be(OriginalValue);
             }
         }
     }
