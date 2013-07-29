@@ -97,5 +97,25 @@ namespace Ninject.Extensions.Interception
             }
         }
 
+        [Fact]
+        public void ServiceBoundTypesDeclaringMethodInterceptorsAreIntercepted()
+        {
+            using (var kernel = CreateDefaultInterceptionKernel())
+            {
+                kernel.Bind<IFoo>().To<ObjectWithMethodInterceptor>();
+                var obj = kernel.Get<IFoo>();
+
+                obj.Should().NotBeNull();
+                this.ProxyType.IsAssignableFrom(obj.GetType()).Should().BeTrue();
+
+                CountInterceptor.Reset();
+
+                obj.Foo();
+                obj.Bar();
+
+                CountInterceptor.Count.Should().Be(1);
+            }
+        }
+
     }
 }
