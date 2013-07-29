@@ -256,5 +256,16 @@ namespace Ninject.Extensions.Interception
                 FlagInterceptor.WasCalled.Should().BeTrue();
             }
         }
+
+        [Fact]
+        public void SelfBoundTypesDeclaringMethodInterceptorsCanBeReleased()
+        {
+            using (var kernel = CreateDefaultInterceptionKernel())
+            {
+                kernel.Bind<ObjectWithMethodInterceptor>().ToSelf();
+                var obj = kernel.Get<ObjectWithMethodInterceptor>();
+                obj.Should().NotBeNull();
+            }
+        }
     }
 }

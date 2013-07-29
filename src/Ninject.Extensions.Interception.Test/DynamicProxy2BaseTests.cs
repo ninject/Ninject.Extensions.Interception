@@ -36,17 +36,6 @@ namespace Ninject.Extensions.Interception
         }
 
         [Fact]
-        public void SelfBoundTypesDeclaringMethodInterceptorsCanBeReleased()
-        {
-            using (var kernel = CreateDefaultInterceptionKernel())
-            {
-                kernel.Bind<ObjectWithMethodInterceptor>().ToSelf();
-                var obj = kernel.Get<ObjectWithMethodInterceptor>();
-                obj.Should().NotBeNull();
-            }
-        }
-
-        [Fact]
         public void ClassesWithMultiplePropertiesWithTheSameNameCanBeInjected()
         {
             using (var kernel = CreateDefaultInterceptionKernel())
