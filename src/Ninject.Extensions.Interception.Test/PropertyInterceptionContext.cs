@@ -132,5 +132,25 @@ namespace Ninject.Extensions.Interception
                 value.Should().Be(OriginalValue);
             }
         }
+
+        [Fact]
+        public void SelfBoundTypesDeclaringPropertyInterceptorsAreIntercepted()
+        {
+            using (var kernel = CreateDefaultInterceptionKernel())
+            {
+                kernel.Bind<ObjectWithMethodInterceptor>().ToSelf();
+                var obj = kernel.Get<ObjectWithMethodInterceptor>();
+
+                CountInterceptor.Reset();
+
+                var value = obj.TestProperty;
+                obj.TestProperty = value;
+                CountInterceptor.Count.Should().Be(0);
+
+                var value2 = obj.TestProperty2;
+                obj.TestProperty2 = value2;
+                CountInterceptor.Count.Should().Be(1);
+            }
+        }
     }
 }
