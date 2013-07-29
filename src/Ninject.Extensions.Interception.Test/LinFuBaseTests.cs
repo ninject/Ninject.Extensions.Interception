@@ -43,23 +43,6 @@ namespace Ninject.Extensions.Interception
                 obj.Child.Should().NotBeNull();
             }
         }
-
-        [Fact]
-        public void SinsgletonTests()
-        {
-            using (var kernel = CreateDefaultInterceptionKernel())
-            {
-                kernel.Bind<RequestsConstructorInjection>().ToSelf().InSingletonScope().Intercept().With<FlagInterceptor>();
-                var obj = kernel.Get<RequestsConstructorInjection>();
-
-                obj.Should().NotBeNull();
-                typeof(IProxy).IsAssignableFrom(obj.GetType()).Should().BeTrue();
-                FlagInterceptor.Reset();
-
-                obj.Child.Should().NotBeNull();
-                FlagInterceptor.WasCalled.Should().BeTrue();
-            }
-        }
     }
 }
 #endif
