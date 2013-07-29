@@ -198,20 +198,5 @@ namespace Ninject.Extensions.Interception
                 obj.Child.Should().NotBeNull();
             }
         }
-
-        [Fact]
-        public void NoneVirtualFunctionIntercepted_WhenResolveByInterface_ThenInterceptabe()
-        {
-            using (var kernel = CreateDefaultInterceptionKernel())
-            {
-                CountInterceptor.Reset();
-
-                kernel.Bind<IFoo>().To<NoneVirtualFooImplementation>().Intercept().With<CountInterceptor>();
-                var obj = kernel.Get<IFoo>();
-                obj.Foo();
-
-                CountInterceptor.Count.Should().Be(1);
-            }
-        }
     }
 }
