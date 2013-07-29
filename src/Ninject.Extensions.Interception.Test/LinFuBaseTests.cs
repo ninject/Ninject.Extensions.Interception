@@ -27,19 +27,7 @@ namespace Ninject.Extensions.Interception
                 FlagInterceptor.WasCalled.Should().BeTrue();
             }
         }
-
-        [Fact]
-        public void ServiceBoundTypesDeclaringMethodInterceptorsAreProxied()
-        {
-            using (var kernel = CreateDefaultInterceptionKernel())
-            {
-                kernel.Bind<IFoo>().To<ObjectWithMethodInterceptor>();
-                var obj = kernel.Get<IFoo>();
-                obj.Should().NotBeNull();
-                typeof(IProxy).IsAssignableFrom(obj.GetType()).Should().BeTrue();
-            }
-        }
-
+        
         [Fact]
         public void ServiceBoundTypesDeclaringMethodInterceptorsAreIntercepted()
         {

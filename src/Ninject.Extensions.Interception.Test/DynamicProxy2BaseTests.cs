@@ -14,19 +14,6 @@ namespace Ninject.Extensions.Interception
     public class DynamicProxy2BaseTests : DynamicProxy2InterceptionContext
     {
         [Fact]
-        public void ServiceBoundTypesDeclaringMethodInterceptorsAreProxied()
-        {
-            using (var kernel = CreateDefaultInterceptionKernel())
-            {
-                kernel.Bind<IFoo>().To<ObjectWithMethodInterceptor>();
-                var obj = kernel.Get<IFoo>();
-
-                obj.Should().NotBeNull();
-                typeof(IProxyTargetAccessor).IsAssignableFrom(obj.GetType()).Should().BeTrue();
-            }
-        }
-
-        [Fact]
         public void ServiceBoundTypesDeclaringMethodInterceptorsAreIntercepted()
         {
             using (var kernel = CreateDefaultInterceptionKernel())
