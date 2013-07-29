@@ -152,5 +152,16 @@ namespace Ninject.Extensions.Interception
                 CountInterceptor.Count.Should().Be(1);
             }
         }
+
+        [Fact]
+        public void ClassesWithMultiplePropertiesWithTheSameNameCanBeInjected()
+        {
+            using (var kernel = CreateDefaultInterceptionKernel())
+            {
+                kernel.Bind<SameNameProperty>().ToSelf();
+                var obj = kernel.Get<SameNameProperty>();
+                obj.Should().NotBeNull();
+            }
+        }
     }
 }

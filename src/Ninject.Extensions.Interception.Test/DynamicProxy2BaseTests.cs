@@ -36,17 +36,6 @@ namespace Ninject.Extensions.Interception
         }
 
         [Fact]
-        public void ClassesWithMultiplePropertiesWithTheSameNameCanBeInjected()
-        {
-            using (var kernel = CreateDefaultInterceptionKernel())
-            {
-                kernel.Bind<SameNameProperty>().ToSelf();
-                var obj = kernel.Get<SameNameProperty>();
-                obj.Should().NotBeNull();
-            }
-        }
-
-        [Fact]
         public void SelfBoundTypesDeclaringMethodInterceptorsAreIntercepted()
         {
             using (var kernel = CreateDefaultInterceptionKernel())
