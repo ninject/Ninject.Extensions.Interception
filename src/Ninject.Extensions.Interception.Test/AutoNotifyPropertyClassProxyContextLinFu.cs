@@ -6,9 +6,16 @@ namespace Ninject.Extensions.Interception
     using LinFu.DynamicProxy; 
     using Xunit;
     
-    public class AutoNotifyPropertyClassProxyContextLinFu :
-        AutoNotifyPropertyClassProxyContext<LinFuModule>
+    public class AutoNotifyPropertyClassProxyContextLinFu : AutoNotifyPropertyClassProxyContext
     {
+        protected override InterceptionModule InterceptionModule
+        {
+            get
+            {
+                return new LinFuModule();
+            }
+        }
+
         [Fact]
         public void WhenAutoNotifyAttributeIsAttachedToAClass_TheObjectIsProxied()
         {

@@ -2,9 +2,7 @@ namespace Ninject.Extensions.Interception
 {
     using System.Collections.Generic;
 
-    public abstract class AutoNotifyPropertyChangedContext<TInterceptionModule> :
-        InterceptionTestContext<TInterceptionModule>
-        where TInterceptionModule : InterceptionModule, new()
+    public abstract class AutoNotifyPropertyChangedContext : InterceptionTestContext
     {
         public AutoNotifyPropertyChangedContext()
         {

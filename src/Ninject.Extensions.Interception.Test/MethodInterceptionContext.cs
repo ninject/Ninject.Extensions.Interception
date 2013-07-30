@@ -8,8 +8,7 @@ namespace Ninject.Extensions.Interception
 
     using Xunit;
     
-    public abstract class MethodInterceptionContext<TInterceptionModule> : InterceptionTestContext<TInterceptionModule>
-        where TInterceptionModule : InterceptionModule, new()
+    public abstract class MethodInterceptionContext : InterceptionTestContext
     {
         protected override StandardKernel CreateDefaultInterceptionKernel()
         {

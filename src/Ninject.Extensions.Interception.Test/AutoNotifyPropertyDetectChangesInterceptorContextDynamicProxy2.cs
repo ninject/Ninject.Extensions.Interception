@@ -1,8 +1,14 @@
 ﻿namespace Ninject.Extensions.Interception
 {
     public class AutoNotifyPropertyDetectChangesInterceptorContextDynamicProxy2 
-        : AutoNotifyPropertyDetectChangesInterceptorContext<DynamicProxyModule>
+        : AutoNotifyPropertyDetectChangesInterceptorContext
     {
-        
+        protected override InterceptionModule InterceptionModule
+        {
+            get
+            {
+                return new DynamicProxyModule();
+            }
+        }        
     }
 }

@@ -14,7 +14,7 @@ namespace Ninject.Extensions.Interception
     
     public class DynamicProxy2ChannelFactoryProxyTest : DynamicProxy2BaseTests
     {
-#if !SILVERLIGHT
+#if !SILVERLIGHT && !MONO
         [Fact]
         public void ProxiesCreatedWithChannelFactoryAreIntercepted()
         {

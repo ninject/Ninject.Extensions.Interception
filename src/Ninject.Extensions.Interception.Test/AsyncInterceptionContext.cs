@@ -7,8 +7,7 @@ namespace Ninject.Extensions.Interception
     using Ninject.Extensions.Interception.Infrastructure.Language;
     using Xunit;
 
-    public abstract class AsyncInterceptionContext<TInterceptionModule> : InterceptionTestContext<TInterceptionModule>
-        where TInterceptionModule : InterceptionModule, new()
+    public abstract class AsyncInterceptionContext : InterceptionTestContext
     {
         [Fact]
         public void AsyncMethodsCanBeIntercepted()

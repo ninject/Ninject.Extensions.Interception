@@ -7,8 +7,16 @@ namespace Ninject.Extensions.Interception
     using Ninject.Extensions.Interception.Infrastructure.Language;
     using Xunit;
     
-    public class PropertyInterceptionContextDynamicProxy2 : PropertyInterceptionContext<DynamicProxyModule>
+    public class PropertyInterceptionContextDynamicProxy2 : PropertyInterceptionContext
     {
+        protected override InterceptionModule InterceptionModule
+        {
+            get
+            {
+                return new DynamicProxyModule();
+            }
+        }
+
         [Fact]
         public void PropertySetInterceptedBefore()
         {

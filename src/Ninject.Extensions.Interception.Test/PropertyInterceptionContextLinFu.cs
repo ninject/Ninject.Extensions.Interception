@@ -7,8 +7,16 @@ namespace Ninject.Extensions.Interception
     using Ninject.Extensions.Interception.Infrastructure.Language;
     using Xunit;
     
-    public class PropertyInterceptionContextLinfFu : PropertyInterceptionContext<LinFuModule>
+    public class PropertyInterceptionContextLinfFu : PropertyInterceptionContext
     {
+        protected override InterceptionModule InterceptionModule
+        {
+            get
+            {
+                return new LinFuModule();
+            }
+        }
+
         [Fact]
         public void PropertySetInterceptedBefore()
         {

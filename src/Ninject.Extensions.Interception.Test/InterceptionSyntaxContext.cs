@@ -9,8 +9,7 @@ namespace Ninject.Extensions.Interception
     using Ninject.Extensions.Interception.Interceptors;
     using Xunit;
     
-    public abstract class InterceptionSyntaxContext<TInterceptionModule> : InterceptionTestContext<TInterceptionModule>
-        where TInterceptionModule : InterceptionModule, new()
+    public abstract class InterceptionSyntaxContext : InterceptionTestContext
     {
         protected abstract Type ProxyType { get; }
 

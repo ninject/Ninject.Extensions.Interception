@@ -5,8 +5,16 @@ namespace Ninject.Extensions.Interception
 
     using LinFu.DynamicProxy;
 
-    public class InterceptionSyntaxContextLinfFu : InterceptionSyntaxContext<LinFuModule>
+    public class InterceptionSyntaxContextLinfFu : InterceptionSyntaxContext
     {
+        protected override InterceptionModule InterceptionModule
+        {
+            get
+            {
+                return new LinFuModule();
+            }
+        }
+
         protected override Type ProxyType
         {
             get

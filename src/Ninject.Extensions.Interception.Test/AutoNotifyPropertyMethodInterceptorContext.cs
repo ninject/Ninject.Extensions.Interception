@@ -5,9 +5,7 @@ namespace Ninject.Extensions.Interception
     using Ninject.Extensions.Interception.Fakes;
     using Xunit;
     
-    public abstract class AutoNotifyPropertyMethodInterceptorContext<TInterceptionModule>
-        : AutoNotifyPropertyChangedContext<TInterceptionModule>
-        where TInterceptionModule : InterceptionModule, new()
+    public abstract class AutoNotifyPropertyMethodInterceptorContext : AutoNotifyPropertyChangedContext
     {
         public AutoNotifyPropertyMethodInterceptorContext()
         {

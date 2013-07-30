@@ -5,8 +5,7 @@ namespace Ninject.Extensions.Interception
     using Ninject.Extensions.Interception.Interceptors;
     using Xunit;
     
-    public abstract class InterceptionTestContext<TInterceptionModule>
-        where TInterceptionModule : InterceptionModule, new()
+    public abstract class InterceptionTestContext
     {
         protected virtual INinjectSettings GetSettings()
         {
@@ -19,7 +18,9 @@ namespace Ninject.Extensions.Interception
 
         protected virtual StandardKernel CreateDefaultInterceptionKernel()
         {
-            return new StandardKernel( this.GetSettings(), new TInterceptionModule() );
+            return new StandardKernel( this.GetSettings(), InterceptionModule );
         }
+
+        protected abstract InterceptionModule InterceptionModule { get; }
     }
 }

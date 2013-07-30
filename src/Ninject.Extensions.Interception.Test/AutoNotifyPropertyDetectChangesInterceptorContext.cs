@@ -5,9 +5,7 @@
     using Ninject.Extensions.Interception.Fakes;
     using Xunit;
     
-    public abstract class AutoNotifyPropertyDetectChangesInterceptorContext<TInterceptionModule>
-        : AutoNotifyPropertyChangedContext<TInterceptionModule>
-        where TInterceptionModule : InterceptionModule, new()
+    public abstract class AutoNotifyPropertyDetectChangesInterceptorContext : AutoNotifyPropertyChangedContext
     {
         public AutoNotifyPropertyDetectChangesInterceptorContext()
         {
