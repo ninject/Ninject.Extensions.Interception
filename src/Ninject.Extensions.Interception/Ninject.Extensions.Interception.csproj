@@ -71,6 +71,7 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="ActionInterceptor.cs" />
+    <Compile Include="AsyncInterceptor.cs" />
     <Compile Include="Attributes\DoNotInterceptAttribute.cs" />
     <Compile Include="Attributes\InterceptAttributeBase.cs" />
     <Compile Include="Attributes\InternalInterceptAttribute.cs" />

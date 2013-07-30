@@ -2,6 +2,7 @@ Version 3.0.2
 -------------
 - Bugfix: Don't crash if there's a special method that is less than 4 characters long, some obvuscated code has this
 - Bugfix: #15: Methods from derived classes can be invoked without getting an Interface not found exception
+- Added: AsyncInterceptor as base class for interceptors that support interception of async methods.
 
 Version 3.0.0.0
 ---------------
