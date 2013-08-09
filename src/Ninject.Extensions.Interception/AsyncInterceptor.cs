@@ -1,3 +1,24 @@
+//-------------------------------------------------------------------------------
+// <copyright file="AsyncInterceptor.cs" company="Ninject Project Contributors">
+//   Copyright (c) 2009-2013 Ninject Project Contributors
+//   Authors: Remo Gloor (remo.gloor@gmail.com)
+//           
+//   Dual-licensed under the Apache License, Version 2.0, and the Microsoft Public License (Ms-PL).
+//   you may not use this file except in compliance with one of the Licenses.
+//   You may obtain a copy of the License at
+//
+//       http://www.apache.org/licenses/LICENSE-2.0
+//   or
+//       http://www.microsoft.com/opensource/licenses.mspx
+//
+//   Unless required by applicable law or agreed to in writing, software
+//   distributed under the License is distributed on an "AS IS" BASIS,
+//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//   See the License for the specific language governing permissions and
+//   limitations under the License.
+// </copyright>
+//-------------------------------------------------------------------------------
+
 #if !NET_35 && !SILVERLIGHT
 namespace Ninject.Extensions.Interception
 {
@@ -10,7 +31,7 @@ namespace Ninject.Extensions.Interception
     /// </summary>
     public abstract class AsyncInterceptor : IInterceptor
     {
-        private static MethodInfo continueWithMethodInfo = typeof(AsyncInterceptor).GetMethod("ContinueWith", BindingFlags.Instance | BindingFlags.NonPublic);
+        private static MethodInfo startTaskMethodInfo = typeof(AsyncInterceptor).GetMethod("InterceptTaskWithResult", BindingFlags.Instance | BindingFlags.NonPublic);
 
         /// <summary>
         /// Intercepts the specified invocation.
@@ -18,47 +39,62 @@ namespace Ninject.Extensions.Interception
         /// <param name="invocation">The invocation to intercept.</param>
         public void Intercept(IInvocation invocation)
         {
+            var returnType = invocation.Request.Method.ReturnType;
+            if (returnType == typeof(Task))
+            {
+                this.InterceptTask(invocation);
+                return;
+            }
+
+            if (returnType.IsGenericType && returnType.GetGenericTypeDefinition() == typeof(Task<>))
+            {
+                var resultType = returnType.GetGenericArguments()[0];
+                var mi = startTaskMethodInfo.MakeGenericMethod(resultType);
+                mi.Invoke(this, new object[] { invocation });
+                return;
+            }
+
             this.BeforeInvoke(invocation);
             invocation.Proceed();
-            this.AfterInvokeInternal(invocation);
+            this.AfterInvoke(invocation);
+        }
+
+        private void InterceptTask(IInvocation invocation)
+        {
+            var invocationClone = invocation.Clone();
+            invocation.ReturnValue = Task.Factory
+                .StartNew(() => this.BeforeInvoke(invocation))
+                .ContinueWith(t =>
+                    {
+                        invocationClone.Proceed();
+                        return invocationClone.ReturnValue as Task;
+                    }).Unwrap()
+                .ContinueWith(t =>
+                            {
+                                this.AfterInvoke(invocation);
+                                this.AfterInvoke(invocation, t);
+                            });
         }
         
-        private void AfterInvokeInternal(IInvocation invocation)
+        private void InterceptTaskWithResult<TResult>(IInvocation invocation)
         {
-            var task = invocation.ReturnValue as Task;
-            if (task != null)
-            {
-                var taskType = task.GetType();
-                if (taskType.IsGenericType)
-                {
-                    var resultType = task.GetType().GetGenericArguments()[0];
-                    var mi = continueWithMethodInfo.MakeGenericMethod(resultType);
-                    invocation.ReturnValue = mi.Invoke(this, new object[] { task, invocation });
-                    return;
-                }
-
-                invocation.ReturnValue = task.ContinueWith(
-                    t =>
-                        {
-                            invocation.ReturnValue = null;
-                            this.AfterInvoke(invocation);
-                            this.AfterInvoke(invocation, t);
-                        });
-            }
-        }
-
-        private Task<TResult> ContinueWith<TResult>(Task<TResult> task, IInvocation invocation)
-        {
-            return task.ContinueWith(
-                t =>
+            var invocationClone = invocation.Clone();
+            invocation.ReturnValue = Task.Factory
+                .StartNew(() => this.BeforeInvoke(invocation))
+                .ContinueWith(t =>
                     {
-                        invocation.ReturnValue = t.Result;
-                        this.AfterInvoke(invocation);
-                        this.AfterInvoke(invocation, t);
-                        return (TResult)invocation.ReturnValue;
-                    });
+                        invocationClone.Proceed();
+                        return invocationClone.ReturnValue as Task<TResult>;
+                    }).Unwrap()
+                .ContinueWith(t =>
+                        {
+                            invocationClone.ReturnValue = t.Result;
+                            this.AfterInvoke(invocationClone);
+                            this.AfterInvoke(invocationClone, t);
+                            return (TResult)invocationClone.ReturnValue;
+                        });
         }
-
+        
         /// <summary>
         /// Takes some action before the invocation proceeds.
         /// </summary>

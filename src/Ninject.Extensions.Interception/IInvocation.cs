@@ -44,5 +44,11 @@ namespace Ninject.Extensions.Interception
         /// if there are no more interceptors, calling the target method.
         /// </summary>
         void Proceed();
+
+        /// <summary>
+        /// Creates a clone of the invocation
+        /// </summary>
+        /// <returns>The clone</returns>
+        IInvocation Clone();
     }
 }

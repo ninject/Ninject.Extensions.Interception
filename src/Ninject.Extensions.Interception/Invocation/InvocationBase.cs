@@ -80,6 +80,15 @@ namespace Ninject.Extensions.Interception.Invocation
             }
         }
 
+        /// <summary>
+        /// Creates a clone of the invocation
+        /// </summary>
+        /// <returns>The clone</returns>
+        public IInvocation Clone()
+        {
+            return (IInvocation)this.MemberwiseClone();
+        }
+
         #endregion
 
         /// <summary>
