@@ -23,6 +23,8 @@ using Ninject.Infrastructure;
 
 namespace Ninject.Extensions.Interception.ProxyFactory
 {
+    using System;
+
     /// <summary>
     /// An implementation of a proxy factory that uses a LinFu <see cref="LinFu.DynamicProxy.ProxyFactory"/> 
     /// to create wrapped instances.
@@ -71,7 +73,12 @@ namespace Ninject.Extensions.Interception.ProxyFactory
         public override void Wrap( IContext context, InstanceReference reference )
         {
             var wrapper = new LinFuWrapper( Kernel, context, reference.Instance );
-            reference.Instance = _factory.CreateProxy(context.Request.Service, wrapper);
+
+            Type targetType = context.Request.Service;
+
+            reference.Instance = targetType.IsInterface 
+                ? this._factory.CreateProxy(typeof(object), wrapper, context.Request.Service) 
+                : this._factory.CreateProxy(context.Request.Service, wrapper);
         }
 
         /// <summary>

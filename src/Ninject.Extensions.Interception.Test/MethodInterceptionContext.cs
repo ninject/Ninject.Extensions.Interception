@@ -241,6 +241,56 @@ namespace Ninject.Extensions.Interception
         }
 
         [Fact]
+        public void ToString_WhenUsingInterfaceProxy_IsInterceptable()
+        {
+            using (var kernel = CreateDefaultInterceptionKernel())
+            {
+                CountInterceptor.Reset();
+
+                kernel.Bind<IFoo>().To<NoneVirtualFooImplementation>().Intercept().With<CountInterceptor>();
+                var obj = kernel.Get<IFoo>();
+                var result = obj.ToString();
+
+                result.Should().Be("42");
+                CountInterceptor.Count.Should().Be(1);
+            }
+        }
+
+        [Fact]
+        public void GetHashCode_WhenUsingInterfaceProxy_IsInterceptable()
+        {
+            using (var kernel = CreateDefaultInterceptionKernel())
+            {
+                CountInterceptor.Reset();
+
+                kernel.Bind<IFoo>().To<NoneVirtualFooImplementation>().Intercept().With<CountInterceptor>();
+                var obj = kernel.Get<IFoo>();
+                var result = obj.GetHashCode();
+
+                result.Should().Be(42);
+                CountInterceptor.Count.Should().Be(1);
+            }
+        }
+
+        [Fact]
+        public void Equals_WhenUsingInterfaceProxy_IsInterceptable()
+        {
+            using (var kernel = CreateDefaultInterceptionKernel())
+            {
+                CountInterceptor.Reset();
+
+                kernel.Bind<IFoo>().To<NoneVirtualFooImplementation>().Intercept().With<CountInterceptor>();
+                var obj = kernel.Get<IFoo>();
+                var result42 = obj.Equals(42);
+                var result41 = obj.Equals(41);
+
+                result42.Should().BeTrue();
+                result41.Should().BeFalse();
+                CountInterceptor.Count.Should().Be(2);
+            }
+        }
+        
+        [Fact]
         public void SelfBoundTypesDeclaringInterceptorsOnGenericMethodsAreIntercepted()
         {
             using (var kernel = CreateDefaultInterceptionKernel())

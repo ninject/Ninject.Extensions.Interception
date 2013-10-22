@@ -20,5 +20,20 @@
         public void Baz()
         {
         }
+
+        public override string ToString()
+        {
+            return "42";
+        }
+
+        public override int GetHashCode()
+        {
+            return 42;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return (int)obj == 42;
+        }
     }
 }

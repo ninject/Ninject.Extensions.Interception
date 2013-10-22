@@ -26,6 +26,8 @@ using Ninject.Parameters;
 
 namespace Ninject.Extensions.Interception.ProxyFactory
 {
+    using Castle.DynamicProxy.Serialization;
+
     /// <summary>
     /// An implementation of a proxy factory that uses a Castle DynamicProxy2 <see cref="ProxyGenerator"/>
     /// and <see cref="DynamicProxyWrapper"/>s to create wrapped instances.
@@ -35,6 +37,7 @@ namespace Ninject.Extensions.Interception.ProxyFactory
         #region Fields
 
         private static readonly ProxyGenerationOptions ProxyOptions = ProxyGenerationOptions.Default;
+        private static readonly ProxyGenerationOptions InterfaceProxyOptions = ProxyGenerationOptions.Default;
         private ProxyGenerator generator = new ProxyGenerator();
 
         #endregion
@@ -46,6 +49,7 @@ namespace Ninject.Extensions.Interception.ProxyFactory
         public DynamicProxyProxyFactory( IKernel kernel )
         {
             Kernel = kernel;
+            InterfaceProxyOptions.BaseTypeForInterfaceProxy = typeof(ProxyBase);
         }
 
         #region IHaveKernel Members
@@ -94,7 +98,7 @@ namespace Ninject.Extensions.Interception.ProxyFactory
 
             if (targetType.IsInterface)
             {
-                reference.Instance = this.generator.CreateInterfaceProxyWithoutTarget(targetType, ProxyOptions, wrapper);
+                reference.Instance = this.generator.CreateInterfaceProxyWithoutTarget(targetType, InterfaceProxyOptions, wrapper);
             }
             else
             {
