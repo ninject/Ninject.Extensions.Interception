@@ -80,6 +80,19 @@ namespace Ninject.Extensions.Interception.Infrastructure.Language
         }
 
         /// <summary>
+        /// Indicates that instances associated with this binding will be proxied.
+        /// </summary>
+        /// <typeparam name="T">The type associated with this binding.</typeparam>
+        /// <param name="bindingSyntax">The binding syntax target.</param>
+        /// <returns>
+        ///     An <see cref="IAdviceTargetSyntax"/> instance which allows the attachment of an <see cref="IInterceptor"/>.
+        /// </returns>
+        public static IAdviceTargetSyntax Intercept<T>(this IBindingOnSyntax<T> bindingSyntax)
+        {
+            return DoIntercept(bindingSyntax);
+        }
+
+        /// <summary>
         /// Constructs the interception advice to trigger according to the binding used.
         /// </summary>
         /// <param name="binding">The binding.</param>
