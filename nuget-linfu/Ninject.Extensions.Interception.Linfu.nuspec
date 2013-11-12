@@ -14,7 +14,7 @@
 	<projectUrl>http://www.ninject.org</projectUrl>
     <dependencies>
       <dependency id="Ninject.Extensions.Interception" version="" />
-      <dependency id="LinFu.DynamicProxy" version="[1.0.5, 2.0.0)" />
+      <dependency id="LinFu.DynamicProxy.OfficialRelease" version="[1.0.5, 2.0.0)" />
     </dependencies> 
   </metadata>
 </package>
