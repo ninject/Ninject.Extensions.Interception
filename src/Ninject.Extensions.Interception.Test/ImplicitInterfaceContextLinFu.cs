@@ -1,4 +1,5 @@
-﻿namespace Ninject.Extensions.Interception
+﻿#if !SILVERLIGHT
+namespace Ninject.Extensions.Interception
 {
     public class ImplicitInterfaceContextLinFu : ImplicitInterfaceContext
     {
@@ -15,3 +16,4 @@
         }
     }
 }
+#endif
