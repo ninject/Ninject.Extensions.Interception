@@ -96,6 +96,7 @@
     <Compile Include="AutoNotifyPropertyMethodInterceptorContext.cs" />
     <Compile Include="AutoNotifyPropertyMethodInterceptorContextDynamicProxy2.cs" />
     <Compile Include="AutoNotifyPropertyMethodInterceptorContextLinFu.cs" />
+    <Compile Include="DynamicProxy2ImplicitInterfaceTest.cs" />
     <Compile Include="Fakes\Base.cs" />
     <Compile Include="Fakes\Derived.cs" />
     <Compile Include="DynamicProxy2BaseTests.cs" />
@@ -106,6 +107,7 @@
     <Compile Include="Fakes\DummyProxyFactory.cs" />
     <Compile Include="Fakes\FooWithNoDefaultConstructor.cs" />
     <Compile Include="Fakes\IFooService.cs" />
+    <Compile Include="Fakes\ImplicitDerived.cs" />
     <Compile Include="Fakes\RefAndOutValues.cs" />
     <Compile Include="Fakes\SameNameProperty.cs" />
     <Compile Include="Fakes\SameNamePropertyBase.cs" />
