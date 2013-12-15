@@ -98,14 +98,14 @@ namespace Ninject.Extensions.Interception.ProxyFactory
 
             if (targetType.IsInterface)
             {
-                reference.Instance = this.generator.CreateInterfaceProxyWithoutTarget(targetType, InterfaceProxyOptions, wrapper);
+                reference.Instance = this.generator.CreateInterfaceProxyWithoutTarget(targetType, reference.Instance.GetType().GetInterfaces(), InterfaceProxyOptions, wrapper);
             }
             else
             {
                 object[] parameters = context.Parameters.OfType<ConstructorArgument>()
                     .Select(parameter => parameter.GetValue(context, null))
                     .ToArray();
-                reference.Instance = this.generator.CreateClassProxy(targetType, ProxyOptions, parameters, wrapper);
+                reference.Instance = this.generator.CreateClassProxy(targetType, reference.Instance.GetType().GetInterfaces().Where(i => i != typeof(IAutoNotifyPropertyChanged)).ToArray(), ProxyOptions, parameters, wrapper);
             }
         }
 

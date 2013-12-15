@@ -24,6 +24,8 @@ using Ninject.Infrastructure;
 namespace Ninject.Extensions.Interception.ProxyFactory
 {
     using System;
+    using System.Linq;
+    using System.Reflection;
 
     /// <summary>
     /// An implementation of a proxy factory that uses a LinFu <see cref="LinFu.DynamicProxy.ProxyFactory"/> 
@@ -76,9 +78,10 @@ namespace Ninject.Extensions.Interception.ProxyFactory
 
             Type targetType = context.Request.Service;
 
-            reference.Instance = targetType.IsInterface 
-                ? this._factory.CreateProxy(typeof(object), wrapper, context.Request.Service) 
-                : this._factory.CreateProxy(context.Request.Service, wrapper);
+            reference.Instance = targetType.IsInterface
+                ? this._factory.CreateProxy(typeof(object), wrapper, new[] { targetType }.Concat(reference.Instance.GetType().GetInterfaces()).ToArray())
+                : targetType.GetMethods( BindingFlags.Instance | BindingFlags.Public |BindingFlags.DeclaredOnly).Any() && targetType.GetMethods(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public).All(mi => !mi.IsSpecialName && mi.IsVirtual)
+                ? this._factory.CreateProxy(targetType, wrapper, reference.Instance.GetType().GetInterfaces()) : this._factory.CreateProxy(targetType, wrapper); ;
         }
 
         /// <summary>
