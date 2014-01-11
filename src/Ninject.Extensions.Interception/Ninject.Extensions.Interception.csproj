@@ -83,6 +83,7 @@
     <Compile Include="IAutoNotifyPropertyChangedInterceptor.cs" />
     <Compile Include="Infrastructure\Language\ExtensionsForIBindingSyntax.cs" />
     <Compile Include="Infrastructure\Language\ExtensionsForMethodInfo.cs" />
+    <Compile Include="Parameters\AdditionalInterfaces.cs" />
     <Compile Include="Planning\Strategies\AutoNotifyInterceptorRegistrationStrategy.cs" />
     <Compile Include="AutoNotifyPropertyChangedInterceptor.cs" />
     <Compile Include="Attributes\NotifyOfChangesAttribute.cs" />

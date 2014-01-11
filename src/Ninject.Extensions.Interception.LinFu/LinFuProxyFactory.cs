@@ -14,8 +14,12 @@
 
 #region Using Directives
 
+using System;
+using System.Linq;
+using System.Reflection;
 using LinFu.DynamicProxy;
 using Ninject.Activation;
+using Ninject.Extensions.Interception.Parameters;
 using Ninject.Extensions.Interception.Wrapper;
 using Ninject.Infrastructure;
 
@@ -23,9 +27,6 @@ using Ninject.Infrastructure;
 
 namespace Ninject.Extensions.Interception.ProxyFactory
 {
-    using System;
-    using System.Linq;
-    using System.Reflection;
 
     /// <summary>
     /// An implementation of a proxy factory that uses a LinFu <see cref="LinFu.DynamicProxy.ProxyFactory"/> 
@@ -78,10 +79,11 @@ namespace Ninject.Extensions.Interception.ProxyFactory
 
             Type targetType = context.Request.Service;
 
+            Type[] additionalInterfaces = context.Parameters.OfType<AdditionalInterfaces>().Any() ? context.Parameters.OfType<AdditionalInterfaces>().First().GetValue(context, null) as Type[] : new Type[] { };
+
             reference.Instance = targetType.IsInterface
-                ? this._factory.CreateProxy(typeof(object), wrapper, new[] { targetType }.Concat(reference.Instance.GetType().GetInterfaces()).ToArray())
-                : targetType.GetMethods( BindingFlags.Instance | BindingFlags.Public |BindingFlags.DeclaredOnly).Any() && targetType.GetMethods(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public).All(mi => !mi.IsSpecialName && mi.IsVirtual)
-                ? this._factory.CreateProxy(targetType, wrapper, reference.Instance.GetType().GetInterfaces()) : this._factory.CreateProxy(targetType, wrapper); ;
+                ? this._factory.CreateProxy(typeof(object), wrapper, new[] { targetType }.Concat(additionalInterfaces).ToArray())
+                : this._factory.CreateProxy(targetType, wrapper, additionalInterfaces);
         }
 
         /// <summary>

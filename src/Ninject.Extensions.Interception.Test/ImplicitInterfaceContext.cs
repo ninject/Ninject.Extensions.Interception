@@ -2,6 +2,7 @@
 {
     using FluentAssertions;
     using Ninject.Extensions.Interception.Fakes;
+    using Ninject.Extensions.Interception.Infrastructure.Language;
     using Xunit;
 
     public abstract class ImplicitInterfaceContext : InterceptionTestContext
@@ -11,7 +12,7 @@
         {
             using (StandardKernel kernel = CreateDefaultInterceptionKernel())
             {
-                kernel.Bind<IBase>().To<ImplicitDerived>();
+                kernel.Bind<IBase>().To<ImplicitDerived>().Intercept(typeof(IDerived));
 
                 var obj = kernel.Get<IBase>();
 
@@ -25,7 +26,7 @@
         {
             using (StandardKernel kernel = CreateDefaultInterceptionKernel())
             {
-                kernel.Bind<Base>().To<ImplicitDerived>();
+                kernel.Bind<Base>().To<ImplicitDerived>().Intercept(typeof(IDerived));
 
                 var obj = kernel.Get<Base>();
 
@@ -39,7 +40,7 @@
         {
             using (StandardKernel kernel = CreateDefaultInterceptionKernel())
             {
-                kernel.Bind<VirtualBase>().To<ImplicitDerivedFromVirtualBase>();
+                kernel.Bind<VirtualBase>().To<ImplicitDerivedFromVirtualBase>().Intercept(typeof(IDerived));
 
                 var obj = kernel.Get<VirtualBase>();
 
