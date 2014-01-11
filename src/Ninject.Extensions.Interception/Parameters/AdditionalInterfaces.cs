@@ -1,5 +1,5 @@
 ﻿//-------------------------------------------------------------------------------
-// <copyright file="TypeMatchingConstructorArgument.cs" company="Ninject Project Contributors">
+// <copyright file="AdditionalInterfaces.cs" company="Ninject Project Contributors">
 //   Copyright (c) 2009-2013 Ninject Project Contributors
 //   Authors: Scott Xu (scott-xu@msn.com)
 //           
