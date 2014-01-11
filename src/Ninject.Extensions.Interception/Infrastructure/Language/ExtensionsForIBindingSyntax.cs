@@ -48,6 +48,7 @@ namespace Ninject.Extensions.Interception.Infrastructure.Language
         /// </summary>
         /// <typeparam name="T">The type associated with this binding.</typeparam>
         /// <param name="bindingSyntax">The binding syntax target.</param>
+        /// <param name="additionalInterfaces">The additional interfaces for the proxy.</param>
         /// <returns>
         ///     An <see cref="IAdviceTargetSyntax"/> instance which allows the attachment of an <see cref="IInterceptor"/>.
         /// </returns>
@@ -61,6 +62,7 @@ namespace Ninject.Extensions.Interception.Infrastructure.Language
         /// </summary>
         /// <typeparam name="T">The type associated with this binding.</typeparam>
         /// <param name="bindingSyntax">The binding syntax target.</param>
+        /// <param name="additionalInterfaces">The additional interfaces for the proxy.</param>
         /// <returns>
         ///     An <see cref="IAdviceTargetSyntax"/> instance which allows the attachment of an <see cref="IInterceptor"/>.
         /// </returns>
@@ -74,6 +76,7 @@ namespace Ninject.Extensions.Interception.Infrastructure.Language
         /// </summary>
         /// <typeparam name="T">The type associated with this binding.</typeparam>
         /// <param name="bindingSyntax">The binding syntax target.</param>
+        /// <param name="additionalInterfaces">The additional interfaces for the proxy.</param>
         /// <returns>
         ///     An <see cref="IAdviceTargetSyntax"/> instance which allows the attachment of an <see cref="IInterceptor"/>.
         /// </returns>
@@ -87,6 +90,7 @@ namespace Ninject.Extensions.Interception.Infrastructure.Language
         /// </summary>
         /// <typeparam name="T">The type associated with this binding.</typeparam>
         /// <param name="bindingSyntax">The binding syntax target.</param>
+        /// <param name="additionalInterfaces">The additional interfaces for the proxy.</param>
         /// <returns>
         ///     An <see cref="IAdviceTargetSyntax"/> instance which allows the attachment of an <see cref="IInterceptor"/>.
         /// </returns>
@@ -99,6 +103,7 @@ namespace Ninject.Extensions.Interception.Infrastructure.Language
         /// Constructs the interception advice to trigger according to the binding used.
         /// </summary>
         /// <param name="binding">The binding.</param>
+        /// <param name="additionalInterfaces">The additional interfaces for the proxy.</param>
         /// <returns>
         ///     An <see cref="IAdviceTargetSyntax"/> instance which allows the attachment of an <see cref="IInterceptor"/>.
         /// </returns>
