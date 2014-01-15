@@ -316,5 +316,33 @@ namespace Ninject.Extensions.Interception
                 obj.Should().NotBeNull();
             }
         }
+
+        [Fact]
+        public void NamedBindingsUseTheCorrectInterceptor()
+        {
+            using (var kernel = CreateDefaultInterceptionKernel())
+            {
+                CountInterceptor.Reset();
+                FlagInterceptor.Reset();
+
+                kernel.Bind<IFoo>().To<FooImpl>().Named("1");
+                kernel.Bind<IFoo>().To<FooWithNoDefaultConstructor>().Named("2");
+                kernel.Bind<IMock>().To<SimpleObject>();
+
+                kernel.Intercept(ctx => ctx.Plan.Type == typeof(FooImpl)).With<CountInterceptor>();
+                kernel.Intercept(ctx => ctx.Plan.Type == typeof(FooWithNoDefaultConstructor)).With<FlagInterceptor>();
+
+                var foo1 = kernel.Get<IFoo>(ctx => ctx.Name == "1");
+                var foo2 = kernel.Get<IFoo>(ctx => ctx.Name == "2");
+
+                foo1.Foo();
+                CountInterceptor.Count.Should().Be(1);
+                FlagInterceptor.WasCalled.Should().BeFalse();
+
+                foo2.Foo();
+                CountInterceptor.Count.Should().Be(1);
+                FlagInterceptor.WasCalled.Should().BeTrue();
+            }
+        }
     }
 }

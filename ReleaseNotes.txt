@@ -1,5 +1,6 @@
 Version 3.0.2
 -------------
+- Bugfix: #26: Wrong interceptor is chosen when multiple bindings exist for same service type
 - Bugfix: Don't crash if there's a special method that is less than 4 characters long, some obvuscated code has this
 - Bugfix: #15: Methods from derived classes can be invoked without getting an Interface not found exception
 - Added: Interface Proxies allow to intercept "System.Object" methods (ToString, GetHashCode, Equals) now.

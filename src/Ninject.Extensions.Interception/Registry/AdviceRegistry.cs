@@ -24,7 +24,10 @@ using Ninject.Extensions.Interception.Request;
 
 namespace Ninject.Extensions.Interception.Registry
 {
+    using System.Collections;
+
     using Ninject.Activation;
+    using Ninject.Infrastructure;
 
     /// <summary>
     /// Collects advice defined for methods.
@@ -33,8 +36,8 @@ namespace Ninject.Extensions.Interception.Registry
     {
         private readonly List<IAdvice> _advice = new List<IAdvice>();
 
-        private readonly Dictionary<RuntimeMethodHandle, List<IInterceptor>> _cache =
-            new Dictionary<RuntimeMethodHandle, List<IInterceptor>>();
+        private readonly Dictionary<RuntimeMethodHandle, IDictionary<RuntimeTypeHandle, List<IInterceptor>>> _cache =
+            new Dictionary<RuntimeMethodHandle, IDictionary<RuntimeTypeHandle, List<IInterceptor>>>();
 
         #region IAdviceRegistry Members
 
@@ -97,26 +100,39 @@ namespace Ninject.Extensions.Interception.Registry
         /// <returns>A collection of interceptors, ordered by the priority in which they should be invoked.</returns>
         public ICollection<IInterceptor> GetInterceptors( IProxyRequest request )
         {
-            RuntimeMethodHandle handle = request.Method.GetMethodHandle();
+            RuntimeMethodHandle methodHandle = request.Method.GetMethodHandle();
+            RuntimeTypeHandle typeHandle = request.Target.GetType().TypeHandle;
+
             ICollection<IInterceptor> interceptors = null;
+            IDictionary<RuntimeTypeHandle, List<IInterceptor>> methodCache = null;
 
-            lock ( _cache )
+            lock (_cache)
             {
-                if ( _cache.ContainsKey( handle ) )
+                if (!_cache.TryGetValue(methodHandle, out methodCache))
                 {
-                    return _cache[handle];
-                }
-
-                if ( HasDynamicAdvice && !_cache.ContainsKey( handle ) )
-                {
-                    interceptors = GetInterceptorsForRequest( request );
-                    // If there are no dynamic interceptors defined, we can safely cache the results.
-                    // Otherwise, we have to evaluate and re-activate the interceptors each time.
-                    _cache.Add( handle, interceptors.ToList() );
+                    methodCache = new Dictionary<RuntimeTypeHandle, List<IInterceptor>>();
+                    _cache.Add(methodHandle, methodCache);
                 }
             }
 
-            return interceptors ?? GetInterceptorsForRequest( request );
+            lock (methodCache)
+            {
+                if (methodCache.ContainsKey(typeHandle))
+                {
+                    return methodCache[typeHandle];
+                }
+
+                if (HasDynamicAdvice)
+                {
+                    interceptors = GetInterceptorsForRequest(request);
+                    // If there are no dynamic interceptors defined, we can safely cache the results.
+                    // Otherwise, we have to evaluate and re-activate the interceptors each time.
+
+                    methodCache.Add(typeHandle, interceptors.ToList());
+                }
+
+                return interceptors ?? GetInterceptorsForRequest(request);
+            }
         }
 
         #endregion
