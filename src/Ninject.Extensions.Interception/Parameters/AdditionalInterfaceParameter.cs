@@ -35,7 +35,7 @@ namespace Ninject.Extensions.Interception.Parameters
         /// <summary>
         /// Initializes a new instance of the <see cref="AdditionalInterfaceParameter"/> class.
         /// </summary>
-        /// <param name="additionalInterface">The additional interface types</param>
+        /// <param name="additionalInterface">The type of additional interface</param>
         public AdditionalInterfaceParameter(Type additionalInterface)
         {
             this.additionalInterface = additionalInterface;
@@ -46,7 +46,7 @@ namespace Ninject.Extensions.Interception.Parameters
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="target">The target</param>
-        /// <returns>The interface array</returns>
+        /// <returns>The interface type</returns>
         public object GetValue(IContext context, ITarget target)
         {
             return this.additionalInterface;
