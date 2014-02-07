@@ -16,7 +16,12 @@ namespace Ninject.Extensions.Interception
 
         public override void InterceptedClassObjectCanImplementImplicitInterfaces()
         {
-            Assert.Throws<TypeLoadException>(() => base.InterceptedClassObjectCanImplementImplicitInterfaces());
+            Assert.Throws<TypeLoadException>(() => this.BaseInterceptedClassObjectCanImplementImplicitInterfaces());
+        }
+
+        private void BaseInterceptedClassObjectCanImplementImplicitInterfaces()
+        {
+            base.InterceptedClassObjectCanImplementImplicitInterfaces();
         }
     }
 }
