@@ -40,11 +40,10 @@ namespace Ninject.Extensions.Interception.Injection
         {
             lock ( _methodInjectors )
             {
-                if ( method.IsGenericMethodDefinition )
+                /*if ( method.IsGenericMethodDefinition )
                 {
-                    throw new InvalidOperationException(
-                        /*ExceptionFormatter.CannotCreateInjectorFromGenericTypeDefinition(method)*/ );
-                }
+                    throw new InvalidOperationException();
+                }*/
 
                 if ( _methodInjectors.ContainsKey( method ) )
                 {
