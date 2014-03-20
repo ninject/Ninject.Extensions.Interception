@@ -5,7 +5,8 @@ Version 3.0.2
 - Bugfix: #15: Methods from derived classes can be invoked without getting an Interface not found exception
 - Added: Interface Proxies allow to intercept "System.Object" methods (ToString, GetHashCode, Equals) now.
 - Added: AsyncInterceptor as base class for interceptors that support interception of async methods.
-- Added: Intercept<T>() can now be used after OnActivation() Syntax.
+- Added: `Intercept<T>()` can now be used after `OnActivation()` syntax.
+- Added: Proxies can now implement additional interfaces. `Intercept<T>()` is now `Intercept<T>(params Type[] additionalInterfaces)`.
 
 Version 3.0.0.0
 ---------------
