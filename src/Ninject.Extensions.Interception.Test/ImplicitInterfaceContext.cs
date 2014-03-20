@@ -8,7 +8,7 @@
     public abstract class ImplicitInterfaceContext : InterceptionTestContext
     {
         [Fact]
-        public void InterceptedInterfaceObjectShouldKeepImplementingImplicitInterfaces()
+        public void InterceptedInterfaceObjectCanImplementImplicitInterfaces()
         {
             using (StandardKernel kernel = CreateDefaultInterceptionKernel())
             {
@@ -22,7 +22,7 @@
         }
 
         [Fact]
-        public virtual void InterceptedClassObjectShouldKeepImplementingImplicitInterfaces()
+        public virtual void InterceptedClassObjectCanImplementImplicitInterfaces()
         {
             using (StandardKernel kernel = CreateDefaultInterceptionKernel())
             {
@@ -36,7 +36,7 @@
         }
 
         [Fact]
-        public void InterceptedVirutalClassObjectShouldKeepImplementingImplicitInterfaces()
+        public void InterceptedVirutalClassObjectCanImplementImplicitInterfaces()
         {
             using (StandardKernel kernel = CreateDefaultInterceptionKernel())
             {

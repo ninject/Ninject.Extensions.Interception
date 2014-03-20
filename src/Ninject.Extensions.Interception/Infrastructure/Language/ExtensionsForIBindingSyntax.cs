@@ -38,9 +38,9 @@ namespace Ninject.Extensions.Interception.Infrastructure.Language
         /// <returns>
         ///     An <see cref="IAdviceTargetSyntax"/> instance which allows the attachment of an <see cref="IInterceptor"/>.
         /// </returns>
-        public static IAdviceTargetSyntax Intercept<T>(this IBindingWhenInNamedWithOrOnSyntax<T> bindingSyntax, params Type[] additionalInterfaces)
+        public static IAdviceTargetSyntax Intercept<T>( this IBindingWhenInNamedWithOrOnSyntax<T> bindingSyntax, params Type[] additionalInterfaces )
         {
-            return DoIntercept(bindingSyntax, additionalInterfaces);
+            return DoIntercept( bindingSyntax, additionalInterfaces );
         }
 
         /// <summary>
@@ -52,9 +52,9 @@ namespace Ninject.Extensions.Interception.Infrastructure.Language
         /// <returns>
         ///     An <see cref="IAdviceTargetSyntax"/> instance which allows the attachment of an <see cref="IInterceptor"/>.
         /// </returns>
-        public static IAdviceTargetSyntax Intercept<T>(this IBindingInNamedWithOrOnSyntax<T> bindingSyntax, params Type[] additionalInterfaces)
+        public static IAdviceTargetSyntax Intercept<T>( this IBindingInNamedWithOrOnSyntax<T> bindingSyntax, params Type[] additionalInterfaces )
         {
-            return DoIntercept(bindingSyntax, additionalInterfaces);
+            return DoIntercept( bindingSyntax, additionalInterfaces );
         }
 
         /// <summary>
@@ -66,9 +66,9 @@ namespace Ninject.Extensions.Interception.Infrastructure.Language
         /// <returns>
         ///     An <see cref="IAdviceTargetSyntax"/> instance which allows the attachment of an <see cref="IInterceptor"/>.
         /// </returns>
-        public static IAdviceTargetSyntax Intercept<T>(this IBindingNamedWithOrOnSyntax<T> bindingSyntax, params Type[] additionalInterfaces)
+        public static IAdviceTargetSyntax Intercept<T>( this IBindingNamedWithOrOnSyntax<T> bindingSyntax, params Type[] additionalInterfaces )
         {
-            return DoIntercept(bindingSyntax, additionalInterfaces);
+            return DoIntercept( bindingSyntax, additionalInterfaces );
         }
 
         /// <summary>
@@ -80,9 +80,9 @@ namespace Ninject.Extensions.Interception.Infrastructure.Language
         /// <returns>
         ///     An <see cref="IAdviceTargetSyntax"/> instance which allows the attachment of an <see cref="IInterceptor"/>.
         /// </returns>
-        public static IAdviceTargetSyntax Intercept<T>(this IBindingWithOrOnSyntax<T> bindingSyntax, params Type[] additionalInterfaces)
+        public static IAdviceTargetSyntax Intercept<T>( this IBindingWithOrOnSyntax<T> bindingSyntax, params Type[] additionalInterfaces )
         {
-            return DoIntercept(bindingSyntax, additionalInterfaces);
+            return DoIntercept( bindingSyntax, additionalInterfaces );
         }
 
         /// <summary>
@@ -94,9 +94,9 @@ namespace Ninject.Extensions.Interception.Infrastructure.Language
         /// <returns>
         ///     An <see cref="IAdviceTargetSyntax"/> instance which allows the attachment of an <see cref="IInterceptor"/>.
         /// </returns>
-        public static IAdviceTargetSyntax Intercept<T>(this IBindingOnSyntax<T> bindingSyntax, params Type[] additionalInterfaces)
+        public static IAdviceTargetSyntax Intercept<T>( this IBindingOnSyntax<T> bindingSyntax, params Type[] additionalInterfaces )
         {
-            return DoIntercept(bindingSyntax, additionalInterfaces);
+            return DoIntercept( bindingSyntax, additionalInterfaces );
         }
 
         /// <summary>
@@ -107,15 +107,20 @@ namespace Ninject.Extensions.Interception.Infrastructure.Language
         /// <returns>
         ///     An <see cref="IAdviceTargetSyntax"/> instance which allows the attachment of an <see cref="IInterceptor"/>.
         /// </returns>
-        private static IAdviceTargetSyntax DoIntercept(IBindingSyntax binding, Type[] additionalInterfaces)
+        private static IAdviceTargetSyntax DoIntercept( IBindingSyntax binding, Type[] additionalInterfaces )
         {
             IKernel kernel = binding.Kernel;
-            binding.BindingConfiguration.Parameters.Add(new AdditionalInterfaces(additionalInterfaces));
+
+            foreach (var additionalInterface in additionalInterfaces)
+            {
+                binding.BindingConfiguration.Parameters.Add( new AdditionalInterfaceParameter( additionalInterface ) );
+            }
+
             IAdvice advice = kernel.Components.Get<IAdviceFactory>()
                 .Create(context => ReferenceEquals(binding.BindingConfiguration, context.Binding.BindingConfiguration));
-            kernel.Components.Get<IAdviceRegistry>().Register(advice);
+            kernel.Components.Get<IAdviceRegistry>().Register( advice );
 
-            return new AdviceBuilder(advice);
+            return new AdviceBuilder( advice );
         }
     }
 }

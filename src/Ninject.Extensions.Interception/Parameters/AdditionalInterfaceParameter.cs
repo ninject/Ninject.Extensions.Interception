@@ -1,5 +1,5 @@
 ﻿//-------------------------------------------------------------------------------
-// <copyright file="AdditionalInterfaces.cs" company="Ninject Project Contributors">
+// <copyright file="AdditionalInterfaceParameter.cs" company="Ninject Project Contributors">
 //   Copyright (c) 2009-2013 Ninject Project Contributors
 //   Authors: Scott Xu (scott-xu@msn.com)
 //           
@@ -28,17 +28,17 @@ namespace Ninject.Extensions.Interception.Parameters
     /// <summary>
     /// Additional Interfaces
     /// </summary>
-    public class AdditionalInterfaces : IParameter
+    public class AdditionalInterfaceParameter : IParameter
     {
-        private Type[] additionalInterfaces;
+        private Type additionalInterface;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AdditionalInterfaces"/> class.
+        /// Initializes a new instance of the <see cref="AdditionalInterfaceParameter"/> class.
         /// </summary>
-        /// <param name="additionalInterfaces">The additional interface types</param>
-        public AdditionalInterfaces(Type[] additionalInterfaces)
+        /// <param name="additionalInterface">The type of additional interface</param>
+        public AdditionalInterfaceParameter(Type additionalInterface)
         {
-            this.additionalInterfaces = additionalInterfaces;
+            this.additionalInterface = additionalInterface;
         }
 
         /// <summary>
@@ -46,10 +46,10 @@ namespace Ninject.Extensions.Interception.Parameters
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="target">The target</param>
-        /// <returns>The interface array</returns>
+        /// <returns>The interface type</returns>
         public object GetValue(IContext context, ITarget target)
         {
-            return this.additionalInterfaces;
+            return this.additionalInterface;
         }
 
         /// <summary>

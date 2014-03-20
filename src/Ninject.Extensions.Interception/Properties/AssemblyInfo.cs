@@ -6,7 +6,7 @@ using System.Security;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 
-[assembly: AssemblyTitle("Interception extesnion for Ninject")]
+[assembly: AssemblyTitle("Interception extension for Ninject")]
 [assembly: AssemblyDescription("Adds support for interception to Ninject")]
 [assembly : AssemblyConfiguration( "" )]
 [assembly : AssemblyTrademark( "" )]

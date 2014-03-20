@@ -79,7 +79,7 @@ namespace Ninject.Extensions.Interception.ProxyFactory
 
             Type targetType = context.Request.Service;
 
-            Type[] additionalInterfaces = context.Parameters.OfType<AdditionalInterfaces>().Any() ? context.Parameters.OfType<AdditionalInterfaces>().First().GetValue(context, null) as Type[] : new Type[] { };
+            Type[] additionalInterfaces = context.Parameters.OfType<AdditionalInterfaceParameter>().Select(ai => (Type)ai.GetValue(context, null)).ToArray();
 
             reference.Instance = targetType.IsInterface
                 ? this._factory.CreateProxy(typeof(object), wrapper, new[] { targetType }.Concat(additionalInterfaces).ToArray())
