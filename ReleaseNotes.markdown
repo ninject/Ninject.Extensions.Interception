@@ -1,4 +1,4 @@
-Version 3.0.2
+Version 3.2.0
 -------------
 - Bugfix: #26: Wrong interceptor is chosen when multiple bindings exist for same service type
 - Bugfix: Don't crash if there's a special method that is less than 4 characters long, some obvuscated code has this
