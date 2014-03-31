@@ -38,62 +38,6 @@ namespace Ninject.Extensions.Interception.Infrastructure.Language
         /// <returns>
         ///     An <see cref="IAdviceTargetSyntax"/> instance which allows the attachment of an <see cref="IInterceptor"/>.
         /// </returns>
-        public static IAdviceTargetSyntax Intercept<T>( this IBindingWhenInNamedWithOrOnSyntax<T> bindingSyntax, params Type[] additionalInterfaces )
-        {
-            return DoIntercept( bindingSyntax, additionalInterfaces );
-        }
-
-        /// <summary>
-        /// Indicates that instances associated with this binding will be proxied.
-        /// </summary>
-        /// <typeparam name="T">The type associated with this binding.</typeparam>
-        /// <param name="bindingSyntax">The binding syntax target.</param>
-        /// <param name="additionalInterfaces">The additional interfaces for the proxy.</param>
-        /// <returns>
-        ///     An <see cref="IAdviceTargetSyntax"/> instance which allows the attachment of an <see cref="IInterceptor"/>.
-        /// </returns>
-        public static IAdviceTargetSyntax Intercept<T>( this IBindingInNamedWithOrOnSyntax<T> bindingSyntax, params Type[] additionalInterfaces )
-        {
-            return DoIntercept( bindingSyntax, additionalInterfaces );
-        }
-
-        /// <summary>
-        /// Indicates that instances associated with this binding will be proxied.
-        /// </summary>
-        /// <typeparam name="T">The type associated with this binding.</typeparam>
-        /// <param name="bindingSyntax">The binding syntax target.</param>
-        /// <param name="additionalInterfaces">The additional interfaces for the proxy.</param>
-        /// <returns>
-        ///     An <see cref="IAdviceTargetSyntax"/> instance which allows the attachment of an <see cref="IInterceptor"/>.
-        /// </returns>
-        public static IAdviceTargetSyntax Intercept<T>( this IBindingNamedWithOrOnSyntax<T> bindingSyntax, params Type[] additionalInterfaces )
-        {
-            return DoIntercept( bindingSyntax, additionalInterfaces );
-        }
-
-        /// <summary>
-        /// Indicates that instances associated with this binding will be proxied.
-        /// </summary>
-        /// <typeparam name="T">The type associated with this binding.</typeparam>
-        /// <param name="bindingSyntax">The binding syntax target.</param>
-        /// <param name="additionalInterfaces">The additional interfaces for the proxy.</param>
-        /// <returns>
-        ///     An <see cref="IAdviceTargetSyntax"/> instance which allows the attachment of an <see cref="IInterceptor"/>.
-        /// </returns>
-        public static IAdviceTargetSyntax Intercept<T>( this IBindingWithOrOnSyntax<T> bindingSyntax, params Type[] additionalInterfaces )
-        {
-            return DoIntercept( bindingSyntax, additionalInterfaces );
-        }
-
-        /// <summary>
-        /// Indicates that instances associated with this binding will be proxied.
-        /// </summary>
-        /// <typeparam name="T">The type associated with this binding.</typeparam>
-        /// <param name="bindingSyntax">The binding syntax target.</param>
-        /// <param name="additionalInterfaces">The additional interfaces for the proxy.</param>
-        /// <returns>
-        ///     An <see cref="IAdviceTargetSyntax"/> instance which allows the attachment of an <see cref="IInterceptor"/>.
-        /// </returns>
         public static IAdviceTargetSyntax Intercept<T>( this IBindingOnSyntax<T> bindingSyntax, params Type[] additionalInterfaces )
         {
             return DoIntercept( bindingSyntax, additionalInterfaces );
