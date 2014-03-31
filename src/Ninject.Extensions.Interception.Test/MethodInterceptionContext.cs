@@ -173,7 +173,7 @@ namespace Ninject.Extensions.Interception
                 CountInterceptor.Count.Should().Be(1);
 
                 obj.DoDerived();
-                CountInterceptor.Count.Should().Be(1);
+                CountInterceptor.Count.Should().Be(2);
             }
         }
 

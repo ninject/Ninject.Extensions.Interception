@@ -127,7 +127,7 @@ namespace Ninject.Extensions.Interception
                 obj.TestProperty = OriginalValue;
                 var value = obj.TestProperty;
 
-                CountInterceptor.Count.Should().Be(1);
+                CountInterceptor.Count.Should().Be(2);
                 value.Should().Be(OriginalValue);
             }
         }
@@ -148,7 +148,7 @@ namespace Ninject.Extensions.Interception
 
                 var value2 = obj.TestProperty2;
                 obj.TestProperty2 = value2;
-                CountInterceptor.Count.Should().Be(1);
+                CountInterceptor.Count.Should().Be(2);
             }
         }
 
