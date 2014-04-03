@@ -27,6 +27,13 @@ namespace Ninject.Extensions.Interception.Activation.Strategies
     /// </summary>
     public class ProxyActivationStrategy : ActivationStrategy
     {
+        private readonly IAdviceRegistry adviceRegistry;
+
+        public ProxyActivationStrategy(IAdviceRegistry adviceRegistry)
+        {
+            this.adviceRegistry = adviceRegistry;
+        }
+
         /// <summary>
         /// Activates the specified context.
         /// </summary>
@@ -61,9 +68,9 @@ namespace Ninject.Extensions.Interception.Activation.Strategies
         /// </summary>
         /// <param name="context">The activation context.</param>
         /// <returns><see langword="True"/> if the instance should be proxied, otherwise <see langword="false"/>.</returns>
-        protected virtual bool ShouldProxy( IContext context )
+        protected virtual bool ShouldProxy(IContext context)
         {
-            if (context.Kernel.Components.Get<IAdviceRegistry>().HasAdvice(context))
+            if (this.adviceRegistry.HasAdvice(context))
             {
                 return true;
             }
