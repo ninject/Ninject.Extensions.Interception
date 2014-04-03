@@ -28,10 +28,12 @@ namespace Ninject.Extensions.Interception.Activation.Strategies
     public class ProxyActivationStrategy : ActivationStrategy
     {
         private readonly IAdviceRegistry adviceRegistry;
+        private readonly IProxyFactory proxyFactory;
 
-        public ProxyActivationStrategy(IAdviceRegistry adviceRegistry)
+        public ProxyActivationStrategy(IAdviceRegistry adviceRegistry, IProxyFactory proxyFactory)
         {
             this.adviceRegistry = adviceRegistry;
+            this.proxyFactory = proxyFactory;
         }
 
         /// <summary>
@@ -43,8 +45,9 @@ namespace Ninject.Extensions.Interception.Activation.Strategies
         {
             if ( ShouldProxy( context ) )
             {
-                context.Kernel.Components.Get<IProxyFactory>().Wrap( context, reference );
+                this.proxyFactory.Wrap( context, reference );
             }
+
             base.Activate( context, reference );
         }
 
