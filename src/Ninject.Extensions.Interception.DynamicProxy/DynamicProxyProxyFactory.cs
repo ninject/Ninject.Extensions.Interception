@@ -89,7 +89,8 @@ namespace Ninject.Extensions.Interception.ProxyFactory
         /// <param name="reference">The <see cref="InstanceReference"/> to wrap.</param>
         public override void Wrap(IContext context, InstanceReference reference)
         {
-            if (reference.Instance is IInterceptor)
+            if (reference.Instance is IInterceptor ||
+                reference.Instance is IProxyTargetAccessor)
             {
                 return;
             }
