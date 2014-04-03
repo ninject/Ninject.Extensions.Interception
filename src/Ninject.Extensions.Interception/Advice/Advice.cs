@@ -13,6 +13,7 @@
 #region Using Directives
 
 using System;
+using System.Linq;
 using System.Reflection;
 using Ninject.Extensions.Interception.Infrastructure;
 using Ninject.Extensions.Interception.Infrastructure.Language;
@@ -52,6 +53,18 @@ namespace Ninject.Extensions.Interception.Advice
             Condition = condition;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Advice"/> class.
+        /// </summary>
+        /// <param name="condition">The condition that will be evaluated for a request.</param>
+        /// <param name="methodPredicate">The condition that will be evaluated to determine if the method call shall be intercepted.</param>
+        public Advice(Predicate<IContext> condition, Predicate<MethodInfo> methodPredicate)
+        {
+            Ensure.ArgumentNotNull( condition, "condition" );
+            Condition = condition;
+            MethodPredicate = methodPredicate;
+        }
+        
         #region IAdvice Members
 
         /// <summary>
@@ -60,9 +73,15 @@ namespace Ninject.Extensions.Interception.Advice
         public RuntimeMethodHandle MethodHandle { get; set; }
 
         /// <summary>
-        /// Gets or sets the condition for the advice, if it is dynamic.
+        /// Gets or sets the condition for the advice that
+        /// will be evaluated to determine if the method call shall be intercepted.
         /// </summary>
         public Predicate<IContext> Condition { get; set; }
+
+        /// <summary>
+        /// Gets or sets the condition for the advice, if it is dynamic.
+        /// </summary>
+        public Predicate<MethodInfo> MethodPredicate { get; set; }
 
         /// <summary>
         /// Gets or sets the interceptor associated with the advice, if applicable.
@@ -95,9 +114,41 @@ namespace Ninject.Extensions.Interception.Advice
         /// <returns><see langword="True"/> if the request matches, otherwise <see langword="false"/>.</returns>
         public bool Matches( IProxyRequest request )
         {
-            return IsDynamic ? Condition( request.Context ) : MatchesMethod(request);
+            return IsDynamic
+                ? Condition(request.Context) && MatchesMethodPredicate(request)
+                : MatchesMethod(request);
         }
 
+        /// <summary>
+        /// Evaluates if the method predicate matches.
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <returns><c>true</c> if the predicate matches, <c>false</c> otherwise.</returns>
+        private bool MatchesMethodPredicate(IProxyRequest request)
+        {
+            if (MethodPredicate == null)
+            {
+                return true;
+            }
+
+            var requestMethod = request.Method;
+            if (requestMethod.DeclaringType != request.Target.GetType())
+            {
+                requestMethod = request.Target.GetType()
+                    .GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
+                    .SingleOrDefault(mi => mi.Name == requestMethod.Name && 
+                                     mi.GetParameters().SequenceEqual(requestMethod.GetParameters())) 
+                    ?? requestMethod;
+            }
+
+            return this.MethodPredicate(requestMethod);
+        }
+
+        /// <summary>
+        /// Evaluates if the method the method of this advice.
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
         private bool MatchesMethod(IProxyRequest request)
         {
             if (request.Method.GetMethodHandle().Equals(this.MethodHandle))
@@ -107,10 +158,10 @@ namespace Ninject.Extensions.Interception.Advice
 
             var requestType = request.Method.DeclaringType;
             if (requestType == null || 
-                !requestType.IsInterface ||
+                !requestType.IsInterface || 
                 !requestType.IsAssignableFrom(this.method.DeclaringType))
             {
-                return false;
+                return this.method.GetBaseDefinition().GetMethodHandle() == request.Method.GetMethodHandle();
             }
 
             var map = this.method.DeclaringType.GetInterfaceMap(request.Method.DeclaringType);

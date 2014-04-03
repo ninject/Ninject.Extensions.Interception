@@ -165,7 +165,7 @@ namespace Ninject.Extensions.Interception.Planning.Strategies
         {
             MethodInfo[] methods = type.GetMethods( DefaultBindingFlags );
 
-            return methods.Where( ShouldIntercept );
+            return methods.Where(ShouldIntercept);
         }
 
         /// <summary>
@@ -178,8 +178,7 @@ namespace Ninject.Extensions.Interception.Planning.Strategies
         protected virtual bool ShouldIntercept( MethodInfo methodInfo )
         {
             return methodInfo.DeclaringType != typeof (object) &&
-                   !methodInfo.IsPrivate;// &&
-                   //!methodInfo.IsFinal;
+                   !methodInfo.IsPrivate;
         }
     }
 }

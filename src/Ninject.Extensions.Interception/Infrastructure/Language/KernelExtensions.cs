@@ -41,20 +41,21 @@ namespace Ninject.Extensions.Interception.Infrastructure.Language
         /// <param name="kernel">The kernel.</param>
         /// <param name="predicate">The predicate to run when determining whether to intercept the method call.</param>
         /// <returns></returns>
-        public static IAdviceTargetSyntax Intercept( this IKernel kernel, Predicate<IContext> predicate )
+        public static IAdviceTargetSyntax Intercept(this IKernel kernel, Predicate<IContext> predicate )
         {
-            return DoIntercept( kernel, predicate );
+            return Intercept(kernel, predicate, mi => mi.DeclaringType != typeof(object));
         }
 
         /// <summary>
         /// Begins a dynamic interception definition.
         /// </summary>
-        /// <param name="kernel"></param>
+        /// <param name="kernel">The kernel.</param>
         /// <param name="condition">The condition to evaluate to determine if a request should be intercepted.</param>
+        /// <param name="methodPredicate">The condition to evaluate if a method call should be intercepted.</param>
         /// <returns>An advice builder.</returns>
-        private static IAdviceTargetSyntax DoIntercept( IKernel kernel, Predicate<IContext> condition )
+        public static IAdviceTargetSyntax Intercept(this IKernel kernel, Predicate<IContext> condition, Predicate<MethodInfo> methodPredicate)
         {
-            IAdvice advice = kernel.Components.Get<IAdviceFactory>().Create( condition );
+            IAdvice advice = kernel.Components.Get<IAdviceFactory>().Create(condition, methodPredicate);
             kernel.Components.Get<IAdviceRegistry>().Register( advice );
 
             return CreateAdviceBuilder( advice );

@@ -36,10 +36,19 @@ namespace Ninject.Extensions.Interception.Advice
         IAdvice Create( MethodInfo method );
 
         /// <summary>
-        /// Creates dynamic advice for the specified condition.
+        /// Creates a dynamic advice for the specified condition.
         /// </summary>
         /// <param name="condition">The condition that will be evaluated to determine whether a request should be intercepted.</param>
         /// <returns>The created advice.</returns>
         IAdvice Create( Predicate<IContext> condition );
+
+        /// <summary>
+        /// Creates a dynamic advice for the specified condition. That will intercept calls to the
+        /// methods matching the method predicate
+        /// </summary>
+        /// <param name="condition">The condition that will be evaluated to determine whether a request should be intercepted.</param>
+        /// <param name="methodPredicate">The condition that will be evaluated to determine whether a call to a method should be intercepted.</param>
+        /// <returns>The created advice.</returns>
+        IAdvice Create(Predicate<IContext> condition, Predicate<MethodInfo> methodPredicate);
     }
 }

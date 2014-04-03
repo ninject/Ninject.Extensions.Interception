@@ -28,8 +28,6 @@ namespace Ninject.Extensions.Interception.Advice
     /// </summary>
     public class AdviceFactory : NinjectComponent, IAdviceFactory
     {
-        #region IAdviceFactory Members
-
         /// <summary>
         /// Creates static advice for the specified method.
         /// </summary>
@@ -50,6 +48,16 @@ namespace Ninject.Extensions.Interception.Advice
             return new Advice( condition );
         }
 
-        #endregion
+        /// <summary>
+        /// Creates a dynamic advice for the specified condition. That will intercept calls to the
+        /// methods matching the method predicate
+        /// </summary>
+        /// <param name="condition">The condition that will be evaluated to determine whether a request should be intercepted.</param>
+        /// <param name="methodPredicate">The condition that will be evaluated to determine whether a call to a method should be intercepted.</param>
+        /// <returns>The created advice.</returns>
+        public IAdvice Create( Predicate<IContext> condition, Predicate<MethodInfo> methodPredicate)
+        {
+            return new Advice( condition, methodPredicate );
+        }
     }
 }

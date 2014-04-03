@@ -148,6 +148,9 @@
     <Compile Include="Fakes\ViewModel.cs" />
     <Compile Include="PropertyInterceptionContextDynamicProxy2.cs" />
     <Compile Include="PropertyInterceptionContextLinFu.cs" />
+    <Compile Include="SystemObjectMethodInterceptionContext.cs" />
+    <Compile Include="SystemObjectMethodInterceptionContextDynamicProxy2.cs" />
+    <Compile Include="SystemObjectMethodInterceptionContextLinFu.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Ninject.Extensions.Interception.DynamicProxy\Ninject.Extensions.Interception.DynamicProxy.csproj">

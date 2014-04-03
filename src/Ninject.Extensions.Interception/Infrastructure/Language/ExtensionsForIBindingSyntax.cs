@@ -13,6 +13,7 @@
 #region Using Directives
 
 using System;
+using System.Reflection;
 using Ninject.Extensions.Interception.Advice;
 using Ninject.Extensions.Interception.Advice.Builders;
 using Ninject.Extensions.Interception.Advice.Syntax;
@@ -40,31 +41,34 @@ namespace Ninject.Extensions.Interception.Infrastructure.Language
         /// </returns>
         public static IAdviceTargetSyntax Intercept<T>( this IBindingOnSyntax<T> bindingSyntax, params Type[] additionalInterfaces )
         {
-            return DoIntercept( bindingSyntax, additionalInterfaces );
+            return Intercept(bindingSyntax, 
+                mi => mi.DeclaringType != typeof(object), 
+                additionalInterfaces);
         }
 
         /// <summary>
-        /// Constructs the interception advice to trigger according to the binding used.
+        /// Indicates that instances associated with this binding will be proxied.
+        /// Only methods that match the specified predicate will be intercepted.
         /// </summary>
-        /// <param name="binding">The binding.</param>
+        /// <typeparam name="T">The type associated with this binding.</typeparam>
+        /// <param name="bindingSyntax">The binding syntax target.</param>
+        /// <param name="methodPredicate">The method predicate that defines if a method shall be intercepted.</param>
         /// <param name="additionalInterfaces">The additional interfaces for the proxy.</param>
-        /// <returns>
-        ///     An <see cref="IAdviceTargetSyntax"/> instance which allows the attachment of an <see cref="IInterceptor"/>.
-        /// </returns>
-        private static IAdviceTargetSyntax DoIntercept( IBindingSyntax binding, Type[] additionalInterfaces )
+        /// <returns>An <see cref="IAdviceTargetSyntax" /> instance which allows the attachment of an <see cref="IInterceptor" />.</returns>
+        public static IAdviceTargetSyntax Intercept<T>(this IBindingOnSyntax<T> bindingSyntax, Predicate<MethodInfo> methodPredicate, params Type[] additionalInterfaces)
         {
-            IKernel kernel = binding.Kernel;
+            IKernel kernel = bindingSyntax.Kernel;
 
             foreach (var additionalInterface in additionalInterfaces)
             {
-                binding.BindingConfiguration.Parameters.Add( new AdditionalInterfaceParameter( additionalInterface ) );
+                bindingSyntax.BindingConfiguration.Parameters.Add(new AdditionalInterfaceParameter(additionalInterface));
             }
 
             IAdvice advice = kernel.Components.Get<IAdviceFactory>()
-                .Create(context => ReferenceEquals(binding.BindingConfiguration, context.Binding.BindingConfiguration));
-            kernel.Components.Get<IAdviceRegistry>().Register( advice );
+                .Create(context => ReferenceEquals(bindingSyntax.BindingConfiguration, context.Binding.BindingConfiguration), methodPredicate);
+            kernel.Components.Get<IAdviceRegistry>().Register(advice);
 
-            return new AdviceBuilder( advice );
+            return new AdviceBuilder(advice);
         }
     }
 }

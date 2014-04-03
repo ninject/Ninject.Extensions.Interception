@@ -279,7 +279,8 @@ namespace Ninject.Extensions.Interception
             {
                 CountInterceptor.Reset();
 
-                kernel.Bind<IFoo>().To<NoneVirtualFooImplementation>().Intercept().With<CountInterceptor>();
+                kernel.Bind<IFoo>().To<NoneVirtualFooImplementation>()
+                    .Intercept(mi => true).With<CountInterceptor>();
                 var obj = kernel.Get<IFoo>();
                 var result42 = obj.Equals(42);
                 var result41 = obj.Equals(41);
