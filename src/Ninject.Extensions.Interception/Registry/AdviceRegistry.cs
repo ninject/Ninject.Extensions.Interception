@@ -122,7 +122,7 @@ namespace Ninject.Extensions.Interception.Registry
                     return methodCache[typeHandle];
                 }
 
-                if (HasDynamicAdvice)
+                if (!HasDynamicAdvice)
                 {
                     interceptors = GetInterceptorsForRequest(request);
                     // If there are no dynamic interceptors defined, we can safely cache the results.
