@@ -30,6 +30,11 @@ namespace Ninject.Extensions.Interception.Activation.Strategies
         private readonly IAdviceRegistry adviceRegistry;
         private readonly IProxyFactory proxyFactory;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ProxyActivationStrategy"/> class.
+        /// </summary>
+        /// <param name="adviceRegistry">The advice registry.</param>
+        /// <param name="proxyFactory">The proxy factory.</param>
         public ProxyActivationStrategy(IAdviceRegistry adviceRegistry, IProxyFactory proxyFactory)
         {
             this.adviceRegistry = adviceRegistry;
