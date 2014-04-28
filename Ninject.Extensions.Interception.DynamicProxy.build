@@ -22,7 +22,9 @@
 		<csc noconfig="true" warnaserror="false" target="library" debug="${build.debug}" optimize="${build.optimize}" define="${build.defines}" 
 		     output="${current.path.build}/DynamicProxy/${product.assembly.DynamicProxy}" 
 			 doc="${current.path.build}/DynamicProxy/${product.name}.DynamicProxy.xml" keyfile="${path.src}/${product.keyfile}">
-			<arg line="/filealign:512" unless="${nant.settings.currentframework == 'mono-2.0'}"/>
+			<arg line="/filealign:512"/>
+      <arg value="-sdk:2" if="${string::contains(build.platform, 'mono-3.5')}"/>
+      <arg value="-sdk:4" if="${string::contains(build.platform, 'mono-4.0')}"/>
 			<sources basedir="${path.src}">
 				<include name="${build.asminfo}"/>
 				<include name="${product.name}.DynamicProxy/**/*.cs"/>
