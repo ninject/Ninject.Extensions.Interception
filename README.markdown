@@ -1,5 +1,5 @@
 ChannelProxies can be intercepted now:    
-	
+```C#	
     [ServiceContract]
     public interface IFooService
     {
@@ -14,3 +14,4 @@ ChannelProxies can be intercepted now:
         .ToMethod(context => ChannelFactory<IFooService>.CreateChannel(new NetTcpBinding(), new EndpointAddress("net.tcp://localhost/FooService")))
 	    .Intercept(typeof(ICommunicationObject))
 	    .With(interceptor);
+```
