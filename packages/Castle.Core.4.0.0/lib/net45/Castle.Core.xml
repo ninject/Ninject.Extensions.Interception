@@ -4,6 +4,12 @@
         <name>Castle.Core</name>
     </assembly>
     <members>
+        <member name="T:Castle.Components.DictionaryAdapter.DynamicDictionary">
+            <summary>
+            Wraps a <see cref="T:System.Collections.IDictionary"/> with a dynamic object to expose a bit better looking API.
+            The implementation is trivial and assumes keys are <see cref="T:System.String"/>s.
+            </summary>
+        </member>
         <member name="T:Castle.Components.DictionaryAdapter.ReferenceAttribute">
             <summary>
             Specifies assignment by reference rather than by copying.
@@ -250,12 +256,135 @@
             <value></value>
             <returns>An object that can be used to synchronize access to the <see cref="T:System.Collections.ICollection"></see>.</returns>
         </member>
+        <member name="T:Castle.Components.DictionaryAdapter.BindingList`1">
+            <summary>
+              Provides a generic collection that supports data binding.
+            </summary>
+            <remarks>
+              This class wraps the CLR <see cref="T:System.ComponentModel.BindingList`1"/>
+              in order to implement the Castle-specific <see cref="T:Castle.Components.DictionaryAdapter.IBindingList`1"/>.
+            </remarks>
+            <typeparam name="T">The type of elements in the list.</typeparam>
+        </member>
+        <member name="M:Castle.Components.DictionaryAdapter.BindingList`1.#ctor">
+            <summary>
+              Initializes a new instance of the <see cref="T:Castle.Components.DictionaryAdapter.BindingList`1"/> class
+              using default values.
+            </summary>
+        </member>
+        <member name="M:Castle.Components.DictionaryAdapter.BindingList`1.#ctor(System.Collections.Generic.IList{`0})">
+            <summary>
+              Initializes a new instance of the <see cref="T:Castle.Components.DictionaryAdapter.BindingList`1"/> class
+              with the specified list.
+            </summary>
+            <param name="list">
+              An <see cref="T:System.Collections.Generic.IList`1"/> of items
+              to be contained in the <see cref="T:Castle.Components.DictionaryAdapter.BindingList`1"/>.
+            </param>
+        </member>
+        <member name="M:Castle.Components.DictionaryAdapter.BindingList`1.#ctor(System.ComponentModel.BindingList{`0})">
+            <summary>
+              Initializes a new instance of the <see cref="T:Castle.Components.DictionaryAdapter.BindingList`1"/> class
+              wrapping the specified <see cref="T:System.ComponentModel.BindingList`1"/> instance.
+            </summary>
+            <param name="list">
+              A <see cref="T:System.ComponentModel.BindingList`1"/>
+              to be wrapped by the <see cref="T:Castle.Components.DictionaryAdapter.BindingList`1"/>.
+            </param>
+        </member>
+        <member name="T:Castle.Components.DictionaryAdapter.IDictionaryPropertyGetter">
+            <summary>
+            Defines the contract for retrieving dictionary values.
+            </summary>
+        </member>
+        <member name="M:Castle.Components.DictionaryAdapter.IDictionaryPropertyGetter.GetPropertyValue(Castle.Components.DictionaryAdapter.IDictionaryAdapter,System.String,System.Object,Castle.Components.DictionaryAdapter.PropertyDescriptor,System.Boolean)">
+            <summary>
+            Gets the effective dictionary value.
+            </summary>
+            <param name="dictionaryAdapter">The dictionary adapter.</param>
+            <param name="key">The key.</param>
+            <param name="storedValue">The stored value.</param>
+            <param name="property">The property.</param>
+            <param name="ifExists">true if return only existing.</param>
+            <returns>The effective property value.</returns>
+        </member>
+        <member name="M:Castle.Components.DictionaryAdapter.Xml.XmlAdapter.#ctor(Castle.Components.DictionaryAdapter.Xml.IXmlNode,Castle.Components.DictionaryAdapter.Xml.XmlReferenceManager)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Castle.Components.DictionaryAdapter.Xml.XmlAdapter"/> class
+            that represents a child object in a larger object graph.
+            </summary>
+            <param name="node"></param>
+            <param name="references"></param>
+        </member>
+        <member name="T:Castle.Components.DictionaryAdapter.IDictionaryMetaInitializer">
+            <summary>
+             Contract for dictionary meta-data initialization.
+            </summary>
+        </member>
+        <member name="M:Castle.Components.DictionaryAdapter.IDictionaryMetaInitializer.Initialize(Castle.Components.DictionaryAdapter.IDictionaryAdapterFactory,Castle.Components.DictionaryAdapter.DictionaryAdapterMeta)">
+            <summary>
+            	Initializes the given <see cref="T:Castle.Components.DictionaryAdapter.DictionaryAdapterMeta"/> object.
+            </summary>
+            <param name="factory">The dictionary adapter factory.</param>
+            <param name="dictionaryMeta">The dictionary adapter meta.</param>
+            
+        </member>
+        <member name="M:Castle.Components.DictionaryAdapter.IDictionaryMetaInitializer.ShouldHaveBehavior(System.Object)">
+            <summary>
+            	Determines whether the given behavior should be included in a new
+            	<see cref="T:Castle.Components.DictionaryAdapter.DictionaryAdapterMeta"/> object.
+            </summary>
+            <param name="behavior">A dictionary behavior or annotation.</param>
+            <returns>True if the behavior should be included; otherwise, false.</returns>
+            <remarks>
+            	<see cref="T:Castle.Components.DictionaryAdapter.IDictionaryMetaInitializer"/> behaviors are always included,
+            	regardless of the result of this method.
+            </remarks>
+            
+        </member>
         <member name="M:Castle.Core.Internal.CollectionExtensions.IsNullOrEmpty(System.Collections.IEnumerable)">
             <summary>
               Checks whether or not collection is null or empty. Assumes colleciton can be safely enumerated multiple times.
             </summary>
             <param name = "this"></param>
             <returns></returns>
+        </member>
+        <member name="M:Castle.Core.Internal.CollectionExtensions.GetContentsHashCode``1(System.Collections.Generic.IList{``0})">
+            <summary>
+              Generates a HashCode for the contents for the list. Order of items does not matter.
+            </summary>
+            <typeparam name="T">The type of object contained within the list.</typeparam>
+            <param name="list">The list.</param>
+            <returns>The generated HashCode.</returns>
+        </member>
+        <member name="M:Castle.Core.Internal.CollectionExtensions.AreEquivalent``1(System.Collections.Generic.IList{``0},System.Collections.Generic.IList{``0})">
+            <summary>
+              Determines if two lists are equivalent. Equivalent lists have the same number of items and each item is found within the other regardless of respective position within each.
+            </summary>
+            <typeparam name="T">The type of object contained within the list.</typeparam>
+            <param name="listA">The first list.</param>
+            <param name="listB">The second list.</param>
+            <returns><c>True</c> if the two lists are equivalent.</returns>
+        </member>
+        <member name="M:Castle.Core.Internal.ExceptionMessageBuilder.CreateMessageForInaccessibleType(System.Type,System.Type)">
+            <summary>
+            Creates a message to inform clients that a proxy couldn't be created due to reliance on an
+            inaccessible type (perhaps itself).
+            </summary>
+            <param name="inaccessibleType">the inaccessible type that prevents proxy creation</param>
+            <param name="typeToProxy">the type that couldn't be proxied</param>
+        </member>
+        <member name="M:Castle.Core.Internal.TypeExtensions.GetBestName(System.Type)">
+            <summary>
+            Find the best available name to describe a type.
+            </summary>
+            <remarks>
+            Usually the best name will be <see cref="P:System.Type.FullName"/>, but
+            sometimes that's null (see http://msdn.microsoft.com/en-us/library/system.type.fullname%28v=vs.110%29.aspx)
+            in which case the method falls back to <see cref="P:System.Reflection.MemberInfo.Name"/>.
+            </remarks>
+            <param name="type">the type to name</param>
+            <returns>the best name</returns>
         </member>
         <member name="F:Castle.Core.Internal.InternalsVisible.ToCastleCore">
             <summary>
@@ -287,22 +416,6 @@
             <param name="key">The current key.</param>
             <param name="property">The property.</param>
             <returns>The updated key</returns>
-        </member>
-        <member name="T:Castle.Components.DictionaryAdapter.IDictionaryPropertyGetter">
-            <summary>
-            Defines the contract for retrieving dictionary values.
-            </summary>
-        </member>
-        <member name="M:Castle.Components.DictionaryAdapter.IDictionaryPropertyGetter.GetPropertyValue(Castle.Components.DictionaryAdapter.IDictionaryAdapter,System.String,System.Object,Castle.Components.DictionaryAdapter.PropertyDescriptor,System.Boolean)">
-            <summary>
-            Gets the effective dictionary value.
-            </summary>
-            <param name="dictionaryAdapter">The dictionary adapter.</param>
-            <param name="key">The key.</param>
-            <param name="storedValue">The stored value.</param>
-            <param name="property">The property.</param>
-            <param name="ifExists">true if return only existing.</param>
-            <returns>The effective property value.</returns>
         </member>
         <member name="P:Castle.Components.DictionaryAdapter.ComponentAttribute.NoPrefix">
             <summary>
@@ -561,6 +674,50 @@
             The type represented by T must be an interface with properties.
             </remarks>
         </member>
+        <member name="M:Castle.Components.DictionaryAdapter.IDictionaryAdapterFactory.GetAdapter``1(System.Collections.Specialized.NameValueCollection)">
+            <summary>
+            Gets a typed adapter bound to the <see cref="T:System.Collections.Specialized.NameValueCollection"/>.
+            </summary>
+            <typeparam name="T">The typed interface.</typeparam>
+            <param name="nameValues">The underlying source of properties.</param>
+            <returns>An implementation of the typed interface bound to the namedValues.</returns>
+            <remarks>
+            The type represented by T must be an interface with properties.
+            </remarks>
+        </member>
+        <member name="M:Castle.Components.DictionaryAdapter.IDictionaryAdapterFactory.GetAdapter(System.Type,System.Collections.Specialized.NameValueCollection)">
+            <summary>
+            Gets a typed adapter bound to the <see cref="T:System.Collections.Specialized.NameValueCollection"/>.
+            </summary>
+            <param name="type">The typed interface.</param>
+            <param name="nameValues">The underlying source of properties.</param>
+            <returns>An implementation of the typed interface bound to the namedValues.</returns>
+            <remarks>
+            The type represented by T must be an interface with properties.
+            </remarks>
+        </member>
+        <member name="M:Castle.Components.DictionaryAdapter.IDictionaryAdapterFactory.GetAdapter``1(System.Xml.XmlNode)">
+            <summary>
+            Gets a typed adapter bound to the <see cref="T:System.Xml.XmlNode"/>.
+            </summary>
+            <typeparam name="T">The typed interface.</typeparam>
+            <param name="xmlNode">The underlying source of properties.</param>
+            <returns>An implementation of the typed interface bound to the <see cref="T:System.Xml.XmlNode"/>.</returns>
+            <remarks>
+            The type represented by T must be an interface with properties.
+            </remarks>
+        </member>
+        <member name="M:Castle.Components.DictionaryAdapter.IDictionaryAdapterFactory.GetAdapter(System.Type,System.Xml.XmlNode)">
+            <summary>
+            Gets a typed adapter bound to the <see cref="T:System.Xml.XmlNode"/>.
+            </summary>
+            <param name="type">The typed interface.</param>
+            <param name="xmlNode">The underlying source of properties.</param>
+            <returns>An implementation of the typed interface bound to the <see cref="T:System.Xml.XmlNode"/>.</returns>
+            <remarks>
+            The type represented by T must be an interface with properties.
+            </remarks>
+        </member>
         <member name="M:Castle.Components.DictionaryAdapter.IDictionaryAdapterFactory.GetAdapterMeta(System.Type)">
             <summary>
             Gets the <see cref="T:Castle.Components.DictionaryAdapter.DictionaryAdapterMeta"/> associated with the type.
@@ -599,6 +756,18 @@
         <member name="M:Castle.Components.DictionaryAdapter.DictionaryAdapterFactory.GetAdapter``1(System.Type,System.Collections.Generic.IDictionary{System.String,``0})">
             <inheritdoc />
         </member>
+        <member name="M:Castle.Components.DictionaryAdapter.DictionaryAdapterFactory.GetAdapter``1(System.Collections.Specialized.NameValueCollection)">
+            <inheritdoc />
+        </member>
+        <member name="M:Castle.Components.DictionaryAdapter.DictionaryAdapterFactory.GetAdapter(System.Type,System.Collections.Specialized.NameValueCollection)">
+            <inheritdoc />
+        </member>
+        <member name="M:Castle.Components.DictionaryAdapter.DictionaryAdapterFactory.GetAdapter``1(System.Xml.XmlNode)">
+            <inheritdoc />
+        </member>
+        <member name="M:Castle.Components.DictionaryAdapter.DictionaryAdapterFactory.GetAdapter(System.Type,System.Xml.XmlNode)">
+            <inheritdoc />
+        </member>
         <member name="M:Castle.Components.DictionaryAdapter.DictionaryAdapterFactory.GetAdapterMeta(System.Type)">
             <inheritdoc />
         </member>
@@ -607,32 +776,6 @@
         </member>
         <member name="M:Castle.Components.DictionaryAdapter.DictionaryAdapterFactory.GetAdapterMeta(System.Type,Castle.Components.DictionaryAdapter.DictionaryAdapterMeta)">
             <inheritdoc />
-        </member>
-        <member name="T:Castle.Components.DictionaryAdapter.IDictionaryMetaInitializer">
-            <summary>
-             Contract for dictionary meta-data initialization.
-            </summary>
-        </member>
-        <member name="M:Castle.Components.DictionaryAdapter.IDictionaryMetaInitializer.Initialize(Castle.Components.DictionaryAdapter.IDictionaryAdapterFactory,Castle.Components.DictionaryAdapter.DictionaryAdapterMeta)">
-            <summary>
-            	Initializes the given <see cref="T:Castle.Components.DictionaryAdapter.DictionaryAdapterMeta"/> object.
-            </summary>
-            <param name="factory">The dictionary adapter factory.</param>
-            <param name="dictionaryMeta">The dictionary adapter meta.</param>
-            
-        </member>
-        <member name="M:Castle.Components.DictionaryAdapter.IDictionaryMetaInitializer.ShouldHaveBehavior(System.Object)">
-            <summary>
-            	Determines whether the given behavior should be included in a new
-            	<see cref="T:Castle.Components.DictionaryAdapter.DictionaryAdapterMeta"/> object.
-            </summary>
-            <param name="behavior">A dictionary behavior or annotation.</param>
-            <returns>True if the behavior should be included; otherwise, false.</returns>
-            <remarks>
-            	<see cref="T:Castle.Components.DictionaryAdapter.IDictionaryMetaInitializer"/> behaviors are always included,
-            	regardless of the result of this method.
-            </remarks>
-            
         </member>
         <member name="T:Castle.Components.DictionaryAdapter.IDictionaryValidator">
             <summary>
@@ -666,6 +809,47 @@
             Invalidates any results cached by the validator.
             </summary>
             <param name="dictionaryAdapter">The dictionary adapter.</param>
+        </member>
+        <member name="T:Castle.Components.DictionaryAdapter.NameValueCollectionAdapter">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Castle.Components.DictionaryAdapter.NameValueCollectionAdapter.#ctor(System.Collections.Specialized.NameValueCollection)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Castle.Components.DictionaryAdapter.NameValueCollectionAdapter"/> class.
+            </summary>
+            <param name="nameValues">The name values.</param>
+        </member>
+        <member name="M:Castle.Components.DictionaryAdapter.NameValueCollectionAdapter.Contains(System.Object)">
+            <summary>
+            Determines whether the <see cref="T:System.Collections.IDictionary"></see> object contains an element with the specified key.
+            </summary>
+            <param name="key">The key to locate in the <see cref="T:System.Collections.IDictionary"></see> object.</param>
+            <returns>
+            true if the <see cref="T:System.Collections.IDictionary"></see> contains an element with the key; otherwise, false.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">key is null. </exception>
+        </member>
+        <member name="M:Castle.Components.DictionaryAdapter.NameValueCollectionAdapter.Adapt(System.Collections.Specialized.NameValueCollection)">
+            <summary>
+            Adapts the specified name values.
+            </summary>
+            <param name="nameValues">The name values.</param>
+            <returns></returns>
+        </member>
+        <member name="P:Castle.Components.DictionaryAdapter.NameValueCollectionAdapter.IsReadOnly">
+            <summary>
+            Gets a value indicating whether the <see cref="T:System.Collections.IDictionary"></see> object is read-only.
+            </summary>
+            <value></value>
+            <returns>true if the <see cref="T:System.Collections.IDictionary"></see> object is read-only; otherwise, false.</returns>
+        </member>
+        <member name="P:Castle.Components.DictionaryAdapter.NameValueCollectionAdapter.Item(System.Object)">
+            <summary>
+            Gets or sets the <see cref="T:System.Object"/> with the specified key.
+            </summary>
+            <value></value>
         </member>
         <member name="T:Castle.Components.DictionaryAdapter.PropertyDescriptor">
             <summary>
@@ -860,18 +1044,32 @@
               Helper class for retrieving attributes.
             </summary>
         </member>
-        <member name="M:Castle.Core.Internal.AttributesUtil.GetAttribute``1(System.Reflection.ICustomAttributeProvider)">
+        <member name="M:Castle.Core.Internal.AttributesUtil.GetAttribute``1(System.Type)">
             <summary>
-              Gets the attribute.
+            Gets the attribute.
             </summary>
-            <param name = "member">The member.</param>
+            <param name="type">The type.</param>
+            <returns>The type attribute.</returns>
+        </member>
+        <member name="M:Castle.Core.Internal.AttributesUtil.GetAttributes``1(System.Type)">
+            <summary>
+            Gets the attributes. Does not consider inherited attributes!
+            </summary>
+            <param name="type">The type.</param>
+            <returns>The type attributes.</returns>
+        </member>
+        <member name="M:Castle.Core.Internal.AttributesUtil.GetAttribute``1(System.Reflection.MemberInfo)">
+            <summary>
+            Gets the attribute.
+            </summary>
+            <param name="member">The member.</param>
             <returns>The member attribute.</returns>
         </member>
-        <member name="M:Castle.Core.Internal.AttributesUtil.GetAttributes``1(System.Reflection.ICustomAttributeProvider)">
+        <member name="M:Castle.Core.Internal.AttributesUtil.GetAttributes``1(System.Reflection.MemberInfo)">
             <summary>
-              Gets the attributes. Does not consider inherited attributes!
+            Gets the attributes. Does not consider inherited attributes!
             </summary>
-            <param name = "member">The member.</param>
+            <param name="member">The member.</param>
             <returns>The member attributes.</returns>
         </member>
         <member name="M:Castle.Core.Internal.AttributesUtil.GetTypeAttribute``1(System.Type)">
@@ -890,17 +1088,10 @@
         </member>
         <member name="M:Castle.Core.Internal.AttributesUtil.GetTypeConverter(System.Reflection.MemberInfo)">
             <summary>
-              Gets the type converter.
+            Gets the type converter.
             </summary>
-            <param name = "member">The member.</param>
+            <param name="member">The member.</param>
             <returns></returns>
-        </member>
-        <member name="M:Castle.Core.Internal.AttributesUtil.HasAttribute``1(System.Reflection.ICustomAttributeProvider)">
-            <summary>
-              Gets the attribute.
-            </summary>
-            <param name = "member">The member.</param>
-            <returns>The member attribute.</returns>
         </member>
         <member name="T:Castle.Components.DictionaryAdapter.IDynamicValue`1">
             <summary>
@@ -1087,6 +1278,15 @@
             <param name = "methodInfo">The method to inspect.</param>
             <returns>True if the given method should be proxied; false otherwise.</returns>
         </member>
+        <member name="T:Castle.DynamicProxy.CustomAttributeInfo">
+            <summary>
+            Encapsulates the information needed to build an attribute.
+            </summary>
+            <remarks>
+            Arrays passed to this class as constructor arguments or property or field values become owned by this class.
+            They should not be mutated after creation.
+            </remarks>
+        </member>
         <member name="T:Castle.DynamicProxy.Contributors.ITypeContributor">
             <summary>
               Interface describing elements composing generated type
@@ -1102,61 +1302,855 @@
             <param name="hook"></param>
             <returns></returns>
         </member>
-        <member name="T:Castle.DynamicProxy.IAttributeDisassembler">
-            <summary>
-              Provides functionality for disassembling instances of attributes to CustomAttributeBuilder form, during the process of emiting new types by Dynamic Proxy.
-            </summary>
-        </member>
-        <member name="M:Castle.DynamicProxy.IAttributeDisassembler.Disassemble(System.Attribute)">
-            <summary>
-              Disassembles given attribute instance back to corresponding CustomAttributeBuilder.
-            </summary>
-            <param name="attribute">An instance of attribute to disassemble</param>
-            <returns><see cref="T:System.Reflection.Emit.CustomAttributeBuilder"/> corresponding 1 to 1 to given attribute instance, or null reference.</returns>
-            <remarks>
-              Implementers should return <see cref="T:System.Reflection.Emit.CustomAttributeBuilder"/> that corresponds to given attribute instance 1 to 1,
-              that is after calling specified constructor with specified arguments, and setting specified properties and fields with values specified
-              we should be able to get an attribute instance identical to the one passed in <paramref name="attribute"/>. Implementer can return null
-              if it wishes to opt out of replicating the attribute. Notice however, that for some cases, like attributes passed explicitly by the user
-              it is illegal to return null, and doing so will result in exception.
-            </remarks>
-        </member>
-        <member name="M:Castle.DynamicProxy.Generators.AttributeDisassembler.HandleError(System.Type,System.Exception)">
-            <summary>
-              Handles error during disassembly process
-            </summary>
-            <param name = "attributeType">Type of the attribute being disassembled</param>
-            <param name = "exception">Exception thrown during the process</param>
-            <returns>usually null, or (re)throws the exception</returns>
-        </member>
-        <member name="M:Castle.DynamicProxy.Generators.AttributeDisassembler.InitializeConstructorArgs(System.Type,System.Attribute,System.Reflection.ParameterInfo[])">
-            <summary>
-              Here we try to match a constructor argument to its value.
-              Since we can't get the values from the assembly, we use some heuristics to get it.
-              a/ we first try to match all the properties on the attributes by name (case insensitive) to the argument
-              b/ if we fail we try to match them by property type, with some smarts about convertions (i,e: can use Guid for string).
-            </summary>
-        </member>
-        <member name="M:Castle.DynamicProxy.Generators.AttributeDisassembler.ReplaceIfBetterMatch(System.Reflection.ParameterInfo,System.Reflection.PropertyInfo,System.Reflection.PropertyInfo)">
-            <summary>
-              We have the following rules here.
-              Try to find a matching type, failing that, if the parameter is string, get the first property (under the assumption that
-              we can convert it.
-            </summary>
-        </member>
-        <member name="M:Castle.DynamicProxy.Generators.AttributeDisassembler.ConvertValue(System.Object,System.Type)">
-            <summary>
-              Attributes can only accept simple types, so we return null for null,
-              if the value is passed as string we call to string (should help with converting), 
-              otherwise, we use the value as is (enums, integer, etc).
-            </summary>
-        </member>
         <member name="M:Castle.DynamicProxy.Internal.TypeUtil.GetAllInterfaces(System.Type[])">
             <summary>
               Returns list of all unique interfaces implemented given types, including their base interfaces.
             </summary>
             <param name="types"> </param>
             <returns> </returns>
+        </member>
+        <member name="T:Castle.DynamicProxy.IProxyGenerator">
+            <summary>
+              Provides proxy objects for classes and interfaces.
+            </summary>
+        </member>
+        <member name="M:Castle.DynamicProxy.IProxyGenerator.CreateInterfaceProxyWithTarget``1(``0,Castle.DynamicProxy.IInterceptor[])">
+            <summary>
+              Creates proxy object intercepting calls to members of interface <typeparamref name="TInterface"/> on <paramref name="target"/> object with given <paramref name="interceptors"/>.
+            </summary>
+            <typeparam name="TInterface">Type of the interface implemented by <paramref name="target"/> which will be proxied.</typeparam>
+            <param name="target">The target object, calls to which will be intercepted.</param>
+            <param name="interceptors">The interceptors called during the invocation of proxied methods.</param>
+            <returns>Object proxying calls to members of <typeparamref name="TInterface"/> on <paramref name="target"/> object.</returns>
+            <exception cref="T:System.ArgumentNullException">Thrown when given <paramref name="target"/> object is a null reference (Nothing in Visual Basic).</exception>
+            <exception cref="T:System.ArgumentNullException">Thrown when given <paramref name="interceptors"/> array is a null reference (Nothing in Visual Basic).</exception>
+            <exception cref="T:System.ArgumentException">Thrown when given <typeparamref name="TInterface"/>is not an interface type.</exception>
+            <exception cref="T:System.MissingMethodException">Thrown when no default constructor exists on actual type of <paramref name="target"/> object.</exception>
+            <exception cref="T:System.Reflection.TargetInvocationException">Thrown when default constructor of actual type of <paramref name="target"/> throws an exception.</exception>
+            <remarks>
+              This method generates new proxy type for each type of <paramref name="target"/>, which affects performance. If you don't want to proxy types differently depending on the type of the target
+              use <see cref="M:Castle.DynamicProxy.IProxyGenerator.CreateInterfaceProxyWithTargetInterface``1(``0,Castle.DynamicProxy.IInterceptor[])"/> method.
+              This method uses <see cref="T:Castle.DynamicProxy.IProxyBuilder"/> implementation to generate a proxy type.
+              As such caller should expect any type of exception that given <see cref="T:Castle.DynamicProxy.IProxyBuilder"/> implementation may throw.
+            </remarks>
+        </member>
+        <member name="M:Castle.DynamicProxy.IProxyGenerator.CreateInterfaceProxyWithTarget``1(``0,Castle.DynamicProxy.ProxyGenerationOptions,Castle.DynamicProxy.IInterceptor[])">
+            <summary>
+              Creates proxy object intercepting calls to members of interface <typeparamref name="TInterface"/> on <paramref name="target"/> object with given <paramref name="interceptors"/>.
+            </summary>
+            <typeparam name="TInterface">Type of the interface implemented by <paramref name="target"/> which will be proxied.</typeparam>
+            <param name="target">The target object, calls to which will be intercepted.</param>
+            <param name="options">The proxy generation options used to influence generated proxy type and object.</param>
+            <param name="interceptors">The interceptors called during the invocation of proxied methods.</param>
+            <returns>
+              Object proxying calls to members of <typeparamref name="TInterface"/> on <paramref name="target"/> object.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">Thrown when given <paramref name="target"/> object is a null reference (Nothing in Visual Basic).</exception>
+            <exception cref="T:System.ArgumentNullException">Thrown when given <paramref name="interceptors"/> array is a null reference (Nothing in Visual Basic).</exception>
+            <exception cref="T:System.ArgumentException">Thrown when given <typeparamref name="TInterface"/>is not an interface type.</exception>
+            <exception cref="T:System.MissingMethodException">Thrown when no default constructor exists on actual type of <paramref name="target"/> object.</exception>
+            <exception cref="T:System.Reflection.TargetInvocationException">Thrown when default constructor of actual type of <paramref name="target"/> throws an exception.</exception>
+            <remarks>
+              This method generates new proxy type for each type of <paramref name="target"/>, which affects performance. If you don't want to proxy types differently depending on the type of the target
+              use <see cref="M:Castle.DynamicProxy.IProxyGenerator.CreateInterfaceProxyWithTargetInterface``1(``0,Castle.DynamicProxy.ProxyGenerationOptions,Castle.DynamicProxy.IInterceptor[])"/> method.
+              This method uses <see cref="T:Castle.DynamicProxy.IProxyBuilder"/> implementation to generate a proxy type.
+              As such caller should expect any type of exception that given <see cref="T:Castle.DynamicProxy.IProxyBuilder"/> implementation may throw.
+            </remarks>
+        </member>
+        <member name="M:Castle.DynamicProxy.IProxyGenerator.CreateInterfaceProxyWithTarget(System.Type,System.Object,Castle.DynamicProxy.IInterceptor[])">
+            <summary>
+              Creates proxy object intercepting calls to members of interface <paramref name="interfaceToProxy"/> on <paramref name="target"/> object with given <paramref name="interceptors"/>.
+            </summary>
+            <param name="interfaceToProxy">Type of the interface implemented by <paramref name="target"/> which will be proxied.</param>
+            <param name="target">The target object, calls to which will be intercepted.</param>
+            <param name="interceptors">The interceptors called during the invocation of proxied methods.</param>
+            <returns>
+              Object proxying calls to members of <paramref name="interfaceToProxy"/> type on <paramref name="target"/> object.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">Thrown when given <paramref name="interfaceToProxy"/> object is a null reference (Nothing in Visual Basic).</exception>
+            <exception cref="T:System.ArgumentNullException">Thrown when given <paramref name="target"/> object is a null reference (Nothing in Visual Basic).</exception>
+            <exception cref="T:System.ArgumentNullException">Thrown when given <paramref name="interceptors"/> array is a null reference (Nothing in Visual Basic).</exception>
+            <exception cref="T:System.ArgumentException">Thrown when given <paramref name="interfaceToProxy"/> is a generic type definition.</exception>
+            <exception cref="T:System.ArgumentException">Thrown when given <paramref name="interfaceToProxy"/> is not an interface type.</exception>
+            <exception cref="T:System.ArgumentException">Thrown when given <paramref name="target"/> does not implement <paramref name="interfaceToProxy"/> interface.</exception>
+            <exception cref="T:System.MissingMethodException">Thrown when no default constructor exists on actual type of <paramref name="target"/> object.</exception>
+            <exception cref="T:System.Reflection.TargetInvocationException">Thrown when default constructor of actual type of <paramref name="target"/> throws an exception.</exception>
+            <remarks>
+              This method generates new proxy type for each type of <paramref name="target"/>, which affects performance. If you don't want to proxy types differently depending on the type of the target
+              use <see cref="M:Castle.DynamicProxy.IProxyGenerator.CreateInterfaceProxyWithTargetInterface(System.Type,System.Object,Castle.DynamicProxy.IInterceptor[])"/> method.
+              This method uses <see cref="T:Castle.DynamicProxy.IProxyBuilder"/> implementation to generate a proxy type.
+              As such caller should expect any type of exception that given <see cref="T:Castle.DynamicProxy.IProxyBuilder"/> implementation may throw.
+            </remarks>
+        </member>
+        <member name="M:Castle.DynamicProxy.IProxyGenerator.CreateInterfaceProxyWithTarget(System.Type,System.Object,Castle.DynamicProxy.ProxyGenerationOptions,Castle.DynamicProxy.IInterceptor[])">
+            <summary>
+              Creates proxy object intercepting calls to members of interface <paramref name="interfaceToProxy"/> on <paramref name="target"/> object with given <paramref name="interceptors"/>.
+            </summary>
+            <param name="interfaceToProxy">Type of the interface implemented by <paramref name="target"/> which will be proxied.</param>
+            <param name="target">The target object, calls to which will be intercepted.</param>
+            <param name="options">The proxy generation options used to influence generated proxy type and object.</param>
+            <param name="interceptors">The interceptors called during the invocation of proxied methods.</param>
+            <returns>
+              Object proxying calls to members of <paramref name="interfaceToProxy"/> type on <paramref name="target"/> object.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">Thrown when given <paramref name="interfaceToProxy"/> object is a null reference (Nothing in Visual Basic).</exception>
+            <exception cref="T:System.ArgumentNullException">Thrown when given <paramref name="target"/> object is a null reference (Nothing in Visual Basic).</exception>
+            <exception cref="T:System.ArgumentNullException">Thrown when given <paramref name="interceptors"/> array is a null reference (Nothing in Visual Basic).</exception>
+            <exception cref="T:System.ArgumentException">Thrown when given <paramref name="interfaceToProxy"/> is a generic type definition.</exception>
+            <exception cref="T:System.ArgumentException">Thrown when given <paramref name="interfaceToProxy"/> is not an interface type.</exception>
+            <exception cref="T:System.ArgumentException">Thrown when given <paramref name="target"/> does not implement <paramref name="interfaceToProxy"/> interface.</exception>
+            <exception cref="T:System.MissingMethodException">Thrown when no default constructor exists on actual type of <paramref name="target"/> object.</exception>
+            <exception cref="T:System.Reflection.TargetInvocationException">Thrown when default constructor of actual type of <paramref name="target"/> throws an exception.</exception>
+            <remarks>
+              This method generates new proxy type for each type of <paramref name="target"/>, which affects performance. If you don't want to proxy types differently depending on the type of the target
+              use <see cref="M:Castle.DynamicProxy.IProxyGenerator.CreateInterfaceProxyWithTargetInterface(System.Type,System.Object,Castle.DynamicProxy.ProxyGenerationOptions,Castle.DynamicProxy.IInterceptor[])"/> method.
+              This method uses <see cref="T:Castle.DynamicProxy.IProxyBuilder"/> implementation to generate a proxy type.
+              As such caller should expect any type of exception that given <see cref="T:Castle.DynamicProxy.IProxyBuilder"/> implementation may throw.
+            </remarks>
+        </member>
+        <member name="M:Castle.DynamicProxy.IProxyGenerator.CreateInterfaceProxyWithTarget(System.Type,System.Type[],System.Object,Castle.DynamicProxy.IInterceptor[])">
+            <summary>
+              Creates proxy object intercepting calls to members of interface <paramref name="interfaceToProxy"/> on <paramref name="target"/> object with given <paramref name="interceptors"/>.
+            </summary>
+            <param name="interfaceToProxy">Type of the interface implemented by <paramref name="target"/> which will be proxied.</param>
+            <param name="target">The target object, calls to which will be intercepted.</param>
+            <param name="additionalInterfacesToProxy">Additional interface types. Calls to their members will be proxied as well.</param>
+            <param name="interceptors">The interceptors called during the invocation of proxied methods.</param>
+            <returns>
+              Object proxying calls to members of <paramref name="interfaceToProxy"/> and <paramref name="additionalInterfacesToProxy"/> types  on <paramref name="target"/> object.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">Thrown when given <paramref name="interfaceToProxy"/> object is a null reference (Nothing in Visual Basic).</exception>
+            <exception cref="T:System.ArgumentNullException">Thrown when given <paramref name="target"/> object is a null reference (Nothing in Visual Basic).</exception>
+            <exception cref="T:System.ArgumentNullException">Thrown when given <paramref name="interceptors"/> array is a null reference (Nothing in Visual Basic).</exception>
+            <exception cref="T:System.ArgumentException">Thrown when given <paramref name="interfaceToProxy"/> or any of <paramref name="additionalInterfacesToProxy"/> is a generic type definition.</exception>
+            <exception cref="T:System.ArgumentException">Thrown when given <paramref name="interfaceToProxy"/> is not an interface type.</exception>
+            <exception cref="T:System.ArgumentException">Thrown when given <paramref name="target"/> does not implement <paramref name="interfaceToProxy"/> interface.</exception>
+            <exception cref="T:System.MissingMethodException">Thrown when no default constructor exists on actual type of <paramref name="target"/> object.</exception>
+            <exception cref="T:System.Reflection.TargetInvocationException">Thrown when default constructor of actual type of <paramref name="target"/> throws an exception.</exception>
+            <remarks>
+              This method generates new proxy type for each type of <paramref name="target"/>, which affects performance. If you don't want to proxy types differently depending on the type of the target
+              use <see cref="M:Castle.DynamicProxy.IProxyGenerator.CreateInterfaceProxyWithTargetInterface(System.Type,System.Type[],System.Object,Castle.DynamicProxy.IInterceptor[])"/> method.
+              This method uses <see cref="T:Castle.DynamicProxy.IProxyBuilder"/> implementation to generate a proxy type.
+              As such caller should expect any type of exception that given <see cref="T:Castle.DynamicProxy.IProxyBuilder"/> implementation may throw.
+            </remarks>
+        </member>
+        <member name="M:Castle.DynamicProxy.IProxyGenerator.CreateInterfaceProxyWithTarget(System.Type,System.Type[],System.Object,Castle.DynamicProxy.ProxyGenerationOptions,Castle.DynamicProxy.IInterceptor[])">
+            <summary>
+              Creates proxy object intercepting calls to members of interface <paramref name="interfaceToProxy"/> on <paramref name="target"/> object with given <paramref name="interceptors"/>.
+            </summary>
+            <param name="interfaceToProxy">Type of the interface implemented by <paramref name="target"/> which will be proxied.</param>
+            <param name="target">The target object, calls to which will be intercepted.</param>
+            <param name="options">The proxy generation options used to influence generated proxy type and object.</param>
+            <param name="additionalInterfacesToProxy">Additional interface types. Calls to their members will be proxied as well.</param>
+            <param name="interceptors">The interceptors called during the invocation of proxied methods.</param>
+            <returns>
+              Object proxying calls to members of <paramref name="interfaceToProxy"/> and <paramref name="additionalInterfacesToProxy"/> types on <paramref name="target"/> object.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">Thrown when given <paramref name="interfaceToProxy"/> object is a null reference (Nothing in Visual Basic).</exception>
+            <exception cref="T:System.ArgumentNullException">Thrown when given <paramref name="target"/> object is a null reference (Nothing in Visual Basic).</exception>
+            <exception cref="T:System.ArgumentNullException">Thrown when given <paramref name="interceptors"/> array is a null reference (Nothing in Visual Basic).</exception>
+            <exception cref="T:System.ArgumentException">Thrown when given <paramref name="interfaceToProxy"/> or any of <paramref name="additionalInterfacesToProxy"/> is a generic type definition.</exception>
+            <exception cref="T:System.ArgumentException">Thrown when given <paramref name="interfaceToProxy"/> is not an interface type.</exception>
+            <exception cref="T:System.ArgumentException">Thrown when given <paramref name="target"/> does not implement <paramref name="interfaceToProxy"/> interface.</exception>
+            <exception cref="T:System.MissingMethodException">Thrown when no default constructor exists on actual type of <paramref name="target"/> object.</exception>
+            <exception cref="T:System.Reflection.TargetInvocationException">Thrown when default constructor of actual type of <paramref name="target"/> throws an exception.</exception>
+            <remarks>
+              This method generates new proxy type for each type of <paramref name="target"/>, which affects performance. If you don't want to proxy types differently depending on the type of the target
+              use <see cref="M:Castle.DynamicProxy.IProxyGenerator.CreateInterfaceProxyWithTargetInterface(System.Type,System.Type[],System.Object,Castle.DynamicProxy.ProxyGenerationOptions,Castle.DynamicProxy.IInterceptor[])"/> method.
+              This method uses <see cref="T:Castle.DynamicProxy.IProxyBuilder"/> implementation to generate a proxy type.
+              As such caller should expect any type of exception that given <see cref="T:Castle.DynamicProxy.IProxyBuilder"/> implementation may throw.
+            </remarks>
+        </member>
+        <member name="M:Castle.DynamicProxy.IProxyGenerator.CreateInterfaceProxyWithTargetInterface(System.Type,System.Object,Castle.DynamicProxy.IInterceptor[])">
+            <summary>
+              Creates proxy object intercepting calls to members of interface <paramref name="interfaceToProxy"/> on <paramref name="target"/> object with given <paramref name="interceptors"/>.
+              Interceptors can use <see cref="T:Castle.DynamicProxy.IChangeProxyTarget"/> interface to provide other target for method invocation than default <paramref name="target"/>.
+            </summary>
+            <param name="interfaceToProxy">Type of the interface implemented by <paramref name="target"/> which will be proxied.</param>
+            <param name="target">The target object, calls to which will be intercepted.</param>
+            <param name="interceptors">The interceptors called during the invocation of proxied methods.</param>
+            <returns>
+              Object proxying calls to members of <paramref name="interfaceToProxy"/> type on <paramref name="target"/> object or alternative implementation swapped at runtime by an interceptor.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">Thrown when given <paramref name="interfaceToProxy"/> object is a null reference (Nothing in Visual Basic).</exception>
+            <exception cref="T:System.ArgumentNullException">Thrown when given <paramref name="target"/> object is a null reference (Nothing in Visual Basic).</exception>
+            <exception cref="T:System.ArgumentNullException">Thrown when given <paramref name="interceptors"/> array is a null reference (Nothing in Visual Basic).</exception>
+            <exception cref="T:System.ArgumentException">Thrown when given <paramref name="interfaceToProxy"/> is a generic type definition.</exception>
+            <exception cref="T:System.ArgumentException">Thrown when given <paramref name="interfaceToProxy"/> is not an interface type.</exception>
+            <exception cref="T:System.ArgumentException">Thrown when given <paramref name="target"/> does not implement <paramref name="interfaceToProxy"/> interface.</exception>
+            <exception cref="T:System.MissingMethodException">Thrown when no default constructor exists on actual type of <paramref name="target"/> object.</exception>
+            <exception cref="T:System.Reflection.TargetInvocationException">Thrown when default constructor of actual type of <paramref name="target"/> throws an exception.</exception>
+            <remarks>
+              This method uses <see cref="T:Castle.DynamicProxy.IProxyBuilder"/> implementation to generate a proxy type.
+              As such caller should expect any type of exception that given <see cref="T:Castle.DynamicProxy.IProxyBuilder"/> implementation may throw.
+            </remarks>
+        </member>
+        <member name="M:Castle.DynamicProxy.IProxyGenerator.CreateInterfaceProxyWithTargetInterface``1(``0,Castle.DynamicProxy.IInterceptor[])">
+            <summary>
+              Creates proxy object intercepting calls to members of interface <typeparamref name="TInterface"/> on <paramref name="target"/> object with given <paramref name="interceptors"/>.
+              Interceptors can use <see cref="T:Castle.DynamicProxy.IChangeProxyTarget"/> interface to provide other target for method invocation than default <paramref name="target"/>.
+            </summary>
+            <typeparam name="TInterface">Type of the interface implemented by <paramref name="target"/> which will be proxied.</typeparam>
+            <param name="target">The target object, calls to which will be intercepted.</param>
+            <param name="interceptors">The interceptors called during the invocation of proxied methods.</param>
+            <returns>
+              Object proxying calls to members of <typeparamref name="TInterface"/> type on <paramref name="target"/> object or alternative implementation swapped at runtime by an interceptor.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">Thrown when given <paramref name="target"/> object is a null reference (Nothing in Visual Basic).</exception>
+            <exception cref="T:System.ArgumentNullException">Thrown when given <paramref name="interceptors"/> array is a null reference (Nothing in Visual Basic).</exception>
+            <exception cref="T:System.ArgumentException">Thrown when given <typeparamref name="TInterface"/> is not an interface type.</exception>
+            <exception cref="T:System.MissingMethodException">Thrown when no default constructor exists on actual type of <paramref name="target"/> object.</exception>
+            <exception cref="T:System.Reflection.TargetInvocationException">Thrown when default constructor of actual type of <paramref name="target"/> throws an exception.</exception>
+            <remarks>
+              This method uses <see cref="T:Castle.DynamicProxy.IProxyBuilder"/> implementation to generate a proxy type.
+              As such caller should expect any type of exception that given <see cref="T:Castle.DynamicProxy.IProxyBuilder"/> implementation may throw.
+            </remarks>
+        </member>
+        <member name="M:Castle.DynamicProxy.IProxyGenerator.CreateInterfaceProxyWithTargetInterface``1(``0,Castle.DynamicProxy.ProxyGenerationOptions,Castle.DynamicProxy.IInterceptor[])">
+            <summary>
+              Creates proxy object intercepting calls to members of interface <typeparamref name="TInterface"/> on <paramref name="target"/> object with given <paramref name="interceptors"/>.
+              Interceptors can use <see cref="T:Castle.DynamicProxy.IChangeProxyTarget"/> interface to provide other target for method invocation than default <paramref name="target"/>.
+            </summary>
+            <typeparam name="TInterface">Type of the interface implemented by <paramref name="target"/> which will be proxied.</typeparam>
+            <param name="target">The target object, calls to which will be intercepted.</param>
+            <param name="options">The proxy generation options used to influence generated proxy type and object.</param>
+            <param name="interceptors">The interceptors called during the invocation of proxied methods.</param>
+            <returns>
+              Object proxying calls to members of <typeparamref name="TInterface"/> type on <paramref name="target"/> object or alternative implementation swapped at runtime by an interceptor.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">Thrown when given <paramref name="target"/> object is a null reference (Nothing in Visual Basic).</exception>
+            <exception cref="T:System.ArgumentNullException">Thrown when given <paramref name="interceptors"/> array is a null reference (Nothing in Visual Basic).</exception>
+            <exception cref="T:System.ArgumentException">Thrown when given <typeparamref name="TInterface"/> is not an interface type.</exception>
+            <exception cref="T:System.MissingMethodException">Thrown when no default constructor exists on actual type of <paramref name="target"/> object.</exception>
+            <exception cref="T:System.Reflection.TargetInvocationException">Thrown when default constructor of actual type of <paramref name="target"/> throws an exception.</exception>
+            <remarks>
+              This method uses <see cref="T:Castle.DynamicProxy.IProxyBuilder"/> implementation to generate a proxy type.
+              As such caller should expect any type of exception that given <see cref="T:Castle.DynamicProxy.IProxyBuilder"/> implementation may throw.
+            </remarks>
+        </member>
+        <member name="M:Castle.DynamicProxy.IProxyGenerator.CreateInterfaceProxyWithTargetInterface(System.Type,System.Type[],System.Object,Castle.DynamicProxy.IInterceptor[])">
+            <summary>
+              Creates proxy object intercepting calls to members of interface <paramref name="interfaceToProxy"/> on <paramref name="target"/> object with given <paramref name="interceptors"/>.
+              Interceptors can use <see cref="T:Castle.DynamicProxy.IChangeProxyTarget"/> interface to provide other target for method invocation than default <paramref name="target"/>.
+            </summary>
+            <param name="interfaceToProxy">Type of the interface implemented by <paramref name="target"/> which will be proxied.</param>
+            <param name="target">The target object, calls to which will be intercepted.</param>
+            <param name="additionalInterfacesToProxy">Additional interface types. Calls to their members will be proxied as well.</param>
+            <param name="interceptors">The interceptors called during the invocation of proxied methods.</param>
+            <returns>
+              Object proxying calls to members of <paramref name="interfaceToProxy"/> and <paramref name="additionalInterfacesToProxy"/> types on <paramref name="target"/> object or alternative implementation swapped at runtime by an interceptor.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">Thrown when given <paramref name="interfaceToProxy"/> object is a null reference (Nothing in Visual Basic).</exception>
+            <exception cref="T:System.ArgumentNullException">Thrown when given <paramref name="target"/> object is a null reference (Nothing in Visual Basic).</exception>
+            <exception cref="T:System.ArgumentNullException">Thrown when given <paramref name="interceptors"/> array is a null reference (Nothing in Visual Basic).</exception>
+            <exception cref="T:System.ArgumentException">Thrown when given <paramref name="interfaceToProxy"/> or any of <paramref name="additionalInterfacesToProxy"/> is a generic type definition.</exception>
+            <exception cref="T:System.ArgumentException">Thrown when given <paramref name="interfaceToProxy"/> is not an interface type.</exception>
+            <exception cref="T:System.ArgumentException">Thrown when given <paramref name="target"/> does not implement <paramref name="interfaceToProxy"/> interface.</exception>
+            <exception cref="T:System.MissingMethodException">Thrown when no default constructor exists on actual type of <paramref name="target"/> object.</exception>
+            <exception cref="T:System.Reflection.TargetInvocationException">Thrown when default constructor of actual type of <paramref name="target"/> throws an exception.</exception>
+            <remarks>
+              This method uses <see cref="T:Castle.DynamicProxy.IProxyBuilder"/> implementation to generate a proxy type.
+              As such caller should expect any type of exception that given <see cref="T:Castle.DynamicProxy.IProxyBuilder"/> implementation may throw.
+            </remarks>
+        </member>
+        <member name="M:Castle.DynamicProxy.IProxyGenerator.CreateInterfaceProxyWithTargetInterface(System.Type,System.Object,Castle.DynamicProxy.ProxyGenerationOptions,Castle.DynamicProxy.IInterceptor[])">
+            <summary>
+              Creates proxy object intercepting calls to members of interface <paramref name="interfaceToProxy"/> on <paramref name="target"/> object with given <paramref name="interceptors"/>.
+              Interceptors can use <see cref="T:Castle.DynamicProxy.IChangeProxyTarget"/> interface to provide other target for method invocation than default <paramref name="target"/>.
+            </summary>
+            <param name="interfaceToProxy">Type of the interface implemented by <paramref name="target"/> which will be proxied.</param>
+            <param name="target">The target object, calls to which will be intercepted.</param>
+            <param name="options">The proxy generation options used to influence generated proxy type and object.</param>
+            <param name="interceptors">The interceptors called during the invocation of proxied methods.</param>
+            <returns>
+              Object proxying calls to members of <paramref name="interfaceToProxy"/> type on <paramref name="target"/> object or alternative implementation swapped at runtime by an interceptor.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">Thrown when given <paramref name="interfaceToProxy"/> object is a null reference (Nothing in Visual Basic).</exception>
+            <exception cref="T:System.ArgumentNullException">Thrown when given <paramref name="target"/> object is a null reference (Nothing in Visual Basic).</exception>
+            <exception cref="T:System.ArgumentNullException">Thrown when given <paramref name="interceptors"/> array is a null reference (Nothing in Visual Basic).</exception>
+            <exception cref="T:System.ArgumentException">Thrown when given <paramref name="interfaceToProxy"/> is a generic type definition.</exception>
+            <exception cref="T:System.ArgumentException">Thrown when given <paramref name="interfaceToProxy"/> is not an interface type.</exception>
+            <exception cref="T:System.ArgumentException">Thrown when given <paramref name="target"/> does not implement <paramref name="interfaceToProxy"/> interface.</exception>
+            <exception cref="T:System.MissingMethodException">Thrown when no default constructor exists on actual type of <paramref name="target"/> object.</exception>
+            <exception cref="T:System.Reflection.TargetInvocationException">Thrown when default constructor of actual type of <paramref name="target"/> throws an exception.</exception>
+            <remarks>
+              This method uses <see cref="T:Castle.DynamicProxy.IProxyBuilder"/> implementation to generate a proxy type.
+              As such caller should expect any type of exception that given <see cref="T:Castle.DynamicProxy.IProxyBuilder"/> implementation may throw.
+            </remarks>
+        </member>
+        <member name="M:Castle.DynamicProxy.IProxyGenerator.CreateInterfaceProxyWithTargetInterface(System.Type,System.Type[],System.Object,Castle.DynamicProxy.ProxyGenerationOptions,Castle.DynamicProxy.IInterceptor[])">
+            <summary>
+              Creates proxy object intercepting calls to members of interface <paramref name="interfaceToProxy"/> on <paramref name="target"/> object with given <paramref name="interceptors"/>.
+              Interceptors can use <see cref="T:Castle.DynamicProxy.IChangeProxyTarget"/> interface to provide other target for method invocation than default <paramref name="target"/>.
+            </summary>
+            <param name="interfaceToProxy">Type of the interface implemented by <paramref name="target"/> which will be proxied.</param>
+            <param name="target">The target object, calls to which will be intercepted.</param>
+            <param name="options">The proxy generation options used to influence generated proxy type and object.</param>
+            <param name="additionalInterfacesToProxy">Additional interface types. Calls to their members will be proxied as well.</param>
+            <param name="interceptors">The interceptors called during the invocation of proxied methods.</param>
+            <returns>
+              Object proxying calls to members of <paramref name="interfaceToProxy"/> and <paramref name="additionalInterfacesToProxy"/> types on <paramref name="target"/> object or alternative implementation swapped at runtime by an interceptor.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">Thrown when given <paramref name="interfaceToProxy"/> object is a null reference (Nothing in Visual Basic).</exception>
+            <exception cref="T:System.ArgumentNullException">Thrown when given <paramref name="target"/> object is a null reference (Nothing in Visual Basic).</exception>
+            <exception cref="T:System.ArgumentNullException">Thrown when given <paramref name="interceptors"/> array is a null reference (Nothing in Visual Basic).</exception>
+            <exception cref="T:System.ArgumentException">Thrown when given <paramref name="interfaceToProxy"/> or any of <paramref name="additionalInterfacesToProxy"/> is a generic type definition.</exception>
+            <exception cref="T:System.ArgumentException">Thrown when given <paramref name="interfaceToProxy"/> is not an interface type.</exception>
+            <exception cref="T:System.ArgumentException">Thrown when given <paramref name="target"/> does not implement <paramref name="interfaceToProxy"/> interface.</exception>
+            <exception cref="T:System.MissingMethodException">Thrown when no default constructor exists on actual type of <paramref name="target"/> object.</exception>
+            <exception cref="T:System.Reflection.TargetInvocationException">Thrown when default constructor of actual type of <paramref name="target"/> throws an exception.</exception>
+            <remarks>
+              This method uses <see cref="T:Castle.DynamicProxy.IProxyBuilder"/> implementation to generate a proxy type.
+              As such caller should expect any type of exception that given <see cref="T:Castle.DynamicProxy.IProxyBuilder"/> implementation may throw.
+            </remarks>
+        </member>
+        <member name="M:Castle.DynamicProxy.IProxyGenerator.CreateInterfaceProxyWithoutTarget``1(Castle.DynamicProxy.IInterceptor)">
+            <summary>
+              Creates proxy object intercepting calls to members of interface <typeparamref name="TInterface"/> on target object generated at runtime with given <paramref name="interceptor"/>.
+            </summary>
+            <typeparam name="TInterface">Type of the interface which will be proxied.</typeparam>
+            <param name="interceptor">The interceptors called during the invocation of proxied methods.</param>
+            <returns>
+              Object proxying calls to members of <typeparamref name="TInterface"/> types on generated target object.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">Thrown when given <paramref name="interceptor"/> array is a null reference (Nothing in Visual Basic).</exception>
+            <exception cref="T:System.ArgumentException">Thrown when given <typeparamref name="TInterface"/> is not an interface type.</exception>
+            <remarks>
+              Since this method uses an empty-shell implementation of interfaces to proxy generated at runtime, the actual implementation of proxied methods must be provided by given <see cref="T:Castle.DynamicProxy.IInterceptor"/> implementations.
+              They are responsible for setting return value (and out parameters) on proxied methods. It is also illegal for an interceptor to call <see cref="M:Castle.DynamicProxy.IInvocation.Proceed"/>, since there's no actual implementation to proceed with.
+              As a result of that also at least one <see cref="T:Castle.DynamicProxy.IInterceptor"/> implementation must be provided.
+              This method uses <see cref="T:Castle.DynamicProxy.IProxyBuilder"/> implementation to generate a proxy type.
+              As such caller should expect any type of exception that given <see cref="T:Castle.DynamicProxy.IProxyBuilder"/> implementation may throw.
+            </remarks>
+        </member>
+        <member name="M:Castle.DynamicProxy.IProxyGenerator.CreateInterfaceProxyWithoutTarget``1(Castle.DynamicProxy.IInterceptor[])">
+            <summary>
+              Creates proxy object intercepting calls to members of interface <typeparamref name="TInterface"/> on target object generated at runtime with given <paramref name="interceptors"/>.
+            </summary>
+            <typeparam name="TInterface">Type of the interface which will be proxied.</typeparam>
+            <param name="interceptors">The interceptors called during the invocation of proxied methods.</param>
+            <returns>
+              Object proxying calls to members of <typeparamref name="TInterface"/> types on generated target object.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">Thrown when given <paramref name="interceptors"/> array is a null reference (Nothing in Visual Basic).</exception>
+            <exception cref="T:System.ArgumentException">Thrown when given <typeparamref name="TInterface"/> is not an interface type.</exception>
+            <remarks>
+              Since this method uses an empty-shell implementation of interfaces to proxy generated at runtime, the actual implementation of proxied methods must be provided by given <see cref="T:Castle.DynamicProxy.IInterceptor"/> implementations.
+              They are responsible for setting return value (and out parameters) on proxied methods. It is also illegal for an interceptor to call <see cref="M:Castle.DynamicProxy.IInvocation.Proceed"/>, since there's no actual implementation to proceed with.
+              As a result of that also at least one <see cref="T:Castle.DynamicProxy.IInterceptor"/> implementation must be provided.
+              This method uses <see cref="T:Castle.DynamicProxy.IProxyBuilder"/> implementation to generate a proxy type.
+              As such caller should expect any type of exception that given <see cref="T:Castle.DynamicProxy.IProxyBuilder"/> implementation may throw.
+            </remarks>
+        </member>
+        <member name="M:Castle.DynamicProxy.IProxyGenerator.CreateInterfaceProxyWithoutTarget``1(Castle.DynamicProxy.ProxyGenerationOptions,Castle.DynamicProxy.IInterceptor[])">
+            <summary>
+              Creates proxy object intercepting calls to members of interface <typeparamref name="TInterface"/> on target object generated at runtime with given <paramref name="interceptors"/>.
+            </summary>
+            <typeparam name="TInterface">Type of the interface which will be proxied.</typeparam>
+            <param name="options">The proxy generation options used to influence generated proxy type and object.</param>
+            <param name="interceptors">The interceptors called during the invocation of proxied methods.</param>
+            <returns>
+              Object proxying calls to members of <typeparamref name="TInterface"/> types on generated target object.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">Thrown when given <paramref name="interceptors"/> array is a null reference (Nothing in Visual Basic).</exception>
+            <exception cref="T:System.ArgumentException">Thrown when given <typeparamref name="TInterface"/> is not an interface type.</exception>
+            <remarks>
+              Since this method uses an empty-shell implementation of interfaces to proxy generated at runtime, the actual implementation of proxied methods must be provided by given <see cref="T:Castle.DynamicProxy.IInterceptor"/> implementations.
+              They are responsible for setting return value (and out parameters) on proxied methods. It is also illegal for an interceptor to call <see cref="M:Castle.DynamicProxy.IInvocation.Proceed"/>, since there's no actual implementation to proceed with.
+              As a result of that also at least one <see cref="T:Castle.DynamicProxy.IInterceptor"/> implementation must be provided.
+              This method uses <see cref="T:Castle.DynamicProxy.IProxyBuilder"/> implementation to generate a proxy type.
+              As such caller should expect any type of exception that given <see cref="T:Castle.DynamicProxy.IProxyBuilder"/> implementation may throw.
+            </remarks>
+        </member>
+        <member name="M:Castle.DynamicProxy.IProxyGenerator.CreateInterfaceProxyWithoutTarget(System.Type,Castle.DynamicProxy.IInterceptor)">
+            <summary>
+              Creates proxy object intercepting calls to members of interface <paramref name="interfaceToProxy"/> on target object generated at runtime with given <paramref name="interceptor"/>.
+            </summary>
+            <param name="interfaceToProxy">Type of the interface which will be proxied.</param>
+            <param name="interceptor">The interceptors called during the invocation of proxied methods.</param>
+            <returns>
+              Object proxying calls to members of <paramref name="interfaceToProxy"/> type on generated target object.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">Thrown when given <paramref name="interfaceToProxy"/> object is a null reference (Nothing in Visual Basic).</exception>
+            <exception cref="T:System.ArgumentNullException">Thrown when given <paramref name="interceptor"/> array is a null reference (Nothing in Visual Basic).</exception>
+            <exception cref="T:System.ArgumentException">Thrown when given <paramref name="interfaceToProxy"/> is a generic type definition.</exception>
+            <exception cref="T:System.ArgumentException">Thrown when given <paramref name="interfaceToProxy"/> is not an interface type.</exception>
+            <remarks>
+              Since this method uses an empty-shell implementation of interfaces to proxy generated at runtime, the actual implementation of proxied methods must be provided by given <see cref="T:Castle.DynamicProxy.IInterceptor"/> implementations.
+              They are responsible for setting return value (and out parameters) on proxied methods. It is also illegal for an interceptor to call <see cref="M:Castle.DynamicProxy.IInvocation.Proceed"/>, since there's no actual implementation to proceed with.
+              This method uses <see cref="T:Castle.DynamicProxy.IProxyBuilder"/> implementation to generate a proxy type.
+              As such caller should expect any type of exception that given <see cref="T:Castle.DynamicProxy.IProxyBuilder"/> implementation may throw.
+            </remarks>
+        </member>
+        <member name="M:Castle.DynamicProxy.IProxyGenerator.CreateInterfaceProxyWithoutTarget(System.Type,Castle.DynamicProxy.IInterceptor[])">
+            <summary>
+              Creates proxy object intercepting calls to members of interface <paramref name="interfaceToProxy"/> on target object generated at runtime with given <paramref name="interceptors"/>.
+            </summary>
+            <param name="interfaceToProxy">Type of the interface which will be proxied.</param>
+            <param name="interceptors">The interceptors called during the invocation of proxied methods.</param>
+            <returns>
+              Object proxying calls to members of <paramref name="interfaceToProxy"/> type on generated target object.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">Thrown when given <paramref name="interfaceToProxy"/> object is a null reference (Nothing in Visual Basic).</exception>
+            <exception cref="T:System.ArgumentNullException">Thrown when given <paramref name="interceptors"/> array is a null reference (Nothing in Visual Basic).</exception>
+            <exception cref="T:System.ArgumentException">Thrown when given <paramref name="interfaceToProxy"/> is a generic type definition.</exception>
+            <exception cref="T:System.ArgumentException">Thrown when given <paramref name="interfaceToProxy"/> is not an interface type.</exception>
+            <remarks>
+              Since this method uses an empty-shell implementation of interfaces to proxy generated at runtime, the actual implementation of proxied methods must be provided by given <see cref="T:Castle.DynamicProxy.IInterceptor"/> implementations.
+              They are responsible for setting return value (and out parameters) on proxied methods. It is also illegal for an interceptor to call <see cref="M:Castle.DynamicProxy.IInvocation.Proceed"/>, since there's no actual implementation to proceed with.
+              This method uses <see cref="T:Castle.DynamicProxy.IProxyBuilder"/> implementation to generate a proxy type.
+              As such caller should expect any type of exception that given <see cref="T:Castle.DynamicProxy.IProxyBuilder"/> implementation may throw.
+            </remarks>
+        </member>
+        <member name="M:Castle.DynamicProxy.IProxyGenerator.CreateInterfaceProxyWithoutTarget(System.Type,System.Type[],Castle.DynamicProxy.IInterceptor[])">
+            <summary>
+              Creates proxy object intercepting calls to members of interface <paramref name="interfaceToProxy"/> on target object generated at runtime with given <paramref name="interceptors"/>.
+            </summary>
+            <param name="interfaceToProxy">Type of the interface which will be proxied.</param>
+            <param name="additionalInterfacesToProxy">Additional interface types. Calls to their members will be proxied as well.</param>
+            <param name="interceptors">The interceptors called during the invocation of proxied methods.</param>
+            <returns>
+              Object proxying calls to members of <paramref name="interfaceToProxy"/> and <paramref name="additionalInterfacesToProxy"/> types on generated target object.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">Thrown when given <paramref name="interfaceToProxy"/> object is a null reference (Nothing in Visual Basic).</exception>
+            <exception cref="T:System.ArgumentNullException">Thrown when given <paramref name="interceptors"/> array is a null reference (Nothing in Visual Basic).</exception>
+            <exception cref="T:System.ArgumentException">Thrown when given <paramref name="interfaceToProxy"/> or any of <paramref name="additionalInterfacesToProxy"/> is a generic type definition.</exception>
+            <exception cref="T:System.ArgumentException">Thrown when given <paramref name="interfaceToProxy"/> is not an interface type.</exception>
+            <remarks>
+              Since this method uses an empty-shell implementation of interfaces to proxy generated at runtime, the actual implementation of proxied methods must be provided by given <see cref="T:Castle.DynamicProxy.IInterceptor"/> implementations.
+              They are responsible for setting return value (and out parameters) on proxied methods. It is also illegal for an interceptor to call <see cref="M:Castle.DynamicProxy.IInvocation.Proceed"/>, since there's no actual implementation to proceed with.
+              This method uses <see cref="T:Castle.DynamicProxy.IProxyBuilder"/> implementation to generate a proxy type.
+              As such caller should expect any type of exception that given <see cref="T:Castle.DynamicProxy.IProxyBuilder"/> implementation may throw.
+            </remarks>
+        </member>
+        <member name="M:Castle.DynamicProxy.IProxyGenerator.CreateInterfaceProxyWithoutTarget(System.Type,Castle.DynamicProxy.ProxyGenerationOptions,Castle.DynamicProxy.IInterceptor[])">
+            <summary>
+              Creates proxy object intercepting calls to members of interface <paramref name="interfaceToProxy"/> on target object generated at runtime with given <paramref name="interceptors"/>.
+            </summary>
+            <param name="interfaceToProxy">Type of the interface which will be proxied.</param>
+            <param name="options">The proxy generation options used to influence generated proxy type and object.</param>
+            <param name="interceptors">The interceptors called during the invocation of proxied methods.</param>
+            <returns>
+              Object proxying calls to members of <paramref name="interfaceToProxy"/> on generated target object.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">Thrown when given <paramref name="interfaceToProxy"/> object is a null reference (Nothing in Visual Basic).</exception>
+            <exception cref="T:System.ArgumentNullException">Thrown when given <paramref name="interceptors"/> array is a null reference (Nothing in Visual Basic).</exception>
+            <exception cref="T:System.ArgumentException">Thrown when given <paramref name="interfaceToProxy"/>  is a generic type definition.</exception>
+            <exception cref="T:System.ArgumentException">Thrown when given <paramref name="interfaceToProxy"/> is not an interface type.</exception>
+            <remarks>
+              They are responsible for setting return value (and out parameters) on proxied methods. It is also illegal for an interceptor to call <see cref="M:Castle.DynamicProxy.IInvocation.Proceed"/>, since there's no actual implementation to proceed with.
+              This method uses <see cref="T:Castle.DynamicProxy.IProxyBuilder"/> implementation to generate a proxy type.
+              As such caller should expect any type of exception that given <see cref="T:Castle.DynamicProxy.IProxyBuilder"/> implementation may throw.
+            </remarks>
+        </member>
+        <member name="M:Castle.DynamicProxy.IProxyGenerator.CreateInterfaceProxyWithoutTarget(System.Type,System.Type[],Castle.DynamicProxy.ProxyGenerationOptions,Castle.DynamicProxy.IInterceptor[])">
+            <summary>
+              Creates proxy object intercepting calls to members of interface <paramref name="interfaceToProxy"/> on target object generated at runtime with given <paramref name="interceptors"/>.
+            </summary>
+            <param name="interfaceToProxy">Type of the interface which will be proxied.</param>
+            <param name="options">The proxy generation options used to influence generated proxy type and object.</param>
+            <param name="additionalInterfacesToProxy">Additional interface types. Calls to their members will be proxied as well.</param>
+            <param name="interceptors">The interceptors called during the invocation of proxied methods.</param>
+            <returns>
+              Object proxying calls to members of <paramref name="interfaceToProxy"/> and <paramref name="additionalInterfacesToProxy"/> types on generated target object.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">Thrown when given <paramref name="interfaceToProxy"/> object is a null reference (Nothing in Visual Basic).</exception>
+            <exception cref="T:System.ArgumentNullException">Thrown when given <paramref name="interceptors"/> array is a null reference (Nothing in Visual Basic).</exception>
+            <exception cref="T:System.ArgumentException">Thrown when given <paramref name="interfaceToProxy"/> or any of <paramref name="additionalInterfacesToProxy"/> is a generic type definition.</exception>
+            <exception cref="T:System.ArgumentException">Thrown when given <paramref name="interfaceToProxy"/> is not an interface type.</exception>
+            <remarks>
+              Since this method uses an empty-shell implementation of <paramref name="additionalInterfacesToProxy"/> to proxy generated at runtime, the actual implementation of proxied methods must be provided by given <see cref="T:Castle.DynamicProxy.IInterceptor"/> implementations.
+              They are responsible for setting return value (and out parameters) on proxied methods. It is also illegal for an interceptor to call <see cref="M:Castle.DynamicProxy.IInvocation.Proceed"/>, since there's no actual implementation to proceed with.
+              This method uses <see cref="T:Castle.DynamicProxy.IProxyBuilder"/> implementation to generate a proxy type.
+              As such caller should expect any type of exception that given <see cref="T:Castle.DynamicProxy.IProxyBuilder"/> implementation may throw.
+            </remarks>
+        </member>
+        <member name="M:Castle.DynamicProxy.IProxyGenerator.CreateClassProxyWithTarget``1(``0,Castle.DynamicProxy.IInterceptor[])">
+            <summary>
+              Creates proxy object intercepting calls to virtual members of type <typeparamref name="TClass"/> on newly created instance of that type with given <paramref name="interceptors"/>.
+            </summary>
+            <typeparam name="TClass">Type of class which will be proxied.</typeparam>
+            <param name="target">The target object, calls to which will be intercepted.</param>
+            <param name="interceptors">The interceptors called during the invocation of proxied methods.</param>
+            <returns>
+              New object of type <typeparamref name="TClass"/> proxying calls to virtual members of <typeparamref name="TClass"/> type.
+            </returns>
+            <exception cref="T:System.ArgumentException">Thrown when given <typeparamref name="TClass"/> is not a class type.</exception>
+            <exception cref="T:System.ArgumentException">Thrown when no default constructor exists on type <typeparamref name="TClass"/>.</exception>
+            <exception cref="T:System.Reflection.TargetInvocationException">Thrown when default constructor of type <typeparamref name="TClass"/> throws an exception.</exception>
+            <remarks>
+              This method uses <see cref="T:Castle.DynamicProxy.IProxyBuilder"/> implementation to generate a proxy type.
+              As such caller should expect any type of exception that given <see cref="T:Castle.DynamicProxy.IProxyBuilder"/> implementation may throw.
+            </remarks>
+        </member>
+        <member name="M:Castle.DynamicProxy.IProxyGenerator.CreateClassProxyWithTarget``1(``0,Castle.DynamicProxy.ProxyGenerationOptions,Castle.DynamicProxy.IInterceptor[])">
+            <summary>
+              Creates proxy object intercepting calls to virtual members of type <typeparamref name="TClass"/> on newly created instance of that type with given <paramref name="interceptors"/>.
+            </summary>
+            <typeparam name="TClass">Type of class which will be proxied.</typeparam>
+            <param name="target">The target object, calls to which will be intercepted.</param>
+            <param name="options">The proxy generation options used to influence generated proxy type and object.</param>
+            <param name="interceptors">The interceptors called during the invocation of proxied methods.</param>
+            <returns>
+              New object of type <typeparamref name="TClass"/> proxying calls to virtual members of <typeparamref name="TClass"/> type.
+            </returns>
+            <exception cref="T:System.ArgumentException">Thrown when given <typeparamref name="TClass"/> is not a class type.</exception>
+            <exception cref="T:System.ArgumentException">Thrown when no default constructor exists on type <typeparamref name="TClass"/>.</exception>
+            <exception cref="T:System.Reflection.TargetInvocationException">Thrown when default constructor of type <typeparamref name="TClass"/> throws an exception.</exception>
+            <remarks>
+              This method uses <see cref="T:Castle.DynamicProxy.IProxyBuilder"/> implementation to generate a proxy type.
+              As such caller should expect any type of exception that given <see cref="T:Castle.DynamicProxy.IProxyBuilder"/> implementation may throw.
+            </remarks>
+        </member>
+        <member name="M:Castle.DynamicProxy.IProxyGenerator.CreateClassProxyWithTarget(System.Type,System.Type[],System.Object,Castle.DynamicProxy.IInterceptor[])">
+            <summary>
+              Creates proxy object intercepting calls to virtual members of type <paramref name="classToProxy"/> on newly created instance of that type with given <paramref name="interceptors"/>.
+            </summary>
+            <param name="classToProxy">Type of class which will be proxied.</param>
+            <param name="additionalInterfacesToProxy">Additional interface types. Calls to their members will be proxied as well.</param>
+            <param name="target">The target object, calls to which will be intercepted.</param>
+            <param name="interceptors">The interceptors called during the invocation of proxied methods.</param>
+            <returns>
+              New object of type <paramref name="classToProxy"/> proxying calls to virtual members of <paramref name="classToProxy"/> and <paramref name="additionalInterfacesToProxy"/> types.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">Thrown when given <paramref name="classToProxy"/> object is a null reference (Nothing in Visual Basic).</exception>
+            <exception cref="T:System.ArgumentException">Thrown when given <paramref name="classToProxy"/> or any of <paramref name="additionalInterfacesToProxy"/> is a generic type definition.</exception>
+            <exception cref="T:System.ArgumentException">Thrown when given <paramref name="classToProxy"/> is not a class type.</exception>
+            <exception cref="T:System.ArgumentException">Thrown when no default constructor exists on type <paramref name="classToProxy"/>.</exception>
+            <exception cref="T:System.Reflection.TargetInvocationException">Thrown when default constructor of type <paramref name="classToProxy"/> throws an exception.</exception>
+            <remarks>
+              This method uses <see cref="T:Castle.DynamicProxy.IProxyBuilder"/> implementation to generate a proxy type.
+              As such caller should expect any type of exception that given <see cref="T:Castle.DynamicProxy.IProxyBuilder"/> implementation may throw.
+            </remarks>
+        </member>
+        <member name="M:Castle.DynamicProxy.IProxyGenerator.CreateClassProxyWithTarget(System.Type,System.Object,Castle.DynamicProxy.ProxyGenerationOptions,System.Object[],Castle.DynamicProxy.IInterceptor[])">
+            <summary>
+              Creates proxy object intercepting calls to virtual members of type <paramref name="classToProxy"/> on newly created instance of that type with given <paramref name="interceptors"/>.
+            </summary>
+            <param name="classToProxy">Type of class which will be proxied.</param>
+            <param name="target">The target object, calls to which will be intercepted.</param>
+            <param name="options">The proxy generation options used to influence generated proxy type and object.</param>
+            <param name="constructorArguments">Arguments of constructor of type <paramref name="classToProxy"/> which should be used to create a new instance of that type.</param>
+            <param name="interceptors">The interceptors called during the invocation of proxied methods.</param>
+            <returns>
+              New object of type <paramref name="classToProxy"/> proxying calls to virtual members of <paramref name="classToProxy"/> type.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">Thrown when given <paramref name="classToProxy"/> object is a null reference (Nothing in Visual Basic).</exception>
+            <exception cref="T:System.ArgumentException">Thrown when given <paramref name="classToProxy"/> is a generic type definition.</exception>
+            <exception cref="T:System.ArgumentException">Thrown when given <paramref name="classToProxy"/> is not a class type.</exception>
+            <exception cref="T:System.ArgumentException">Thrown when no constructor exists on type <paramref name="classToProxy"/> with parameters matching <paramref name="constructorArguments"/>.</exception>
+            <exception cref="T:System.Reflection.TargetInvocationException">Thrown when constructor of type <paramref name="classToProxy"/> throws an exception.</exception>
+            <remarks>
+              This method uses <see cref="T:Castle.DynamicProxy.IProxyBuilder"/> implementation to generate a proxy type.
+              As such caller should expect any type of exception that given <see cref="T:Castle.DynamicProxy.IProxyBuilder"/> implementation may throw.
+            </remarks>
+        </member>
+        <member name="M:Castle.DynamicProxy.IProxyGenerator.CreateClassProxyWithTarget(System.Type,System.Object,System.Object[],Castle.DynamicProxy.IInterceptor[])">
+            <summary>
+              Creates proxy object intercepting calls to virtual members of type <paramref name="classToProxy"/> on newly created instance of that type with given <paramref name="interceptors"/>.
+            </summary>
+            <param name="classToProxy">Type of class which will be proxied.</param>
+            <param name="target">The target object, calls to which will be intercepted.</param>
+            <param name="constructorArguments">Arguments of constructor of type <paramref name="classToProxy"/> which should be used to create a new instance of that type.</param>
+            <param name="interceptors">The interceptors called during the invocation of proxied methods.</param>
+            <returns>
+              New object of type <paramref name="classToProxy"/> proxying calls to virtual members of <paramref name="classToProxy"/> type.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">Thrown when given <paramref name="classToProxy"/> object is a null reference (Nothing in Visual Basic).</exception>
+            <exception cref="T:System.ArgumentException">Thrown when given <paramref name="classToProxy"/> is a generic type definition.</exception>
+            <exception cref="T:System.ArgumentException">Thrown when given <paramref name="classToProxy"/> is not a class type.</exception>
+            <exception cref="T:System.ArgumentException">Thrown when no constructor exists on type <paramref name="classToProxy"/> with parameters matching <paramref name="constructorArguments"/>.</exception>
+            <exception cref="T:System.Reflection.TargetInvocationException">Thrown when constructor of type <paramref name="classToProxy"/> throws an exception.</exception>
+            <remarks>
+              This method uses <see cref="T:Castle.DynamicProxy.IProxyBuilder"/> implementation to generate a proxy type.
+              As such caller should expect any type of exception that given <see cref="T:Castle.DynamicProxy.IProxyBuilder"/> implementation may throw.
+            </remarks>
+        </member>
+        <member name="M:Castle.DynamicProxy.IProxyGenerator.CreateClassProxyWithTarget(System.Type,System.Object,Castle.DynamicProxy.IInterceptor[])">
+            <summary>
+              Creates proxy object intercepting calls to virtual members of type <paramref name="classToProxy"/> on newly created instance of that type with given <paramref name="interceptors"/>.
+            </summary>
+            <param name="classToProxy">Type of class which will be proxied.</param>
+            <param name="target">The target object, calls to which will be intercepted.</param>
+            <param name="interceptors">The interceptors called during the invocation of proxied methods.</param>
+            <returns>
+              New object of type <paramref name="classToProxy"/> proxying calls to virtual members of <paramref name="classToProxy"/> type.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">Thrown when given <paramref name="classToProxy"/> object is a null reference (Nothing in Visual Basic).</exception>
+            <exception cref="T:System.ArgumentException">Thrown when given <paramref name="classToProxy"/> is a generic type definition.</exception>
+            <exception cref="T:System.ArgumentException">Thrown when given <paramref name="classToProxy"/> is not a class type.</exception>
+            <exception cref="T:System.ArgumentException">Thrown when no parameterless constructor exists on type <paramref name="classToProxy"/>.</exception>
+            <exception cref="T:System.Reflection.TargetInvocationException">Thrown when constructor of type <paramref name="classToProxy"/> throws an exception.</exception>
+            <remarks>
+              This method uses <see cref="T:Castle.DynamicProxy.IProxyBuilder"/> implementation to generate a proxy type.
+              As such caller should expect any type of exception that given <see cref="T:Castle.DynamicProxy.IProxyBuilder"/> implementation may throw.
+            </remarks>
+        </member>
+        <member name="M:Castle.DynamicProxy.IProxyGenerator.CreateClassProxyWithTarget(System.Type,System.Object,Castle.DynamicProxy.ProxyGenerationOptions,Castle.DynamicProxy.IInterceptor[])">
+            <summary>
+              Creates proxy object intercepting calls to virtual members of type <paramref name="classToProxy"/> on newly created instance of that type with given <paramref name="interceptors"/>.
+            </summary>
+            <param name="classToProxy">Type of class which will be proxied.</param>
+            <param name="target">The target object, calls to which will be intercepted.</param>
+            <param name="options">The proxy generation options used to influence generated proxy type and object.</param>
+            <param name="interceptors">The interceptors called during the invocation of proxied methods.</param>
+            <returns>
+              New object of type <paramref name="classToProxy"/> proxying calls to virtual members of <paramref name="classToProxy"/> type.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">Thrown when given <paramref name="classToProxy"/> object is a null reference (Nothing in Visual Basic).</exception>
+            <exception cref="T:System.ArgumentNullException">Thrown when given <paramref name="options"/> object is a null reference (Nothing in Visual Basic).</exception>
+            <exception cref="T:System.ArgumentException">Thrown when given <paramref name="classToProxy"/> is a generic type definition.</exception>
+            <exception cref="T:System.ArgumentException">Thrown when given <paramref name="classToProxy"/> is not a class type.</exception>
+            <exception cref="T:System.ArgumentException">Thrown when no default constructor exists on type <paramref name="classToProxy"/>.</exception>
+            <exception cref="T:System.Reflection.TargetInvocationException">Thrown when default constructor of type <paramref name="classToProxy"/> throws an exception.</exception>
+            <remarks>
+              This method uses <see cref="T:Castle.DynamicProxy.IProxyBuilder"/> implementation to generate a proxy type.
+              As such caller should expect any type of exception that given <see cref="T:Castle.DynamicProxy.IProxyBuilder"/> implementation may throw.
+            </remarks>
+        </member>
+        <member name="M:Castle.DynamicProxy.IProxyGenerator.CreateClassProxyWithTarget(System.Type,System.Type[],System.Object,Castle.DynamicProxy.ProxyGenerationOptions,Castle.DynamicProxy.IInterceptor[])">
+            <summary>
+              Creates proxy object intercepting calls to virtual members of type <paramref name="classToProxy"/> on newly created instance of that type with given <paramref name="interceptors"/>.
+            </summary>
+            <param name="classToProxy">Type of class which will be proxied.</param>
+            <param name="additionalInterfacesToProxy">Additional interface types. Calls to their members will be proxied as well.</param>
+            <param name="target">The target object, calls to which will be intercepted.</param>
+            <param name="options">The proxy generation options used to influence generated proxy type and object.</param>
+            <param name="interceptors">The interceptors called during the invocation of proxied methods.</param>
+            <returns>
+              New object of type <paramref name="classToProxy"/> proxying calls to virtual members of <paramref name="classToProxy"/> and <paramref name="additionalInterfacesToProxy"/> types.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">Thrown when given <paramref name="classToProxy"/> object is a null reference (Nothing in Visual Basic).</exception>
+            <exception cref="T:System.ArgumentNullException">Thrown when given <paramref name="options"/> object is a null reference (Nothing in Visual Basic).</exception>
+            <exception cref="T:System.ArgumentException">Thrown when given <paramref name="classToProxy"/> or any of <paramref name="additionalInterfacesToProxy"/> is a generic type definition.</exception>
+            <exception cref="T:System.ArgumentException">Thrown when given <paramref name="classToProxy"/> is not a class type.</exception>
+            <exception cref="T:System.ArgumentException">Thrown when no default constructor exists on type <paramref name="classToProxy"/>.</exception>
+            <exception cref="T:System.Reflection.TargetInvocationException">Thrown when default constructor of type <paramref name="classToProxy"/> throws an exception.</exception>
+            <remarks>
+              This method uses <see cref="T:Castle.DynamicProxy.IProxyBuilder"/> implementation to generate a proxy type.
+              As such caller should expect any type of exception that given <see cref="T:Castle.DynamicProxy.IProxyBuilder"/> implementation may throw.
+            </remarks>
+        </member>
+        <member name="M:Castle.DynamicProxy.IProxyGenerator.CreateClassProxyWithTarget(System.Type,System.Type[],System.Object,Castle.DynamicProxy.ProxyGenerationOptions,System.Object[],Castle.DynamicProxy.IInterceptor[])">
+            <summary>
+              Creates proxy object intercepting calls to virtual members of type <paramref name="classToProxy"/> on newly created instance of that type with given <paramref name="interceptors"/>.
+            </summary>
+            <param name="classToProxy">Type of class which will be proxied.</param>
+            <param name="additionalInterfacesToProxy">Additional interface types. Calls to their members will be proxied as well.</param>
+            <param name="target">The target object, calls to which will be intercepted.</param>
+            <param name="options">The proxy generation options used to influence generated proxy type and object.</param>
+            <param name="constructorArguments">Arguments of constructor of type <paramref name="classToProxy"/> which should be used to create a new instance of that type.</param>
+            <param name="interceptors">The interceptors called during the invocation of proxied methods.</param>
+            <returns>
+              New object of type <paramref name="classToProxy"/> proxying calls to virtual members of <paramref name="classToProxy"/> and <paramref name="additionalInterfacesToProxy"/> types.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">Thrown when given <paramref name="classToProxy"/> object is a null reference (Nothing in Visual Basic).</exception>
+            <exception cref="T:System.ArgumentNullException">Thrown when given <paramref name="options"/> object is a null reference (Nothing in Visual Basic).</exception>
+            <exception cref="T:System.ArgumentException">Thrown when given <paramref name="classToProxy"/> or any of <paramref name="additionalInterfacesToProxy"/> is a generic type definition.</exception>
+            <exception cref="T:System.ArgumentException">Thrown when given <paramref name="classToProxy"/> is not a class type.</exception>
+            <exception cref="T:System.ArgumentException">Thrown when no constructor exists on type <paramref name="classToProxy"/> with parameters matching <paramref name="constructorArguments"/>.</exception>
+            <exception cref="T:System.Reflection.TargetInvocationException">Thrown when constructor of type <paramref name="classToProxy"/> throws an exception.</exception>
+            <remarks>
+              This method uses <see cref="T:Castle.DynamicProxy.IProxyBuilder"/> implementation to generate a proxy type.
+              As such caller should expect any type of exception that given <see cref="T:Castle.DynamicProxy.IProxyBuilder"/> implementation may throw.
+            </remarks>
+        </member>
+        <member name="M:Castle.DynamicProxy.IProxyGenerator.CreateClassProxy``1(Castle.DynamicProxy.IInterceptor[])">
+            <summary>
+              Creates proxy object intercepting calls to virtual members of type <typeparamref name="TClass"/> on newly created instance of that type with given <paramref name="interceptors"/>.
+            </summary>
+            <typeparam name="TClass">Type of class which will be proxied.</typeparam>
+            <param name="interceptors">The interceptors called during the invocation of proxied methods.</param>
+            <returns>
+              New object of type <typeparamref name="TClass"/> proxying calls to virtual members of <typeparamref name="TClass"/> type.
+            </returns>
+            <exception cref="T:System.ArgumentException">Thrown when given <typeparamref name="TClass"/> is not a class type.</exception>
+            <exception cref="T:System.ArgumentException">Thrown when no default constructor exists on type <typeparamref name="TClass"/>.</exception>
+            <exception cref="T:System.Reflection.TargetInvocationException">Thrown when default constructor of type <typeparamref name="TClass"/> throws an exception.</exception>
+            <remarks>
+              This method uses <see cref="T:Castle.DynamicProxy.IProxyBuilder"/> implementation to generate a proxy type.
+              As such caller should expect any type of exception that given <see cref="T:Castle.DynamicProxy.IProxyBuilder"/> implementation may throw.
+            </remarks>
+        </member>
+        <member name="M:Castle.DynamicProxy.IProxyGenerator.CreateClassProxy``1(Castle.DynamicProxy.ProxyGenerationOptions,Castle.DynamicProxy.IInterceptor[])">
+            <summary>
+              Creates proxy object intercepting calls to virtual members of type <typeparamref name="TClass"/> on newly created instance of that type with given <paramref name="interceptors"/>.
+            </summary>
+            <typeparam name="TClass">Type of class which will be proxied.</typeparam>
+            <param name="options">The proxy generation options used to influence generated proxy type and object.</param>
+            <param name="interceptors">The interceptors called during the invocation of proxied methods.</param>
+            <returns>
+              New object of type <typeparamref name="TClass"/> proxying calls to virtual members of <typeparamref name="TClass"/> type.
+            </returns>
+            <exception cref="T:System.ArgumentException">Thrown when given <typeparamref name="TClass"/> is not a class type.</exception>
+            <exception cref="T:System.ArgumentException">Thrown when no default constructor exists on type <typeparamref name="TClass"/>.</exception>
+            <exception cref="T:System.Reflection.TargetInvocationException">Thrown when default constructor of type <typeparamref name="TClass"/> throws an exception.</exception>
+            <remarks>
+              This method uses <see cref="T:Castle.DynamicProxy.IProxyBuilder"/> implementation to generate a proxy type.
+              As such caller should expect any type of exception that given <see cref="T:Castle.DynamicProxy.IProxyBuilder"/> implementation may throw.
+            </remarks>
+        </member>
+        <member name="M:Castle.DynamicProxy.IProxyGenerator.CreateClassProxy(System.Type,System.Type[],Castle.DynamicProxy.IInterceptor[])">
+            <summary>
+              Creates proxy object intercepting calls to virtual members of type <paramref name="classToProxy"/> on newly created instance of that type with given <paramref name="interceptors"/>.
+            </summary>
+            <param name="classToProxy">Type of class which will be proxied.</param>
+            <param name="additionalInterfacesToProxy">Additional interface types. Calls to their members will be proxied as well.</param>
+            <param name="interceptors">The interceptors called during the invocation of proxied methods.</param>
+            <returns>
+              New object of type <paramref name="classToProxy"/> proxying calls to virtual members of <paramref name="classToProxy"/> and <paramref name="additionalInterfacesToProxy"/> types.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">Thrown when given <paramref name="classToProxy"/> object is a null reference (Nothing in Visual Basic).</exception>
+            <exception cref="T:System.ArgumentException">Thrown when given <paramref name="classToProxy"/> or any of <paramref name="additionalInterfacesToProxy"/> is a generic type definition.</exception>
+            <exception cref="T:System.ArgumentException">Thrown when given <paramref name="classToProxy"/> is not a class type.</exception>
+            <exception cref="T:System.ArgumentException">Thrown when no default constructor exists on type <paramref name="classToProxy"/>.</exception>
+            <exception cref="T:System.Reflection.TargetInvocationException">Thrown when default constructor of type <paramref name="classToProxy"/> throws an exception.</exception>
+            <remarks>
+              This method uses <see cref="T:Castle.DynamicProxy.IProxyBuilder"/> implementation to generate a proxy type.
+              As such caller should expect any type of exception that given <see cref="T:Castle.DynamicProxy.IProxyBuilder"/> implementation may throw.
+            </remarks>
+        </member>
+        <member name="M:Castle.DynamicProxy.IProxyGenerator.CreateClassProxy(System.Type,Castle.DynamicProxy.ProxyGenerationOptions,System.Object[],Castle.DynamicProxy.IInterceptor[])">
+            <summary>
+              Creates proxy object intercepting calls to virtual members of type <paramref name="classToProxy"/> on newly created instance of that type with given <paramref name="interceptors"/>.
+            </summary>
+            <param name="classToProxy">Type of class which will be proxied.</param>
+            <param name="options">The proxy generation options used to influence generated proxy type and object.</param>
+            <param name="constructorArguments">Arguments of constructor of type <paramref name="classToProxy"/> which should be used to create a new instance of that type.</param>
+            <param name="interceptors">The interceptors called during the invocation of proxied methods.</param>
+            <returns>
+              New object of type <paramref name="classToProxy"/> proxying calls to virtual members of <paramref name="classToProxy"/> type.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">Thrown when given <paramref name="classToProxy"/> object is a null reference (Nothing in Visual Basic).</exception>
+            <exception cref="T:System.ArgumentException">Thrown when given <paramref name="classToProxy"/> is a generic type definition.</exception>
+            <exception cref="T:System.ArgumentException">Thrown when given <paramref name="classToProxy"/> is not a class type.</exception>
+            <exception cref="T:System.ArgumentException">Thrown when no constructor exists on type <paramref name="classToProxy"/> with parameters matching <paramref name="constructorArguments"/>.</exception>
+            <exception cref="T:System.Reflection.TargetInvocationException">Thrown when constructor of type <paramref name="classToProxy"/> throws an exception.</exception>
+            <remarks>
+              This method uses <see cref="T:Castle.DynamicProxy.IProxyBuilder"/> implementation to generate a proxy type.
+              As such caller should expect any type of exception that given <see cref="T:Castle.DynamicProxy.IProxyBuilder"/> implementation may throw.
+            </remarks>
+        </member>
+        <member name="M:Castle.DynamicProxy.IProxyGenerator.CreateClassProxy(System.Type,System.Object[],Castle.DynamicProxy.IInterceptor[])">
+            <summary>
+              Creates proxy object intercepting calls to virtual members of type <paramref name="classToProxy"/> on newly created instance of that type with given <paramref name="interceptors"/>.
+            </summary>
+            <param name="classToProxy">Type of class which will be proxied.</param>
+            <param name="constructorArguments">Arguments of constructor of type <paramref name="classToProxy"/> which should be used to create a new instance of that type.</param>
+            <param name="interceptors">The interceptors called during the invocation of proxied methods.</param>
+            <returns>
+              New object of type <paramref name="classToProxy"/> proxying calls to virtual members of <paramref name="classToProxy"/> type.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">Thrown when given <paramref name="classToProxy"/> object is a null reference (Nothing in Visual Basic).</exception>
+            <exception cref="T:System.ArgumentException">Thrown when given <paramref name="classToProxy"/> is a generic type definition.</exception>
+            <exception cref="T:System.ArgumentException">Thrown when given <paramref name="classToProxy"/> is not a class type.</exception>
+            <exception cref="T:System.ArgumentException">Thrown when no constructor exists on type <paramref name="classToProxy"/> with parameters matching <paramref name="constructorArguments"/>.</exception>
+            <exception cref="T:System.Reflection.TargetInvocationException">Thrown when constructor of type <paramref name="classToProxy"/> throws an exception.</exception>
+            <remarks>
+              This method uses <see cref="T:Castle.DynamicProxy.IProxyBuilder"/> implementation to generate a proxy type.
+              As such caller should expect any type of exception that given <see cref="T:Castle.DynamicProxy.IProxyBuilder"/> implementation may throw.
+            </remarks>
+        </member>
+        <member name="M:Castle.DynamicProxy.IProxyGenerator.CreateClassProxy(System.Type,Castle.DynamicProxy.IInterceptor[])">
+            <summary>
+              Creates proxy object intercepting calls to virtual members of type <paramref name="classToProxy"/> on newly created instance of that type with given <paramref name="interceptors"/>.
+            </summary>
+            <param name="classToProxy">Type of class which will be proxied.</param>
+            <param name="interceptors">The interceptors called during the invocation of proxied methods.</param>
+            <returns>
+              New object of type <paramref name="classToProxy"/> proxying calls to virtual members of <paramref name="classToProxy"/> type.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">Thrown when given <paramref name="classToProxy"/> object is a null reference (Nothing in Visual Basic).</exception>
+            <exception cref="T:System.ArgumentException">Thrown when given <paramref name="classToProxy"/> is a generic type definition.</exception>
+            <exception cref="T:System.ArgumentException">Thrown when given <paramref name="classToProxy"/> is not a class type.</exception>
+            <exception cref="T:System.ArgumentException">Thrown when no parameterless constructor exists on type <paramref name="classToProxy"/>.</exception>
+            <exception cref="T:System.Reflection.TargetInvocationException">Thrown when constructor of type <paramref name="classToProxy"/> throws an exception.</exception>
+            <remarks>
+              This method uses <see cref="T:Castle.DynamicProxy.IProxyBuilder"/> implementation to generate a proxy type.
+              As such caller should expect any type of exception that given <see cref="T:Castle.DynamicProxy.IProxyBuilder"/> implementation may throw.
+            </remarks>
+        </member>
+        <member name="M:Castle.DynamicProxy.IProxyGenerator.CreateClassProxy(System.Type,Castle.DynamicProxy.ProxyGenerationOptions,Castle.DynamicProxy.IInterceptor[])">
+            <summary>
+              Creates proxy object intercepting calls to virtual members of type <paramref name="classToProxy"/> on newly created instance of that type with given <paramref name="interceptors"/>.
+            </summary>
+            <param name="classToProxy">Type of class which will be proxied.</param>
+            <param name="options">The proxy generation options used to influence generated proxy type and object.</param>
+            <param name="interceptors">The interceptors called during the invocation of proxied methods.</param>
+            <returns>
+              New object of type <paramref name="classToProxy"/> proxying calls to virtual members of <paramref name="classToProxy"/> type.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">Thrown when given <paramref name="classToProxy"/> object is a null reference (Nothing in Visual Basic).</exception>
+            <exception cref="T:System.ArgumentNullException">Thrown when given <paramref name="options"/> object is a null reference (Nothing in Visual Basic).</exception>
+            <exception cref="T:System.ArgumentException">Thrown when given <paramref name="classToProxy"/> is a generic type definition.</exception>
+            <exception cref="T:System.ArgumentException">Thrown when given <paramref name="classToProxy"/> is not a class type.</exception>
+            <exception cref="T:System.ArgumentException">Thrown when no default constructor exists on type <paramref name="classToProxy"/>.</exception>
+            <exception cref="T:System.Reflection.TargetInvocationException">Thrown when default constructor of type <paramref name="classToProxy"/> throws an exception.</exception>
+            <remarks>
+              This method uses <see cref="T:Castle.DynamicProxy.IProxyBuilder"/> implementation to generate a proxy type.
+              As such caller should expect any type of exception that given <see cref="T:Castle.DynamicProxy.IProxyBuilder"/> implementation may throw.
+            </remarks>
+        </member>
+        <member name="M:Castle.DynamicProxy.IProxyGenerator.CreateClassProxy(System.Type,System.Type[],Castle.DynamicProxy.ProxyGenerationOptions,Castle.DynamicProxy.IInterceptor[])">
+            <summary>
+              Creates proxy object intercepting calls to virtual members of type <paramref name="classToProxy"/> on newly created instance of that type with given <paramref name="interceptors"/>.
+            </summary>
+            <param name="classToProxy">Type of class which will be proxied.</param>
+            <param name="additionalInterfacesToProxy">Additional interface types. Calls to their members will be proxied as well.</param>
+            <param name="options">The proxy generation options used to influence generated proxy type and object.</param>
+            <param name="interceptors">The interceptors called during the invocation of proxied methods.</param>
+            <returns>
+              New object of type <paramref name="classToProxy"/> proxying calls to virtual members of <paramref name="classToProxy"/> and <paramref name="additionalInterfacesToProxy"/> types.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">Thrown when given <paramref name="classToProxy"/> object is a null reference (Nothing in Visual Basic).</exception>
+            <exception cref="T:System.ArgumentNullException">Thrown when given <paramref name="options"/> object is a null reference (Nothing in Visual Basic).</exception>
+            <exception cref="T:System.ArgumentException">Thrown when given <paramref name="classToProxy"/> or any of <paramref name="additionalInterfacesToProxy"/> is a generic type definition.</exception>
+            <exception cref="T:System.ArgumentException">Thrown when given <paramref name="classToProxy"/> is not a class type.</exception>
+            <exception cref="T:System.ArgumentException">Thrown when no default constructor exists on type <paramref name="classToProxy"/>.</exception>
+            <exception cref="T:System.Reflection.TargetInvocationException">Thrown when default constructor of type <paramref name="classToProxy"/> throws an exception.</exception>
+            <remarks>
+              This method uses <see cref="T:Castle.DynamicProxy.IProxyBuilder"/> implementation to generate a proxy type.
+              As such caller should expect any type of exception that given <see cref="T:Castle.DynamicProxy.IProxyBuilder"/> implementation may throw.
+            </remarks>
+        </member>
+        <member name="M:Castle.DynamicProxy.IProxyGenerator.CreateClassProxy(System.Type,System.Type[],Castle.DynamicProxy.ProxyGenerationOptions,System.Object[],Castle.DynamicProxy.IInterceptor[])">
+            <summary>
+              Creates proxy object intercepting calls to virtual members of type <paramref name="classToProxy"/> on newly created instance of that type with given <paramref name="interceptors"/>.
+            </summary>
+            <param name="classToProxy">Type of class which will be proxied.</param>
+            <param name="additionalInterfacesToProxy">Additional interface types. Calls to their members will be proxied as well.</param>
+            <param name="options">The proxy generation options used to influence generated proxy type and object.</param>
+            <param name="constructorArguments">Arguments of constructor of type <paramref name="classToProxy"/> which should be used to create a new instance of that type.</param>
+            <param name="interceptors">The interceptors called during the invocation of proxied methods.</param>
+            <returns>
+              New object of type <paramref name="classToProxy"/> proxying calls to virtual members of <paramref name="classToProxy"/> and <paramref name="additionalInterfacesToProxy"/> types.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">Thrown when given <paramref name="classToProxy"/> object is a null reference (Nothing in Visual Basic).</exception>
+            <exception cref="T:System.ArgumentNullException">Thrown when given <paramref name="options"/> object is a null reference (Nothing in Visual Basic).</exception>
+            <exception cref="T:System.ArgumentException">Thrown when given <paramref name="classToProxy"/> or any of <paramref name="additionalInterfacesToProxy"/> is a generic type definition.</exception>
+            <exception cref="T:System.ArgumentException">Thrown when given <paramref name="classToProxy"/> is not a class type.</exception>
+            <exception cref="T:System.ArgumentException">Thrown when no constructor exists on type <paramref name="classToProxy"/> with parameters matching <paramref name="constructorArguments"/>.</exception>
+            <exception cref="T:System.Reflection.TargetInvocationException">Thrown when constructor of type <paramref name="classToProxy"/> throws an exception.</exception>
+            <remarks>
+              This method uses <see cref="T:Castle.DynamicProxy.IProxyBuilder"/> implementation to generate a proxy type.
+              As such caller should expect any type of exception that given <see cref="T:Castle.DynamicProxy.IProxyBuilder"/> implementation may throw.
+            </remarks>
+        </member>
+        <member name="P:Castle.DynamicProxy.IProxyGenerator.Logger">
+            <summary>
+              Gets or sets the <see cref="T:Castle.Core.Logging.ILogger"/> that this <see cref="T:Castle.DynamicProxy.ProxyGenerator"/> log to.
+            </summary>
+        </member>
+        <member name="P:Castle.DynamicProxy.IProxyGenerator.ProxyBuilder">
+            <summary>
+              Gets the proxy builder instance used to generate proxy types.
+            </summary>
+            <value>The proxy builder.</value>
+        </member>
+        <member name="T:Castle.DynamicProxy.Serialization.CacheMappingsAttribute">
+            <summary>
+              Applied to the assemblies saved by <see cref="T:Castle.DynamicProxy.ModuleScope"/> in order to persist the cache data included in the persisted assembly.
+            </summary>
         </member>
         <member name="T:Castle.DynamicProxy.Generators.BaseProxyGenerator">
             <summary>
@@ -1294,17 +2288,6 @@
               Initializes a new instance of the <see cref="T:Castle.DynamicProxy.DefaultProxyBuilder"/> class.
             </summary>
             <param name="scope">The module scope for generated proxy types.</param>
-        </member>
-        <member name="M:Castle.DynamicProxy.Internal.AttributeUtil.AddDisassembler``1(Castle.DynamicProxy.IAttributeDisassembler)">
-            <summary>
-              Registers custom disassembler to handle disassembly of specified type of attributes.
-            </summary>
-            <typeparam name="TAttribute">Type of attributes to handle</typeparam>
-            <param name="disassembler">Disassembler converting existing instances of Attributes to CustomAttributeBuilders</param>
-            <remarks>
-              When disassembling an attribute Dynamic Proxy will first check if an custom disassembler has been registered to handle attributes of that type, 
-              and if none is found, it'll use the <see cref="P:Castle.DynamicProxy.Internal.AttributeUtil.FallbackDisassembler"/>.
-            </remarks>
         </member>
         <member name="M:Castle.DynamicProxy.Internal.AttributeUtil.ShouldSkipAttributeReplication(System.Type)">
             <summary>
@@ -1576,6 +2559,55 @@
             </summary>
             <returns>A weak-named module generated by this scope.</returns>
         </member>
+        <member name="M:Castle.DynamicProxy.ModuleScope.SaveAssembly">
+            <summary>
+              Saves the generated assembly with the name and directory information given when this <see cref="T:Castle.DynamicProxy.ModuleScope"/> instance was created (or with
+              the <see cref="F:Castle.DynamicProxy.ModuleScope.DEFAULT_FILE_NAME"/> and current directory if none was given).
+            </summary>
+            <remarks>
+              <para>
+                This method stores the generated assembly in the directory passed as part of the module information specified when this instance was
+                constructed (if any, else the current directory is used). If both a strong-named and a weak-named assembly
+                have been generated, it will throw an exception; in this case, use the <see cref="M:Castle.DynamicProxy.ModuleScope.SaveAssembly(System.Boolean)"/> overload.
+              </para>
+              <para>
+                If this <see cref="T:Castle.DynamicProxy.ModuleScope"/> was created without indicating that the assembly should be saved, this method does nothing.
+              </para>
+            </remarks>
+            <exception cref="T:System.InvalidOperationException">Both a strong-named and a weak-named assembly have been generated.</exception>
+            <returns>The path of the generated assembly file, or null if no file has been generated.</returns>
+        </member>
+        <member name="M:Castle.DynamicProxy.ModuleScope.SaveAssembly(System.Boolean)">
+            <summary>
+              Saves the specified generated assembly with the name and directory information given when this <see cref="T:Castle.DynamicProxy.ModuleScope"/> instance was created
+              (or with the <see cref="F:Castle.DynamicProxy.ModuleScope.DEFAULT_FILE_NAME"/> and current directory if none was given).
+            </summary>
+            <param name="strongNamed">True if the generated assembly with a strong name should be saved (see <see cref="P:Castle.DynamicProxy.ModuleScope.StrongNamedModule"/>);
+              false if the generated assembly without a strong name should be saved (see <see cref="P:Castle.DynamicProxy.ModuleScope.WeakNamedModule"/>.</param>
+            <remarks>
+              <para>
+                This method stores the specified generated assembly in the directory passed as part of the module information specified when this instance was
+                constructed (if any, else the current directory is used).
+              </para>
+              <para>
+                If this <see cref="T:Castle.DynamicProxy.ModuleScope"/> was created without indicating that the assembly should be saved, this method does nothing.
+              </para>
+            </remarks>
+            <exception cref="T:System.InvalidOperationException">No assembly has been generated that matches the <paramref name="strongNamed"/> parameter.
+            </exception>
+            <returns>The path of the generated assembly file, or null if no file has been generated.</returns>
+        </member>
+        <member name="M:Castle.DynamicProxy.ModuleScope.LoadAssemblyIntoCache(System.Reflection.Assembly)">
+            <summary>
+              Loads the generated types from the given assembly into this <see cref="T:Castle.DynamicProxy.ModuleScope"/>'s cache.
+            </summary>
+            <param name="assembly">The assembly to load types from. This assembly must have been saved via <see cref="M:Castle.DynamicProxy.ModuleScope.SaveAssembly(System.Boolean)"/> or
+              <see cref="M:Castle.DynamicProxy.ModuleScope.SaveAssembly"/>, or it must have the <see cref="T:Castle.DynamicProxy.Serialization.CacheMappingsAttribute"/> manually applied.</param>
+            <remarks>
+              This method can be used to load previously generated and persisted proxy types from disk into this scope's type cache, eg. in order
+              to avoid the performance hit associated with proxy generation.
+            </remarks>
+        </member>
         <member name="P:Castle.DynamicProxy.ModuleScope.Lock">
             <summary>
               Users of this <see cref="T:Castle.DynamicProxy.ModuleScope"/> should use this lock when accessing the cache.
@@ -1593,6 +2625,14 @@
             </summary>
             <value>The file name of the strongly named module generated by this scope.</value>
         </member>
+        <member name="P:Castle.DynamicProxy.ModuleScope.StrongNamedModuleDirectory">
+            <summary>
+              Gets the directory where the strongly named module generated by this scope will be saved, or <see langword="null"/> if the current directory
+              is used.
+            </summary>
+            <value>The directory where the strongly named module generated by this scope will be saved when <see cref="M:Castle.DynamicProxy.ModuleScope.SaveAssembly"/> is called
+              (if this scope was created to save modules).</value>
+        </member>
         <member name="P:Castle.DynamicProxy.ModuleScope.WeakNamedModule">
             <summary>
               Gets the weak-named module generated by this scope, or <see langword = "null" /> if none has yet been generated.
@@ -1604,6 +2644,37 @@
               Gets the file name of the weakly named module generated by this scope.
             </summary>
             <value>The file name of the weakly named module generated by this scope.</value>
+        </member>
+        <member name="P:Castle.DynamicProxy.ModuleScope.WeakNamedModuleDirectory">
+            <summary>
+              Gets the directory where the weakly named module generated by this scope will be saved, or <see langword="null"/> if the current directory
+              is used.
+            </summary>
+            <value>The directory where the weakly named module generated by this scope will be saved when <see cref="M:Castle.DynamicProxy.ModuleScope.SaveAssembly"/> is called
+              (if this scope was created to save modules).</value>
+        </member>
+        <member name="T:Castle.DynamicProxy.PersistentProxyBuilder">
+            <summary>
+              ProxyBuilder that persists the generated type.
+            </summary>
+            <remarks>
+              The saved assembly contains just the last generated type.
+            </remarks>
+        </member>
+        <member name="M:Castle.DynamicProxy.PersistentProxyBuilder.#ctor">
+            <summary>
+              Initializes a new instance of the <see cref="T:Castle.DynamicProxy.PersistentProxyBuilder"/> class.
+            </summary>
+        </member>
+        <member name="M:Castle.DynamicProxy.PersistentProxyBuilder.SaveAssembly">
+            <summary>
+              Saves the generated assembly to a physical file. Note that this renders the <see cref="T:Castle.DynamicProxy.PersistentProxyBuilder"/> unusable.
+            </summary>
+            <returns>The path of the generated assembly file, or null if no assembly has been generated.</returns>
+            <remarks>
+              This method does not support saving multiple files. If both a signed and an unsigned module have been generated, use the 
+              respective methods of the <see cref="T:Castle.DynamicProxy.ModuleScope"/>.
+            </remarks>
         </member>
         <member name="M:Castle.DynamicProxy.ProxyGenerationOptions.#ctor(Castle.DynamicProxy.IProxyGenerationHook)">
             <summary>
@@ -2508,16 +3579,68 @@
             </summary>
             <value>The proxy builder.</value>
         </member>
-        <member name="M:Castle.DynamicProxy.SilverlightExtensions.Extensions.IsNested(System.Type)">
+        <member name="T:Castle.DynamicProxy.Serialization.ProxyObjectReference">
             <summary>
-            The silverlight System.Type is missing the IsNested property so this exposes similar functionality.
+              Handles the deserialization of proxies.
             </summary>
-            <param name="type"></param>
-            <returns></returns>
+        </member>
+        <member name="M:Castle.DynamicProxy.Serialization.ProxyObjectReference.ResetScope">
+            <summary>
+              Resets the <see cref="P:Castle.DynamicProxy.Serialization.ProxyObjectReference.ModuleScope"/> used for deserialization to a new scope.
+            </summary>
+            <remarks>
+              This is useful for test cases.
+            </remarks>
+        </member>
+        <member name="M:Castle.DynamicProxy.Serialization.ProxyObjectReference.SetScope(Castle.DynamicProxy.ModuleScope)">
+            <summary>
+              Resets the <see cref="P:Castle.DynamicProxy.Serialization.ProxyObjectReference.ModuleScope"/> used for deserialization to a given <paramref name="scope"/>.
+            </summary>
+            <param name="scope"> The scope to be used for deserialization. </param>
+            <remarks>
+              By default, the deserialization process uses a different scope than the rest of the application, which can lead to multiple proxies
+              being generated for the same type. By explicitly setting the deserialization scope to the application's scope, this can be avoided.
+            </remarks>
+        </member>
+        <member name="P:Castle.DynamicProxy.Serialization.ProxyObjectReference.ModuleScope">
+            <summary>
+              Gets the <see cref="P:Castle.DynamicProxy.Serialization.ProxyObjectReference.ModuleScope"/> used for deserialization.
+            </summary>
+            <value> As <see cref="T:Castle.DynamicProxy.Serialization.ProxyObjectReference"/> has no way of automatically determining the scope used by the application (and the application might use more than one scope at the same time), <see cref="T:Castle.DynamicProxy.Serialization.ProxyObjectReference"/> uses a dedicated scope instance for deserializing proxy types. This instance can be reset and set to a specific value via <see cref="M:Castle.DynamicProxy.Serialization.ProxyObjectReference.ResetScope"/> and <see cref="M:Castle.DynamicProxy.Serialization.ProxyObjectReference.SetScope(Castle.DynamicProxy.ModuleScope)"/> . </value>
         </member>
         <member name="T:Castle.DynamicProxy.Tokens.InvocationMethods">
             <summary>
               Holds <see cref="T:System.Reflection.MethodInfo"/> objects representing methods of <see cref="T:Castle.DynamicProxy.AbstractInvocation"/> class.
+            </summary>
+        </member>
+        <member name="T:Castle.DynamicProxy.Tokens.SerializationInfoMethods">
+            <summary>
+              Holds <see cref="T:System.Reflection.MethodInfo"/> objects representing methods of <see cref="T:System.Runtime.Serialization.SerializationInfo"/> class.
+            </summary>
+        </member>
+        <member name="F:Castle.DynamicProxy.Tokens.SerializationInfoMethods.AddValue_Bool">
+            <summary>
+              <see cref="M:System.Runtime.Serialization.SerializationInfo.AddValue(System.String,System.Boolean)"/>
+            </summary>
+        </member>
+        <member name="F:Castle.DynamicProxy.Tokens.SerializationInfoMethods.AddValue_Int32">
+            <summary>
+              <see cref="M:System.Runtime.Serialization.SerializationInfo.AddValue(System.String,System.Int32)"/>
+            </summary>
+        </member>
+        <member name="F:Castle.DynamicProxy.Tokens.SerializationInfoMethods.AddValue_Object">
+            <summary>
+              <see cref="M:System.Runtime.Serialization.SerializationInfo.AddValue(System.String,System.Object)"/>
+            </summary>
+        </member>
+        <member name="F:Castle.DynamicProxy.Tokens.SerializationInfoMethods.GetValue">
+            <summary>
+              <see cref="M:System.Runtime.Serialization.SerializationInfo.GetValue(System.String,System.Type)"/>
+            </summary>
+        </member>
+        <member name="F:Castle.DynamicProxy.Tokens.SerializationInfoMethods.SetType">
+            <summary>
+              <see cref="M:System.Runtime.Serialization.SerializationInfo.SetType(System.Type)"/>
             </summary>
         </member>
         <member name="T:Castle.DynamicProxy.IInterceptorSelector">
@@ -2562,7 +3685,7 @@
         </member>
         <member name="T:Castle.DynamicProxy.IChangeProxyTarget">
             <summary>
-              Exposes means to change target objects of proxies and invocations
+              Exposes means to change target objects of proxies and invocations.
             </summary>
         </member>
         <member name="M:Castle.DynamicProxy.IChangeProxyTarget.ChangeInvocationTarget(System.Object)">
@@ -2595,7 +3718,13 @@
         </member>
         <member name="T:Castle.DynamicProxy.IInterceptor">
             <summary>
-              New interface that is going to be used by DynamicProxy 2
+              Provides the main DynamicProxy extension point that allows member interception.
+            </summary>
+        </member>
+        <member name="T:Castle.DynamicProxy.IProxyTargetAccessor">
+            <summary>
+              Exposes access to the target object and interceptors of proxy objects.
+              This is a DynamicProxy infrastructure interface and should not be implemented yourself.
             </summary>
         </member>
         <member name="M:Castle.DynamicProxy.IProxyTargetAccessor.DynProxyGetTarget">
@@ -2726,6 +3855,18 @@
             <param name = "fileName">i.e. log4net.config</param>
             <returns></returns>
         </member>
+        <member name="T:Castle.Core.Logging.TraceLoggerFactory">
+            <summary>
+              Used to create the TraceLogger implementation of ILogger interface. See <see cref="T:Castle.Core.Logging.TraceLogger"/>.
+            </summary>
+        </member>
+        <member name="M:Castle.Core.Logging.AbstractLoggerFactory.GetConfigFile(System.String)">
+            <summary>
+              Gets the configuration file.
+            </summary>
+            <param name = "fileName">i.e. log4net.config</param>
+            <returns></returns>
+        </member>
         <member name="T:Castle.Core.Logging.IContextProperties">
             <summary>
               Interface for Context Properties implementations
@@ -2752,13 +3893,6 @@
               </para>
             </remarks>
         </member>
-        <member name="M:Castle.Core.Logging.AbstractLoggerFactory.GetConfigFile(System.String)">
-            <summary>
-              Gets the configuration file.
-            </summary>
-            <param name = "fileName">i.e. log4net.config</param>
-            <returns></returns>
-        </member>
         <member name="T:Castle.Core.Logging.NullLogFactory">
             <summary>
             NullLogFactory used when logging is turned off.
@@ -2778,6 +3912,13 @@
             <param name = "name">Name.</param>
             <param name = "level">Level.</param>
             <returns></returns>
+        </member>
+        <member name="T:Castle.Core.Logging.StreamLoggerFactory">
+            <summary>
+              Creates <see cref="T:Castle.Core.Logging.StreamLogger"/> outputing 
+              to files. The name of the file is derived from the log name
+              plus the 'log' extension.
+            </summary>
         </member>
         <member name="T:Castle.Core.Logging.IExtendedLogger">
             <summary>
@@ -3124,6 +4265,12 @@
               Creates a new <c>LevelFilteredLogger</c>.
             </summary>
         </member>
+        <member name="M:Castle.Core.Logging.LevelFilteredLogger.InitializeLifetimeService">
+            <summary>
+            Keep the instance alive in a remoting scenario
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:Castle.Core.Logging.LevelFilteredLogger.Debug(System.String)">
             <summary>
               Logs a debug message.
@@ -3445,6 +4592,32 @@
             </summary>
             <param name = "loggerName">The added hierarchical name.</param>
             <returns>A new <c>ConsoleLogger</c>.</returns>
+        </member>
+        <member name="T:Castle.Core.Logging.DiagnosticsLogger">
+            <summary>
+              The Logger using standard Diagnostics namespace.
+            </summary>
+        </member>
+        <member name="M:Castle.Core.Logging.DiagnosticsLogger.#ctor(System.String)">
+            <summary>
+              Creates a logger based on <see cref="T:System.Diagnostics.EventLog"/>.
+            </summary>
+            <param name="logName"><see cref="P:System.Diagnostics.EventLog.Log"/></param>
+        </member>
+        <member name="M:Castle.Core.Logging.DiagnosticsLogger.#ctor(System.String,System.String)">
+            <summary>
+              Creates a logger based on <see cref="T:System.Diagnostics.EventLog"/>.
+            </summary>
+            <param name="logName"><see cref="P:System.Diagnostics.EventLog.Log"/></param>
+            <param name="source"><see cref="P:System.Diagnostics.EventLog.Source"/></param>
+        </member>
+        <member name="M:Castle.Core.Logging.DiagnosticsLogger.#ctor(System.String,System.String,System.String)">
+            <summary>
+              Creates a logger based on <see cref="T:System.Diagnostics.EventLog"/>.
+            </summary>
+            <param name="logName"><see cref="P:System.Diagnostics.EventLog.Log"/></param>
+            <param name="machineName"><see cref="P:System.Diagnostics.EventLog.MachineName"/></param>
+            <param name="source"><see cref="P:System.Diagnostics.EventLog.Source"/></param>
         </member>
         <member name="T:Castle.Core.Logging.NullLogger">
             <summary>
@@ -3799,6 +4972,46 @@
             <param name = "name">The name of the log.</param>
             <param name = "writer">The <c>StreamWriter</c> the log will write to.</param>
         </member>
+        <member name="T:Castle.Core.Logging.TraceLogger">
+            <summary>
+              The TraceLogger sends all logging to the System.Diagnostics.TraceSource
+              built into the .net framework.
+            </summary>
+            <remarks>
+              Logging can be configured in the system.diagnostics configuration 
+              section. 
+            
+              If logger doesn't find a source name with a full match it will
+              use source names which match the namespace partially. For example you can
+              configure from all castle components by adding a source name with the
+              name "Castle". 
+            
+              If no portion of the namespace matches the source named "Default" will
+              be used.
+            </remarks>
+        </member>
+        <member name="M:Castle.Core.Logging.TraceLogger.#ctor(System.String)">
+            <summary>
+            Build a new trace logger based on the named TraceSource
+            </summary>
+            <param name="name">The name used to locate the best TraceSource. In most cases comes from the using type's fullname.</param>
+        </member>
+        <member name="M:Castle.Core.Logging.TraceLogger.#ctor(System.String,Castle.Core.Logging.LoggerLevel)">
+            <summary>
+            Build a new trace logger based on the named TraceSource
+            </summary>
+            <param name="name">The name used to locate the best TraceSource. In most cases comes from the using type's fullname.</param>
+            <param name="level">The default logging level at which this source should write messages. In almost all cases this
+            default value will be overridden in the config file. </param>
+        </member>
+        <member name="M:Castle.Core.Logging.TraceLogger.CreateChildLogger(System.String)">
+            <summary>
+            Create a new child logger.
+            The name of the child logger is [current-loggers-name].[passed-in-name]
+            </summary>
+            <param name="loggerName">The Subname of this logger.</param>
+            <returns>The New ILogger instance.</returns> 
+        </member>
         <member name="T:Castle.Core.Configuration.AbstractConfiguration">
             <summary>
               This is an abstract <see cref="T:Castle.Core.Configuration.IConfiguration"/> implementation
@@ -3929,6 +5142,19 @@
             <value>
             The Value of the <see cref="T:Castle.Core.Configuration.IConfiguration"/>.
             </value>
+        </member>
+        <member name="M:Castle.Core.Configuration.Xml.XmlConfigurationDeserializer.Deserialize(System.Xml.XmlNode)">
+            <summary>
+              Deserializes the specified node into an abstract representation of configuration.
+            </summary>
+            <param name = "node">The node.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Castle.Core.Configuration.Xml.XmlConfigurationDeserializer.GetConfigValue(System.String)">
+            <summary>
+              If a config value is an empty string we return null, this is to keep
+              backward compatibility with old code
+            </summary>
         </member>
         <member name="T:Castle.Core.Pair`2">
             <summary>
@@ -4209,6 +5435,11 @@
             
             </summary>
         </member>
+        <member name="T:Castle.Core.Resource.FileResourceFactory">
+            <summary>
+            
+            </summary>
+        </member>
         <member name="T:Castle.Core.Resource.StaticContentResource">
             <summary>
             Adapts a static string content as an <see cref="T:Castle.Core.Resource.IResource"/>
@@ -4218,6 +5449,134 @@
             <summary>
             Enable access to files on network shares
             </summary>
+        </member>
+        <member name="T:Castle.Core.Smtp.IEmailSender">
+            <summary>
+            Email sender abstraction.
+            </summary>
+        </member>
+        <member name="M:Castle.Core.Smtp.IEmailSender.Send(System.String,System.String,System.String,System.String)">
+            <summary>
+            Sends a mail message.
+            </summary>
+            <param name="from">From field</param>
+            <param name="to">To field</param>
+            <param name="subject">E-mail's subject</param>
+            <param name="messageText">message's body</param>
+        </member>
+        <member name="M:Castle.Core.Smtp.IEmailSender.Send(System.Net.Mail.MailMessage)">
+            <summary>
+            Sends a <see cref="T:System.Net.Mail.MailMessage">message</see>. 
+            </summary>
+            <param name="message"><see cref="T:System.Net.Mail.MailMessage">Message</see> instance</param>
+        </member>
+        <member name="M:Castle.Core.Smtp.IEmailSender.Send(System.Collections.Generic.IEnumerable{System.Net.Mail.MailMessage})">
+            <summary>
+            Sends multiple <see cref="T:System.Net.Mail.MailMessage">messages</see>. 
+            </summary>
+            <param name="messages">List of <see cref="T:System.Net.Mail.MailMessage">messages</see></param>
+        </member>
+        <member name="T:Castle.Core.Smtp.DefaultSmtpSender">
+            <summary>
+            Default <see cref="T:Castle.Core.Smtp.IEmailSender"/> implementation.
+            </summary>
+        </member>
+        <member name="M:Castle.Core.Smtp.DefaultSmtpSender.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Castle.Core.Smtp.DefaultSmtpSender"/> class based on the <see cref="T:System.Net.Mail.SmtpClient"/> configuration provided in the application configuration file.
+            </summary>
+            <remarks>
+            This constructor is based on the default <see cref="T:System.Net.Mail.SmtpClient"/> configuration in the application configuration file.
+            </remarks> 
+        </member>
+        <member name="M:Castle.Core.Smtp.DefaultSmtpSender.#ctor(System.String)">
+            <summary>
+            This service implementation
+            requires a host name in order to work
+            </summary>
+            <param name="hostname">The smtp server name</param>
+        </member>
+        <member name="M:Castle.Core.Smtp.DefaultSmtpSender.Send(System.String,System.String,System.String,System.String)">
+            <summary>
+            Sends a message. 
+            </summary>
+            <exception cref="T:System.ArgumentNullException">If any of the parameters is null</exception>
+            <param name="from">From field</param>
+            <param name="to">To field</param>
+            <param name="subject">e-mail's subject</param>
+            <param name="messageText">message's body</param>
+        </member>
+        <member name="M:Castle.Core.Smtp.DefaultSmtpSender.Send(System.Net.Mail.MailMessage)">
+            <summary>
+            Sends a message. 
+            </summary>
+            <exception cref="T:System.ArgumentNullException">If the message is null</exception>
+            <param name="message">Message instance</param>
+        </member>
+        <member name="M:Castle.Core.Smtp.DefaultSmtpSender.Configure(System.Net.Mail.SmtpClient)">
+            <summary>
+            Configures the sender
+            with port information and eventual credential
+            informed
+            </summary>
+            <param name="smtpClient">Message instance</param>
+        </member>
+        <member name="P:Castle.Core.Smtp.DefaultSmtpSender.Port">
+            <summary>
+            Gets or sets the port used to 
+            access the SMTP server
+            </summary>
+        </member>
+        <member name="P:Castle.Core.Smtp.DefaultSmtpSender.Hostname">
+            <summary>
+            Gets the hostname.
+            </summary>
+            <value>The hostname.</value>
+        </member>
+        <member name="P:Castle.Core.Smtp.DefaultSmtpSender.AsyncSend">
+            <summary>
+            Gets or sets a value which is used to 
+            configure if emails are going to be sent asynchronously or not.
+            </summary>
+        </member>
+        <member name="P:Castle.Core.Smtp.DefaultSmtpSender.Timeout">
+            <summary>
+            Gets or sets a value that specifies 
+            the amount of time after which a synchronous Send call times out.
+            </summary>
+        </member>
+        <member name="P:Castle.Core.Smtp.DefaultSmtpSender.UseSsl">
+            <summary>
+            Gets or sets a value indicating whether the email should be sent using 
+            a secure communication channel.
+            </summary>
+            <value><c>true</c> if should use SSL; otherwise, <c>false</c>.</value>
+        </member>
+        <member name="P:Castle.Core.Smtp.DefaultSmtpSender.Domain">
+            <summary>
+            Gets or sets the domain.
+            </summary>
+            <value>The domain.</value>
+        </member>
+        <member name="P:Castle.Core.Smtp.DefaultSmtpSender.UserName">
+            <summary>
+            Gets or sets the name of the user.
+            </summary>
+            <value>The name of the user.</value>
+        </member>
+        <member name="P:Castle.Core.Smtp.DefaultSmtpSender.Password">
+            <summary>
+            Gets or sets the password.
+            </summary>
+            <value>The password.</value>
+        </member>
+        <member name="P:Castle.Core.Smtp.DefaultSmtpSender.HasCredentials">
+            <summary>
+            Gets a value indicating whether credentials were informed.
+            </summary>
+            <value>
+            <see langword="true"/> if this instance has credentials; otherwise, <see langword="false"/>.
+            </value>
         </member>
     </members>
 </doc>
