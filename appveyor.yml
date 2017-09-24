@@ -33,7 +33,7 @@ build:
   verbosity: minimal
 
 test_script:
-  - OpenCover.Console.exe -register:user -target:"%xunit20%\xunit.console.x86.exe" -targetargs:".\src\Ninject.Extensions.Interception.Test\bin\Release\net452\Ninject.Extensions.Interception.Tests.dll -noshadow -parallel none" -filter:"+[Ninject]* -[Ninject.Extensions.Interception.Test*]*" -output:".\Ninject.Extensions.Interception_coverage.xml"
+  - OpenCover.Console.exe -register:user -target:"%xunit20%\xunit.console.x86.exe" -targetargs:".\src\Ninject.Extensions.Interception.Test\bin\Release\net452\Ninject.Extensions.Interception.Tests.dll -noshadow -parallel none" -filter:"+[Ninject*]* -[Ninject.Extensions.Interception.Test*]*" -output:".\Ninject.Extensions.Interception_coverage.xml"
   - codecov -f "Ninject.Extensions.Interception_coverage.xml
 
 artifacts:
