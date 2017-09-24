@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net45</TargetFrameworks>
+    <TargetFrameworks>net45</TargetFrameworks>
     <Version>0.0.0</Version>
     <Authors>Ninject Contributors</Authors>
     <Company>Ninject Project Contributors</Company>
@@ -36,9 +36,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="LinFu.DynamicProxy.OfficialRelease" Version="1.0.5">
-      <NoWarn>NU1701</NoWarn>
-    </PackageReference>
+    <PackageReference Include="LinFu.DynamicProxy.OfficialRelease" Version="1.0.5" />
     <PackageReference Include="Ninject" Version="3.3.0-beta1" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.0-beta004">
       <PrivateAssets>All</PrivateAssets>
