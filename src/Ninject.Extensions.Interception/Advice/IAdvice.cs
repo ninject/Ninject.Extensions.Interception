@@ -1,25 +1,16 @@
-#region License
-
-// 
-// Author: Nate Kohari <nate@enkari.com>
-// Copyright (c) 2007-2010, Enkari, Ltd.
-// 
-// Dual-licensed under the Apache License, Version 2.0, and the Microsoft Public License (Ms-PL).
-// See the file LICENSE.txt for details.
-// 
-
-#endregion
-
-#region Using Directives
-
-using System;
-using Ninject.Extensions.Interception.Request;
-
-#endregion
+// -------------------------------------------------------------------------------------------------
+// <copyright file="IAdvice.cs" company="Ninject Project Contributors">
+//   Copyright (c) 2007-2010, Enkari, Ltd.
+//   Copyright (c) 2010-2017, Ninject Project Contributors
+//   Dual-licensed under the Apache License, Version 2.0, and the Microsoft Public License (Ms-PL).
+// </copyright>
+// -------------------------------------------------------------------------------------------------
 
 namespace Ninject.Extensions.Interception.Advice
 {
+    using System;
     using Ninject.Activation;
+    using Ninject.Extensions.Interception.Request;
 
     /// <summary>
     /// A declaration of advice, which relates a method or condition with an interceptor.
@@ -48,7 +39,7 @@ namespace Ninject.Extensions.Interception.Advice
         Func<IProxyRequest, IInterceptor> Callback { get; set; }
 
         /// <summary>
-        /// Gets the order of precedence in which the advice should be called.
+        /// Gets or sets the order of precedence in which the advice should be called.
         /// </summary>
         int Order { get; set; }
 
@@ -63,13 +54,13 @@ namespace Ninject.Extensions.Interception.Advice
         /// </summary>
         /// <param name="request">The request in question.</param>
         /// <returns><see langword="True"/> if the request matches, otherwise <see langword="false"/>.</returns>
-        bool Matches( IProxyRequest request );
+        bool Matches(IProxyRequest request);
 
         /// <summary>
         /// Gets the interceptor associated with the advice for the specified request.
         /// </summary>
         /// <param name="request">The request in question.</param>
         /// <returns>The interceptor.</returns>
-        IInterceptor GetInterceptor( IProxyRequest request );
+        IInterceptor GetInterceptor(IProxyRequest request);
     }
 }

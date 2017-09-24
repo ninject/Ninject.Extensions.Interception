@@ -1,27 +1,19 @@
-#region License
-
-// 
-// Author: Nate Kohari <nate@enkari.com>
-// Copyright (c) 2007-2010, Enkari, Ltd.
-// 
-// Dual-licensed under the Apache License, Version 2.0, and the Microsoft Public License (Ms-PL).
-// See the file LICENSE.txt for details.
-// 
-
-#endregion
-
-#region Using Directives
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
-#endregion
+// -------------------------------------------------------------------------------------------------
+// <copyright file="ExtensionsForIEnumerable.cs" company="Ninject Project Contributors">
+//   Copyright (c) 2007-2010, Enkari, Ltd.
+//   Copyright (c) 2010-2017, Ninject Project Contributors
+//   Dual-licensed under the Apache License, Version 2.0, and the Microsoft Public License (Ms-PL).
+// </copyright>
+// -------------------------------------------------------------------------------------------------
 
 namespace Ninject.Extensions.Interception.Infrastructure.Language
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
     /// <summary>
-    /// Extension methods that enhance System.Collections.IEnumerable.
+    /// Provides extension methods for <see cref="IEnumerable{T}"/>.
     /// </summary>
     internal static class ExtensionsForIEnumerable
     {
@@ -33,10 +25,11 @@ namespace Ninject.Extensions.Interception.Infrastructure.Language
         /// <param name="items">The series of items to convert.</param>
         /// <param name="converter">The converter to use to convert the items.</param>
         /// <returns>A list of the converted items.</returns>
-        public static IEnumerable<TOutput> Convert<TInput, TOutput>( this IEnumerable<TInput> items,
-                                                                     Func<TInput, TOutput> converter )
+        public static IEnumerable<TOutput> Convert<TInput, TOutput>(
+            this IEnumerable<TInput> items,
+            Func<TInput, TOutput> converter)
         {
-            return items.Select( converter );
+            return items.Select(converter);
         }
 
         /// <summary>

@@ -1,14 +1,10 @@
-#region License
-
-// 
-// Author: Ian Davis <ian@innovatian.com>
-// Copyright (c) 2010, Innovatian Software, LLC
-// 
-// Dual-licensed under the Apache License, Version 2.0, and the Microsoft Public License (Ms-PL).
-// See the file LICENSE.txt for details.
-// 
-
-#endregion
+// -------------------------------------------------------------------------------------------------
+// <copyright file="InterceptionModule.cs" company="Ninject Project Contributors">
+//   Copyright (c) 2007-2010, Enkari, Ltd.
+//   Copyright (c) 2010-2017, Ninject Project Contributors
+//   Dual-licensed under the Apache License, Version 2.0, and the Microsoft Public License (Ms-PL).
+// </copyright>
+// -------------------------------------------------------------------------------------------------
 
 namespace Ninject.Extensions.Interception
 {
@@ -29,7 +25,6 @@ namespace Ninject.Extensions.Interception
     using Ninject.Modules;
     using Ninject.Planning.Strategies;
 
-
     /// <summary>
     /// Extends the functionality of the kernel, providing the base functionality needed for interception.
     /// </summary>
@@ -43,26 +38,26 @@ namespace Ninject.Extensions.Interception
         /// </summary>
         public override void Load()
         {
-            Kernel.Components.Add<IActivationStrategy, ProxyActivationStrategy>();
-            Kernel.Components.Add<IProxyRequestFactory, ProxyRequestFactory>();
-            Kernel.Components.Add<IAdviceFactory, AdviceFactory>();
-            Kernel.Components.Add<IAdviceRegistry, AdviceRegistry>();
-            Kernel.Components.Add<IPlanningStrategy, InterceptorRegistrationStrategy>();
-            Kernel.Components.Add<IPlanningStrategy, AutoNotifyInterceptorRegistrationStrategy>();
-            Kernel.Components.Add<IPlanningStrategy, MethodInterceptorRegistrationStrategy>();
-            Kernel.Components.Add<IMethodInterceptorRegistry, MethodInterceptorRegistry>();
+            this.Kernel.Components.Add<IActivationStrategy, ProxyActivationStrategy>();
+            this.Kernel.Components.Add<IProxyRequestFactory, ProxyRequestFactory>();
+            this.Kernel.Components.Add<IAdviceFactory, AdviceFactory>();
+            this.Kernel.Components.Add<IAdviceRegistry, AdviceRegistry>();
+            this.Kernel.Components.Add<IPlanningStrategy, InterceptorRegistrationStrategy>();
+            this.Kernel.Components.Add<IPlanningStrategy, AutoNotifyInterceptorRegistrationStrategy>();
+            this.Kernel.Components.Add<IPlanningStrategy, MethodInterceptorRegistrationStrategy>();
+            this.Kernel.Components.Add<IMethodInterceptorRegistry, MethodInterceptorRegistry>();
 
 #if NO_LCG
             // If the target platform doesn't have DynamicMethod support, we can't use DynamicInjectorFactory.
             Kernel.Components.Add<IInjectorFactory, ReflectionInjectorFactory>();
 #else
-            if ( Kernel.Settings.UseReflectionBasedInjection )
+            if (this.Kernel.Settings.UseReflectionBasedInjection)
             {
-                Kernel.Components.Add<IInjectorFactory, ReflectionInjectorFactory>();
+                this.Kernel.Components.Add<IInjectorFactory, ReflectionInjectorFactory>();
             }
             else
             {
-                Kernel.Components.Add<IInjectorFactory, DynamicInjectorFactory>();
+                this.Kernel.Components.Add<IInjectorFactory, DynamicInjectorFactory>();
             }
 #endif
         }
@@ -72,18 +67,19 @@ namespace Ninject.Extensions.Interception
         /// </summary>
         protected virtual void VerifyNoBoundProxyFactoriesExist()
         {
-            IProxyFactory existingProxyFactory = Kernel.Components.Get<IProxyFactory>();
+            IProxyFactory existingProxyFactory = this.Kernel.Components.Get<IProxyFactory>();
 
-            if ( existingProxyFactory != null )
+            if (existingProxyFactory != null)
             {
                 StringBuilder builder = new StringBuilder();
-                builder.AppendFormat("The Ninject Kernel already has an implementation of IProxyFactory bound to {0}. ",
-                                   existingProxyFactory.GetType().Name );
+                builder.AppendFormat(
+                    "The Ninject Kernel already has an implementation of IProxyFactory bound to {0}. ",
+                    existingProxyFactory.GetType().Name);
                 builder.AppendLine();
                 builder.AppendLine(
-                    " Please verify that if you are using automatic extension loading that you only have one interception module." );
+                    " Please verify that if you are using automatic extension loading that you only have one interception module.");
                 builder.AppendLine(
-                    " If you have more than one interception module, please disable automatic extension loading by passing an INinjectSettings object into your Kernel's .ctor with" );
+                    " If you have more than one interception module, please disable automatic extension loading by passing an INinjectSettings object into your Kernel's .ctor with");
                 throw new InvalidOperationException();
             }
         }

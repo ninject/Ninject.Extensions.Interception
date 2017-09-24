@@ -1,26 +1,18 @@
-#region License
-
-// 
-// Author: Nate Kohari <nate@enkari.com>
-// Copyright (c) 2007-2010, Enkari, Ltd.
-// 
-// Dual-licensed under the Apache License, Version 2.0, and the Microsoft Public License (Ms-PL).
-// See the file LICENSE.txt for details.
-// 
-
-#endregion
-
-#region Using Directives
-
-using System;
-using System.Reflection;
-using Ninject.Activation;
-using Ninject.Components;
-
-#endregion
+// -------------------------------------------------------------------------------------------------
+// <copyright file="IProxyRequestFactory.cs" company="Ninject Project Contributors">
+//   Copyright (c) 2007-2010, Enkari, Ltd.
+//   Copyright (c) 2010-2017, Ninject Project Contributors
+//   Dual-licensed under the Apache License, Version 2.0, and the Microsoft Public License (Ms-PL).
+// </copyright>
+// -------------------------------------------------------------------------------------------------
 
 namespace Ninject.Extensions.Interception.Request
 {
+    using System;
+    using System.Reflection;
+    using Ninject.Activation;
+    using Ninject.Components;
+
     /// <summary>
     /// Creates <see cref="IProxyRequest"/>s, which describe method calls.
     /// </summary>
@@ -36,11 +28,12 @@ namespace Ninject.Extensions.Interception.Request
         /// <param name="arguments">The arguments to the method.</param>
         /// <param name="genericArguments">The generic type arguments for the method.</param>
         /// <returns>The newly-created request.</returns>
-        IProxyRequest Create( IContext context,
-                              object proxy,
-                              object target,
-                              MethodInfo method,
-                              object[] arguments,
-                              Type[] genericArguments );
+        IProxyRequest Create(
+            IContext context,
+            object proxy,
+            object target,
+            MethodInfo method,
+            object[] arguments,
+            Type[] genericArguments);
     }
 }

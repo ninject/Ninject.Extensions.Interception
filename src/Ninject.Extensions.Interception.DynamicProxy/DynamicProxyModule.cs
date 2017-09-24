@@ -1,25 +1,16 @@
-#if  !NO_CDP2
+// -------------------------------------------------------------------------------------------------
+// <copyright file="DynamicProxyModule.cs" company="Ninject Project Contributors">
+//   Copyright (c) 2007-2010, Enkari, Ltd.
+//   Copyright (c) 2010-2017, Ninject Project Contributors
+//   Dual-licensed under the Apache License, Version 2.0, and the Microsoft Public License (Ms-PL).
+// </copyright>
+// -------------------------------------------------------------------------------------------------
 
-#region License
-
-// 
-// Author: Ian Davis <ian@innovatian.com>
-// Copyright (c) 2010, Innovatian Software, LLC
-// 
-// Dual-licensed under the Apache License, Version 2.0, and the Microsoft Public License (Ms-PL).
-// See the file LICENSE.txt for details.
-// 
-
-#endregion
-
-#region Using Directives
-
-using Ninject.Extensions.Interception.ProxyFactory;
-
-#endregion
-
+#if !NO_CDP2
 namespace Ninject.Extensions.Interception
 {
+    using Ninject.Extensions.Interception.ProxyFactory;
+
     /// <summary>
     /// Extends the functionality of the kernel, providing a proxy factory that uses Castle DynamicProxy2
     /// to generate dynamic proxies.
@@ -31,7 +22,7 @@ namespace Ninject.Extensions.Interception
         /// </summary>
         public override void Load()
         {
-            Kernel.Components.Add<IProxyFactory, DynamicProxyProxyFactory>();
+            this.Kernel.Components.Add<IProxyFactory, DynamicProxyProxyFactory>();
             base.Load();
         }
     }

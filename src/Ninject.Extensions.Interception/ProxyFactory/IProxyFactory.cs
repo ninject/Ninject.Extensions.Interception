@@ -1,24 +1,16 @@
-#region License
-
-// 
-// Author: Nate Kohari <nate@enkari.com>
-// Copyright (c) 2007-2010, Enkari, Ltd.
-// 
-// Dual-licensed under the Apache License, Version 2.0, and the Microsoft Public License (Ms-PL).
-// See the file LICENSE.txt for details.
-// 
-
-#endregion
-
-#region Using Directives
-
-using Ninject.Activation;
-using Ninject.Components;
-
-#endregion
+// -------------------------------------------------------------------------------------------------
+// <copyright file="IProxyFactory.cs" company="Ninject Project Contributors">
+//   Copyright (c) 2007-2010, Enkari, Ltd.
+//   Copyright (c) 2010-2017, Ninject Project Contributors
+//   Dual-licensed under the Apache License, Version 2.0, and the Microsoft Public License (Ms-PL).
+// </copyright>
+// -------------------------------------------------------------------------------------------------
 
 namespace Ninject.Extensions.Interception.ProxyFactory
 {
+    using Ninject.Activation;
+    using Ninject.Components;
+
     /// <summary>
     /// Creates proxies for activated instances to allow method calls on them to be intercepted.
     /// </summary>
@@ -28,16 +20,14 @@ namespace Ninject.Extensions.Interception.ProxyFactory
         /// Wraps the instance in the specified context in a proxy.
         /// </summary>
         /// <param name="context">The activation context.</param>
-        /// <param name="reference"></param>
-        /// <returns>A proxy that wraps the instance.</returns>
-        void Wrap( IContext context, InstanceReference reference );
+        /// <param name="reference">The instance reference.</param>
+        void Wrap(IContext context, InstanceReference reference);
 
         /// <summary>
         /// Unwraps the instance in the specified context.
         /// </summary>
         /// <param name="context">The activation context.</param>
-        /// <param name="reference"></param>
-        /// <returns>The unwrapped instance.</returns>
-        void Unwrap( IContext context, InstanceReference reference );
+        /// <param name="reference">The instance reference.</param>
+        void Unwrap(IContext context, InstanceReference reference);
     }
 }

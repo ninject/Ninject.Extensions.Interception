@@ -1,23 +1,15 @@
-#region License
-
-// 
-// Author: Ian Davis <ian@innovatian.com>
-// Copyright (c) 2010, Innovatian Software, LLC
-// 
-// Dual-licensed under the Apache License, Version 2.0, and the Microsoft Public License (Ms-PL).
-// See the file LICENSE.txt for details.
-// 
-
-#endregion
-
-#region Using Directives
-
-using System.ComponentModel;
-
-#endregion
+// -------------------------------------------------------------------------------------------------
+// <copyright file="IAutoNotifyPropertyChanged.cs" company="Ninject Project Contributors">
+//   Copyright (c) 2007-2010, Enkari, Ltd.
+//   Copyright (c) 2010-2017, Ninject Project Contributors
+//   Dual-licensed under the Apache License, Version 2.0, and the Microsoft Public License (Ms-PL).
+// </copyright>
+// -------------------------------------------------------------------------------------------------
 
 namespace Ninject.Extensions.Interception
 {
+    using System.ComponentModel;
+
     /// <summary>
     /// Provides a common interface for classes that wish to provide automatic <see cref="INotifyPropertyChanged"/> functionality.
     /// </summary>
@@ -27,6 +19,6 @@ namespace Ninject.Extensions.Interception
         /// Raises the <see cref="INotifyPropertyChanged.PropertyChanged"/> event for the given property.
         /// </summary>
         /// <param name="propertyName">Name of the property.</param>
-        void OnPropertyChanged( string propertyName );
+        void OnPropertyChanged(string propertyName);
     }
 }

@@ -1,26 +1,18 @@
-#region License
-
-// 
-// Author: Nate Kohari <nate@enkari.com>
-// Copyright (c) 2007-2010, Enkari, Ltd.
-// 
-// Dual-licensed under the Apache License, Version 2.0, and the Microsoft Public License (Ms-PL).
-// See the file LICENSE.txt for details.
-// 
-
-#endregion
-
-#region Using Directives
-
-using System;
-using System.Reflection;
-using Ninject.Activation;
-using Ninject.Extensions.Interception.Infrastructure;
-
-#endregion
+// -------------------------------------------------------------------------------------------------
+// <copyright file="ProxyRequest.cs" company="Ninject Project Contributors">
+//   Copyright (c) 2007-2010, Enkari, Ltd.
+//   Copyright (c) 2010-2017, Ninject Project Contributors
+//   Dual-licensed under the Apache License, Version 2.0, and the Microsoft Public License (Ms-PL).
+// </copyright>
+// -------------------------------------------------------------------------------------------------
 
 namespace Ninject.Extensions.Interception.Request
 {
+    using System;
+    using System.Reflection;
+    using Ninject.Activation;
+    using Ninject.Extensions.Interception.Infrastructure;
+
     /// <summary>
     /// The stock implementation of a request.
     /// </summary>
@@ -30,34 +22,33 @@ namespace Ninject.Extensions.Interception.Request
         /// Initializes a new instance of the <see cref="ProxyRequest"/> class.
         /// </summary>
         /// <param name="context">The context in which the target instance was activated.</param>
-        /// <param name="proxy"></param>
+        /// <param name="proxy">The proxy instance.</param>
         /// <param name="target">The target instance.</param>
         /// <param name="method">The method that will be called on the target instance.</param>
         /// <param name="arguments">The arguments to the method.</param>
         /// <param name="genericArguments">The generic type arguments for the method.</param>
-        public ProxyRequest( IContext context,
-                             object proxy,
-                             object target,
-                             MethodInfo method,
-                             object[] arguments,
-                             Type[] genericArguments )
+        public ProxyRequest(
+            IContext context,
+            object proxy,
+            object target,
+            MethodInfo method,
+            object[] arguments,
+            Type[] genericArguments)
         {
-            Ensure.ArgumentNotNull( context, "context" );
-            Ensure.ArgumentNotNull( proxy, "proxy" );
-            Ensure.ArgumentNotNull( target, "target" );
-            Ensure.ArgumentNotNull( method, "method" );
-            Ensure.ArgumentNotNull( arguments, "arguments" );
+            Ensure.ArgumentNotNull(context, "context");
+            Ensure.ArgumentNotNull(proxy, "proxy");
+            Ensure.ArgumentNotNull(target, "target");
+            Ensure.ArgumentNotNull(method, "method");
+            Ensure.ArgumentNotNull(arguments, "arguments");
 
-            Kernel = context.Kernel;
-            Context = context;
-            Proxy = proxy;
-            Target = target;
-            Method = method;
-            Arguments = arguments;
-            GenericArguments = genericArguments;
+            this.Kernel = context.Kernel;
+            this.Context = context;
+            this.Proxy = proxy;
+            this.Target = target;
+            this.Method = method;
+            this.Arguments = arguments;
+            this.GenericArguments = genericArguments;
         }
-
-        #region IProxyRequest Members
 
         /// <summary>
         /// Gets the kernel that created the target instance.
@@ -99,9 +90,7 @@ namespace Ninject.Extensions.Interception.Request
         /// </summary>
         public bool HasGenericArguments
         {
-            get { return ( GenericArguments != null ) && ( GenericArguments.Length > 0 ); }
+            get { return (this.GenericArguments != null) && (this.GenericArguments.Length > 0); }
         }
-
-        #endregion
     }
 }

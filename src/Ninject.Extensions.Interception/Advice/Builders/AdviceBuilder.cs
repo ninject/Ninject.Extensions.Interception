@@ -1,26 +1,18 @@
-#region License
-
-// 
-// Author: Nate Kohari <nate@enkari.com>
-// Copyright (c) 2007-2010, Enkari, Ltd.
-// 
-// Dual-licensed under the Apache License, Version 2.0, and the Microsoft Public License (Ms-PL).
-// See the file LICENSE.txt for details.
-// 
-
-#endregion
-
-#region Using Directives
-
-using System;
-using Ninject.Extensions.Interception.Advice.Syntax;
-using Ninject.Extensions.Interception.Infrastructure;
-using Ninject.Extensions.Interception.Request;
-
-#endregion
+// -------------------------------------------------------------------------------------------------
+// <copyright file="AdviceBuilder.cs" company="Ninject Project Contributors">
+//   Copyright (c) 2007-2010, Enkari, Ltd.
+//   Copyright (c) 2010-2017, Ninject Project Contributors
+//   Dual-licensed under the Apache License, Version 2.0, and the Microsoft Public License (Ms-PL).
+// </copyright>
+// -------------------------------------------------------------------------------------------------
 
 namespace Ninject.Extensions.Interception.Advice.Builders
 {
+    using System;
+    using Ninject.Extensions.Interception.Advice.Syntax;
+    using Ninject.Extensions.Interception.Infrastructure;
+    using Ninject.Extensions.Interception.Request;
+
     /// <summary>
     /// The stock definition of an advice builder.
     /// </summary>
@@ -30,46 +22,36 @@ namespace Ninject.Extensions.Interception.Advice.Builders
         /// Initializes a new instance of the <see cref="AdviceBuilder"/> class.
         /// </summary>
         /// <param name="advice">The advice that should be manipulated.</param>
-        public AdviceBuilder( IAdvice advice )
+        public AdviceBuilder(IAdvice advice)
         {
-            Ensure.ArgumentNotNull( advice, "advice" );
-            Advice = advice;
+            Ensure.ArgumentNotNull(advice, "advice");
+            this.Advice = advice;
         }
-
-        #region IAdviceBuilder Members
 
         /// <summary>
         /// Gets or sets the advice the builder should manipulate.
         /// </summary>
         public IAdvice Advice { get; protected set; }
 
-        #endregion
-
-        #region IAdviceOrderSyntax Members
-
         /// <summary>
         /// Indicates that the interceptor should be called with the specified order. (Interceptors
         /// with a lower order will be called first.)
         /// </summary>
         /// <param name="order">The order.</param>
-        void IAdviceOrderSyntax.InOrder( int order )
+        void IAdviceOrderSyntax.InOrder(int order)
         {
-            Advice.Order = order;
+            this.Advice.Order = order;
         }
-
-        #endregion
-
-        #region IAdviceTargetSyntax Members
 
         /// <summary>
         /// Indicates that matching requests should be intercepted via an interceptor of the
         /// specified type. The interceptor will be created via the kernel when the method is called.
         /// </summary>
         /// <typeparam name="T">The type of interceptor to call.</typeparam>
-        /// <returns></returns>
+        /// <returns>The advice builder.</returns>
         IAdviceOrderSyntax IAdviceTargetSyntax.With<T>()
         {
-            Advice.Callback = r => r.Kernel.Get<T>();
+            this.Advice.Callback = r => r.Kernel.Get<T>();
             return this;
         }
 
@@ -78,10 +60,10 @@ namespace Ninject.Extensions.Interception.Advice.Builders
         /// specified type. The interceptor will be created via the kernel when the method is called.
         /// </summary>
         /// <param name="interceptorType">The type of interceptor to call.</param>
-        /// <returns></returns>
-        IAdviceOrderSyntax IAdviceTargetSyntax.With( Type interceptorType )
+        /// <returns>The advice builder.</returns>
+        IAdviceOrderSyntax IAdviceTargetSyntax.With(Type interceptorType)
         {
-            Advice.Callback = r => r.Kernel.Get( interceptorType ) as IInterceptor;
+            this.Advice.Callback = r => r.Kernel.Get(interceptorType) as IInterceptor;
             return this;
         }
 
@@ -89,10 +71,10 @@ namespace Ninject.Extensions.Interception.Advice.Builders
         /// Indicates that matching requests should be intercepted via the specified interceptor.
         /// </summary>
         /// <param name="interceptor">The interceptor to call.</param>
-        /// <returns></returns>
-        IAdviceOrderSyntax IAdviceTargetSyntax.With( IInterceptor interceptor )
+        /// <returns>The advice builder.</returns>
+        IAdviceOrderSyntax IAdviceTargetSyntax.With(IInterceptor interceptor)
         {
-            Advice.Interceptor = interceptor;
+            this.Advice.Interceptor = interceptor;
             return this;
         }
 
@@ -101,13 +83,11 @@ namespace Ninject.Extensions.Interception.Advice.Builders
         /// calling the specified callback.
         /// </summary>
         /// <param name="factoryMethod">The factory method that will create the interceptor.</param>
-        /// <returns></returns>
-        IAdviceOrderSyntax IAdviceTargetSyntax.With( Func<IProxyRequest, IInterceptor> factoryMethod )
+        /// <returns>The advice builder.</returns>
+        IAdviceOrderSyntax IAdviceTargetSyntax.With(Func<IProxyRequest, IInterceptor> factoryMethod)
         {
-            Advice.Callback = factoryMethod;
+            this.Advice.Callback = factoryMethod;
             return this;
         }
-
-        #endregion
     }
 }

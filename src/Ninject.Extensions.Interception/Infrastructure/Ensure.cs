@@ -1,38 +1,30 @@
-#region License
-
-// 
-// Author: Nate Kohari <nate@enkari.com>
-// Copyright (c) 2007-2010, Enkari, Ltd.
-// 
-// Dual-licensed under the Apache License, Version 2.0, and the Microsoft Public License (Ms-PL).
-// See the file LICENSE.txt for details.
-// 
-
-#endregion
-
-#region Using Directives
-
-using System;
-
-#endregion
+// -------------------------------------------------------------------------------------------------
+// <copyright file="Ensure.cs" company="Ninject Project Contributors">
+//   Copyright (c) 2007-2010, Enkari, Ltd.
+//   Copyright (c) 2010-2017, Ninject Project Contributors
+//   Dual-licensed under the Apache License, Version 2.0, and the Microsoft Public License (Ms-PL).
+// </copyright>
+// -------------------------------------------------------------------------------------------------
 
 namespace Ninject.Extensions.Interception.Infrastructure
 {
+    using System;
+
+    /// <summary>
+    /// Argument guard.
+    /// </summary>
     internal static class Ensure
     {
-        public static void ArgumentNotNull( object argument, string name )
+        /// <summary>
+        /// Ensures the argument is not null.
+        /// </summary>
+        /// <param name="argument">The argument value.</param>
+        /// <param name="name">The argument name.</param>
+        internal static void ArgumentNotNull(object argument, string name)
         {
-            if ( argument == null )
+            if (argument == null)
             {
-                throw new ArgumentNullException( name, "Cannot be null" );
-            }
-        }
-
-        public static void ArgumentNotNullOrEmpty( string argument, string name )
-        {
-            if ( String.IsNullOrEmpty( argument ) )
-            {
-                throw new ArgumentException( "Cannot be null or empty", name );
+                throw new ArgumentNullException(name, "Cannot be null");
             }
         }
     }

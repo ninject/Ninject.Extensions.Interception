@@ -1,33 +1,24 @@
+// -------------------------------------------------------------------------------------------------
+// <copyright file="DynamicProxyProxyFactory.cs" company="Ninject Project Contributors">
+//   Copyright (c) 2007-2010, Enkari, Ltd.
+//   Copyright (c) 2010-2017, Ninject Project Contributors
+//   Dual-licensed under the Apache License, Version 2.0, and the Microsoft Public License (Ms-PL).
+// </copyright>
+// -------------------------------------------------------------------------------------------------
+
 #if !NO_CDP2
-
-#region License
-
-// 
-// Author: Nate Kohari <nate@enkari.com>
-// Copyright (c) 2007-2010, Enkari, Ltd.
-// 
-// Dual-licensed under the Apache License, Version 2.0, and the Microsoft Public License (Ms-PL).
-// See the file LICENSE.txt for details.
-// 
-
-#endregion
-
-#region Using Directives
-
-using System;
-using System.Linq;
-using Castle.DynamicProxy;
-using Castle.DynamicProxy.Serialization;
-using Ninject.Activation;
-using Ninject.Extensions.Interception.Parameters;
-using Ninject.Extensions.Interception.Wrapper;
-using Ninject.Infrastructure;
-using Ninject.Parameters;
-
-#endregion
 
 namespace Ninject.Extensions.Interception.ProxyFactory
 {
+    using System;
+    using System.Linq;
+    using Castle.DynamicProxy;
+    using Castle.DynamicProxy.Serialization;
+    using Ninject.Activation;
+    using Ninject.Extensions.Interception.Parameters;
+    using Ninject.Extensions.Interception.Wrapper;
+    using Ninject.Infrastructure;
+    using Ninject.Parameters;
 
     /// <summary>
     /// An implementation of a proxy factory that uses a Castle DynamicProxy2 <see cref="ProxyGenerator"/>
@@ -35,52 +26,38 @@ namespace Ninject.Extensions.Interception.ProxyFactory
     /// </summary>
     public class DynamicProxyProxyFactory : ProxyFactoryBase, IHaveKernel
     {
-        #region Fields
-
         private static readonly ProxyGenerationOptions ProxyOptions = ProxyGenerationOptions.Default;
         private static readonly ProxyGenerationOptions InterfaceProxyOptions = ProxyGenerationOptions.Default;
         private ProxyGenerator generator = new ProxyGenerator();
-
-        #endregion
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DynamicProxyProxyFactory"/> class.
         /// </summary>
         /// <param name="kernel">The kernel.</param>
-        public DynamicProxyProxyFactory( IKernel kernel )
+        public DynamicProxyProxyFactory(IKernel kernel)
         {
-            Kernel = kernel;
+            this.Kernel = kernel;
             InterfaceProxyOptions.BaseTypeForInterfaceProxy = typeof(ProxyBase);
         }
-
-        #region IHaveKernel Members
 
         /// <summary>
         /// Gets the kernel.
         /// </summary>
         public IKernel Kernel { get; private set; }
 
-        #endregion
-
-        #region Disposal
-
         /// <summary>
         /// Releases all resources held by the object.
         /// </summary>
         /// <param name="disposing"><see langword="True"/> if managed objects should be disposed, otherwise <see langword="false"/>.</param>
-        public override void Dispose( bool disposing )
+        public override void Dispose(bool disposing)
         {
-            if ( disposing && !IsDisposed )
+            if (disposing && !this.IsDisposed)
             {
                 this.generator = null;
             }
 
-            base.Dispose( disposing );
+            base.Dispose(disposing);
         }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Wraps the specified instance in a proxy.
@@ -95,7 +72,7 @@ namespace Ninject.Extensions.Interception.ProxyFactory
                 return;
             }
 
-            var wrapper = new DynamicProxyWrapper(Kernel, context, reference.Instance);
+            var wrapper = new DynamicProxyWrapper(this.Kernel, context, reference.Instance);
 
             Type targetType = context.Request.Service;
 
@@ -119,7 +96,7 @@ namespace Ninject.Extensions.Interception.ProxyFactory
         /// </summary>
         /// <param name="context">The context in which the instance was activated.</param>
         /// <param name="reference">The <see cref="InstanceReference"/> to unwrap.</param>
-        public override void Unwrap( IContext context, InstanceReference reference )
+        public override void Unwrap(IContext context, InstanceReference reference)
         {
             var accessor = reference.Instance as IProxyTargetAccessor;
 
@@ -144,8 +121,6 @@ namespace Ninject.Extensions.Interception.ProxyFactory
 
             reference.Instance = wrapper.Instance;
         }
-
-        #endregion
     }
 }
 

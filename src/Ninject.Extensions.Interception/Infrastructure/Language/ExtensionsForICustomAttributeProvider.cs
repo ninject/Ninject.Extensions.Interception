@@ -1,27 +1,19 @@
-#region License
-
-// 
-// Author: Nate Kohari <nate@enkari.com>
-// Copyright (c) 2007-2010, Enkari, Ltd.
-// 
-// Dual-licensed under the Apache License, Version 2.0, and the Microsoft Public License (Ms-PL).
-// See the file LICENSE.txt for details.
-// 
-
-#endregion
-
-#region Using Directives
-
-using System;
-using System.Linq;
-using System.Reflection;
-
-#endregion
+// -------------------------------------------------------------------------------------------------
+// <copyright file="ExtensionsForICustomAttributeProvider.cs" company="Ninject Project Contributors">
+//   Copyright (c) 2007-2010, Enkari, Ltd.
+//   Copyright (c) 2010-2017, Ninject Project Contributors
+//   Dual-licensed under the Apache License, Version 2.0, and the Microsoft Public License (Ms-PL).
+// </copyright>
+// -------------------------------------------------------------------------------------------------
 
 namespace Ninject.Extensions.Interception.Infrastructure.Language
 {
+    using System;
+    using System.Linq;
+    using System.Reflection;
+
     /// <summary>
-    /// Extension methods that enhance <see cref="ICustomAttributeProvider"/>.
+    /// Provides extension methods for <see cref="ICustomAttributeProvider"/>.
     /// </summary>
     internal static class ExtensionsForICustomAttributeProvider
     {
@@ -31,13 +23,13 @@ namespace Ninject.Extensions.Interception.Infrastructure.Language
         /// <typeparam name="T">The type of attribute to search for.</typeparam>
         /// <param name="member">The member to examine.</param>
         /// <returns>The first attribute matching the specified type.</returns>
-        public static T GetOneAttribute<T>( this ICustomAttributeProvider member )
+        public static T GetOneAttribute<T>(this ICustomAttributeProvider member)
             where T : Attribute
         {
-            var attributes = member.GetCustomAttributes( typeof (T), true ) as T[];
+            var attributes = member.GetCustomAttributes(typeof(T), true) as T[];
 
-            return ( attributes == null ) ||
-                   ( attributes.Length == 0 )
+            return (attributes == null) ||
+                   (attributes.Length == 0)
                        ? null
                        : attributes[0];
         }
@@ -48,9 +40,9 @@ namespace Ninject.Extensions.Interception.Infrastructure.Language
         /// <param name="member">The member to examine.</param>
         /// <param name="type">The type of attribute to search for.</param>
         /// <returns>The first attribute matching the specified type.</returns>
-        public static object GetOneAttribute( this ICustomAttributeProvider member, Type type )
+        public static object GetOneAttribute(this ICustomAttributeProvider member, Type type)
         {
-            object[] attributes = member.GetCustomAttributes( type, true );
+            object[] attributes = member.GetCustomAttributes(type, true);
 
             return (attributes == null) ||
                    (attributes.Length == 0)
@@ -64,10 +56,10 @@ namespace Ninject.Extensions.Interception.Infrastructure.Language
         /// <typeparam name="T">The type of attribute to search for.</typeparam>
         /// <param name="member">The member to examine.</param>
         /// <returns>An array of attributes matching the specified type.</returns>
-        public static T[] GetAllAttributes<T>( this ICustomAttributeProvider member )
+        public static T[] GetAllAttributes<T>(this ICustomAttributeProvider member)
             where T : Attribute
         {
-            return member.GetCustomAttributes( typeof (T), true ) as T[];
+            return member.GetCustomAttributes(typeof(T), true) as T[];
         }
 
         /// <summary>
@@ -76,9 +68,9 @@ namespace Ninject.Extensions.Interception.Infrastructure.Language
         /// <param name="member">The member to examine.</param>
         /// <param name="type">The type of attribute to search for.</param>
         /// <returns>An array of attributes matching the specified type.</returns>
-        public static object[] GetAllAttributes( this ICustomAttributeProvider member, Type type )
+        public static object[] GetAllAttributes(this ICustomAttributeProvider member, Type type)
         {
-            return member.GetCustomAttributes( type, true );
+            return member.GetCustomAttributes(type, true);
         }
 
         /// <summary>
@@ -87,10 +79,10 @@ namespace Ninject.Extensions.Interception.Infrastructure.Language
         /// <typeparam name="T">The type of attribute to search for.</typeparam>
         /// <param name="member">The member to examine.</param>
         /// <returns><see langword="True"/> if the member is decorated with one or more attributes of the type, otherwise <see langword="false"/>.</returns>
-        public static bool HasAttribute<T>( this ICustomAttributeProvider member )
+        public static bool HasAttribute<T>(this ICustomAttributeProvider member)
             where T : Attribute
         {
-            return member.IsDefined( typeof (T), true );
+            return member.IsDefined(typeof(T), true);
         }
 
         /// <summary>
@@ -99,9 +91,9 @@ namespace Ninject.Extensions.Interception.Infrastructure.Language
         /// <param name="member">The member to examine.</param>
         /// <param name="type">The type of attribute to search for.</param>
         /// <returns><see langword="True"/> if the member is decorated with one or more attributes of the type, otherwise <see langword="false"/>.</returns>
-        public static bool HasAttribute( this ICustomAttributeProvider member, Type type )
+        public static bool HasAttribute(this ICustomAttributeProvider member, Type type)
         {
-            return member.IsDefined( type, true );
+            return member.IsDefined(type, true);
         }
 
         /// <summary>
@@ -111,18 +103,18 @@ namespace Ninject.Extensions.Interception.Infrastructure.Language
         /// <param name="member">The member to examine.</param>
         /// <param name="attributeToMatch">The attribute to match against.</param>
         /// <returns><see langword="True"/> if the member is decorated with a matching attribute, otherwise <see langword="false"/>.</returns>
-        public static bool HasMatchingAttribute<T>( this ICustomAttributeProvider member, T attributeToMatch )
+        public static bool HasMatchingAttribute<T>(this ICustomAttributeProvider member, T attributeToMatch)
             where T : Attribute
         {
             T[] attributes = member.GetAllAttributes<T>();
 
-            if ( ( attributes == null ) ||
-                 ( attributes.Length == 0 ) )
+            if ((attributes == null) ||
+                 (attributes.Length == 0))
             {
                 return false;
             }
 
-            return attributes.Any( attribute => attribute.Match( attributeToMatch ) );
+            return attributes.Any(attribute => attribute.Match(attributeToMatch));
         }
     }
 }

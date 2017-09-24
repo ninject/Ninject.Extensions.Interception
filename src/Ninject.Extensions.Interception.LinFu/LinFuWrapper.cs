@@ -1,27 +1,19 @@
+// -------------------------------------------------------------------------------------------------
+// <copyright file="LinFuWrapper.cs" company="Ninject Project Contributors">
+//   Copyright (c) 2007-2010, Enkari, Ltd.
+//   Copyright (c) 2010-2017, Ninject Project Contributors
+//   Dual-licensed under the Apache License, Version 2.0, and the Microsoft Public License (Ms-PL).
+// </copyright>
+// -------------------------------------------------------------------------------------------------
+
 #if !SILVERLIGHT && !NO_LINFU
-
-#region License
-
-// 
-// Author: Nate Kohari <nate@enkari.com>
-// Copyright (c) 2007-2010, Enkari, Ltd.
-// 
-// Dual-licensed under the Apache License, Version 2.0, and the Microsoft Public License (Ms-PL).
-// See the file LICENSE.txt for details.
-// 
-
-#endregion
-
-#region Using Directives
-
-using LinFu.DynamicProxy;
-using Ninject.Activation;
-using Ninject.Extensions.Interception.Request;
-
-#endregion
 
 namespace Ninject.Extensions.Interception.Wrapper
 {
+    using LinFu.DynamicProxy;
+    using Ninject.Activation;
+    using Ninject.Extensions.Interception.Request;
+
     /// <summary>
     /// Defines an interception wrapper that can convert a LinFu <see cref="InvocationInfo"/>
     /// into a Ninject <see cref="IProxyRequest"/> for interception.
@@ -34,36 +26,37 @@ namespace Ninject.Extensions.Interception.Wrapper
         /// <param name="kernel">The kernel associated with the wrapper.</param>
         /// <param name="context">The context in which the instance was activated.</param>
         /// <param name="instance">The wrapped instance.</param>
-        public LinFuWrapper( IKernel kernel, IContext context, object instance )
-            : base( kernel, context, instance )
+        public LinFuWrapper(IKernel kernel, IContext context, object instance)
+            : base(kernel, context, instance)
         {
         }
 
-        #region IInterceptor Members
-
-        object LinFu.DynamicProxy.IInterceptor.Intercept( InvocationInfo info )
+        /// <summary>
+        /// Intercepts the invocation.
+        /// </summary>
+        /// <param name="info">The invocation info.</param>
+        /// <returns>The return value.</returns>
+        object LinFu.DynamicProxy.IInterceptor.Intercept(InvocationInfo info)
         {
-            IProxyRequest request = CreateRequest( info );
-            IInvocation invocation = CreateInvocation( request );
+            IProxyRequest request = this.CreateRequest(info);
+            IInvocation invocation = this.CreateInvocation(request);
 
             invocation.Proceed();
 
             return invocation.ReturnValue;
         }
 
-        #endregion
-
-        private IProxyRequest CreateRequest( InvocationInfo info )
+        private IProxyRequest CreateRequest(InvocationInfo info)
         {
-            var requestFactory = Context.Kernel.Components.Get<IProxyRequestFactory>();
+            var requestFactory = this.Context.Kernel.Components.Get<IProxyRequestFactory>();
 
             return requestFactory.Create(
-                Context,
+                this.Context,
                 info.Target,
-                Instance,
+                this.Instance,
                 info.TargetMethod,
                 info.Arguments,
-                info.TypeArguments );
+                info.TypeArguments);
         }
     }
 }

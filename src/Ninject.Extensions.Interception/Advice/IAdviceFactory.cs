@@ -1,27 +1,18 @@
-#region License
-
-// 
-// Author: Nate Kohari <nate@enkari.com>
-// Copyright (c) 2007-2010, Enkari, Ltd.
-// 
-// Dual-licensed under the Apache License, Version 2.0, and the Microsoft Public License (Ms-PL).
-// See the file LICENSE.txt for details.
-// 
-
-#endregion
-
-#region Using Directives
-
-using System;
-using System.Reflection;
-using Ninject.Components;
-using Ninject.Extensions.Interception.Request;
-
-#endregion
+// -------------------------------------------------------------------------------------------------
+// <copyright file="IAdviceFactory.cs" company="Ninject Project Contributors">
+//   Copyright (c) 2007-2010, Enkari, Ltd.
+//   Copyright (c) 2010-2017, Ninject Project Contributors
+//   Dual-licensed under the Apache License, Version 2.0, and the Microsoft Public License (Ms-PL).
+// </copyright>
+// -------------------------------------------------------------------------------------------------
 
 namespace Ninject.Extensions.Interception.Advice
 {
+    using System;
+    using System.Reflection;
     using Ninject.Activation;
+    using Ninject.Components;
+    using Ninject.Extensions.Interception.Request;
 
     /// <summary>
     /// Creates <see cref="IAdvice"/> objects, which hold information about interception.
@@ -33,14 +24,14 @@ namespace Ninject.Extensions.Interception.Advice
         /// </summary>
         /// <param name="method">The method that will be intercepted.</param>
         /// <returns>The created advice.</returns>
-        IAdvice Create( MethodInfo method );
+        IAdvice Create(MethodInfo method);
 
         /// <summary>
         /// Creates a dynamic advice for the specified condition.
         /// </summary>
         /// <param name="condition">The condition that will be evaluated to determine whether a request should be intercepted.</param>
         /// <returns>The created advice.</returns>
-        IAdvice Create( Predicate<IContext> condition );
+        IAdvice Create(Predicate<IContext> condition);
 
         /// <summary>
         /// Creates a dynamic advice for the specified condition. That will intercept calls to the

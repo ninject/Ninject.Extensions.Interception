@@ -1,23 +1,10 @@
-//-------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------------------
 // <copyright file="AsyncInterceptor.cs" company="Ninject Project Contributors">
-//   Copyright (c) 2009-2013 Ninject Project Contributors
-//   Authors: Remo Gloor (remo.gloor@gmail.com)
-//           
+//   Copyright (c) 2007-2010, Enkari, Ltd.
+//   Copyright (c) 2010-2017, Ninject Project Contributors
 //   Dual-licensed under the Apache License, Version 2.0, and the Microsoft Public License (Ms-PL).
-//   you may not use this file except in compliance with one of the Licenses.
-//   You may obtain a copy of the License at
-//
-//       http://www.apache.org/licenses/LICENSE-2.0
-//   or
-//       http://www.microsoft.com/opensource/licenses.mspx
-//
-//   Unless required by applicable law or agreed to in writing, software
-//   distributed under the License is distributed on an "AS IS" BASIS,
-//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//   See the License for the specific language governing permissions and
-//   limitations under the License.
 // </copyright>
-//-------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------------------
 
 #if !NET_35 && !SILVERLIGHT
 namespace Ninject.Extensions.Interception
@@ -59,6 +46,33 @@ namespace Ninject.Extensions.Interception
             this.AfterInvoke(invocation);
         }
 
+        /// <summary>
+        /// Takes some action before the invocation proceeds.
+        /// </summary>
+        /// <param name="invocation">The invocation that is being intercepted.</param>
+        protected virtual void BeforeInvoke(IInvocation invocation)
+        {
+        }
+
+        /// <summary>
+        /// Takes some action after the invocation proceeds.
+        /// </summary>
+        /// <remarks>Use one AfterInvoke method overload.</remarks>
+        /// <param name="invocation">The invocation that is being intercepted.</param>
+        protected virtual void AfterInvoke(IInvocation invocation)
+        {
+        }
+
+        /// <summary>
+        /// Takes some action after the invocation proceeds.
+        /// </summary>
+        /// <remarks>Use one AfterInvoke method overload.</remarks>
+        /// <param name="invocation">The invocation that is being intercepted.</param>
+        /// <param name="task">The task that was executed.</param>
+        protected virtual void AfterInvoke(IInvocation invocation, Task task)
+        {
+        }
+
         private void InterceptTask(IInvocation invocation)
         {
             var invocationClone = invocation.Clone();
@@ -75,7 +89,7 @@ namespace Ninject.Extensions.Interception
                                 this.AfterInvoke(invocation, t);
                             });
         }
-        
+
         private void InterceptTaskWithResult<TResult>(IInvocation invocation)
         {
             var invocationClone = invocation.Clone();
@@ -93,33 +107,6 @@ namespace Ninject.Extensions.Interception
                             this.AfterInvoke(invocationClone, t);
                             return (TResult)invocationClone.ReturnValue;
                         });
-        }
-        
-        /// <summary>
-        /// Takes some action before the invocation proceeds.
-        /// </summary>
-        /// <param name="invocation">The invocation that is being intercepted.</param>
-        protected virtual void BeforeInvoke(IInvocation invocation)
-        {
-        }
-
-        /// <summary>
-        /// Takes some action after the invocation proceeds. 
-        /// </summary>
-        /// <remarks>Use one AfterInvoke method overload.</remarks>
-        /// <param name="invocation">The invocation that is being intercepted.</param>
-        protected virtual void AfterInvoke(IInvocation invocation)
-        {
-        }
-
-        /// <summary>
-        /// Takes some action after the invocation proceeds.
-        /// </summary>
-        /// <remarks>Use one AfterInvoke method overload.</remarks>
-        /// <param name="invocation">The invocation that is being intercepted.</param>
-        /// <param name="task">The task that was executed.</param>
-        protected virtual void AfterInvoke(IInvocation invocation, Task task)
-        {
         }
     }
 }

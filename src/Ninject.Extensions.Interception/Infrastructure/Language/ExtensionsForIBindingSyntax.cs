@@ -1,32 +1,24 @@
-#region License
-
-// 
-// Author: Ian Davis <ian@innovatian.com>
-// Copyright (c) 2010, Innovatian Software, LLC
-// 
-// Dual-licensed under the Apache License, Version 2.0, and the Microsoft Public License (Ms-PL).
-// See the file LICENSE.txt for details.
-// 
-
-#endregion
-
-#region Using Directives
-
-using System;
-using System.Reflection;
-using Ninject.Extensions.Interception.Advice;
-using Ninject.Extensions.Interception.Advice.Builders;
-using Ninject.Extensions.Interception.Advice.Syntax;
-using Ninject.Extensions.Interception.Parameters;
-using Ninject.Extensions.Interception.Registry;
-using Ninject.Syntax;
-
-#endregion
+// -------------------------------------------------------------------------------------------------
+// <copyright file="ExtensionsForIBindingSyntax.cs" company="Ninject Project Contributors">
+//   Copyright (c) 2007-2010, Enkari, Ltd.
+//   Copyright (c) 2010-2017, Ninject Project Contributors
+//   Dual-licensed under the Apache License, Version 2.0, and the Microsoft Public License (Ms-PL).
+// </copyright>
+// -------------------------------------------------------------------------------------------------
 
 namespace Ninject.Extensions.Interception.Infrastructure.Language
 {
+    using System;
+    using System.Reflection;
+    using Ninject.Extensions.Interception.Advice;
+    using Ninject.Extensions.Interception.Advice.Builders;
+    using Ninject.Extensions.Interception.Advice.Syntax;
+    using Ninject.Extensions.Interception.Parameters;
+    using Ninject.Extensions.Interception.Registry;
+    using Ninject.Syntax;
+
     /// <summary>
-    /// 
+    /// Provides extension methods for <see cref="IBindingOnSyntax{T}"/>.
     /// </summary>
     public static class ExtensionsForIBindingSyntax
     {
@@ -39,10 +31,11 @@ namespace Ninject.Extensions.Interception.Infrastructure.Language
         /// <returns>
         ///     An <see cref="IAdviceTargetSyntax"/> instance which allows the attachment of an <see cref="IInterceptor"/>.
         /// </returns>
-        public static IAdviceTargetSyntax Intercept<T>( this IBindingOnSyntax<T> bindingSyntax, params Type[] additionalInterfaces )
+        public static IAdviceTargetSyntax Intercept<T>(this IBindingOnSyntax<T> bindingSyntax, params Type[] additionalInterfaces)
         {
-            return Intercept(bindingSyntax, 
-                mi => mi.DeclaringType != typeof(object), 
+            return Intercept(
+                bindingSyntax,
+                mi => mi.DeclaringType != typeof(object),
                 additionalInterfaces);
         }
 

@@ -1,25 +1,10 @@
-//-------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------------------
 // <copyright file="DynamicMethodFactory.cs" company="Ninject Project Contributors">
-//   Copyright (c) 2007-2009, Enkari, Ltd.
-//   Copyright (c) 2009-2011 Ninject Project Contributors
-//   Authors: Nate Kohari (nate@enkari.com)
-//            Remo Gloor (remo.gloor@gmail.com)
-//           
+//   Copyright (c) 2007-2010, Enkari, Ltd.
+//   Copyright (c) 2010-2017, Ninject Project Contributors
 //   Dual-licensed under the Apache License, Version 2.0, and the Microsoft Public License (Ms-PL).
-//   you may not use this file except in compliance with one of the Licenses.
-//   You may obtain a copy of the License at
-//
-//       http://www.apache.org/licenses/LICENSE-2.0
-//   or
-//       http://www.microsoft.com/opensource/licenses.mspx
-//
-//   Unless required by applicable law or agreed to in writing, software
-//   distributed under the License is distributed on an "AS IS" BASIS,
-//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//   See the License for the specific language governing permissions and
-//   limitations under the License.
 // </copyright>
-//-------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------------------
 
 #if !NO_LCG
 namespace Ninject.Extensions.Interception.Injection.Dynamic
@@ -36,7 +21,7 @@ namespace Ninject.Extensions.Interception.Injection.Dynamic
     {
         private static readonly Module Module = typeof(DynamicMethodFactory).Module;
 
-        private static readonly ConstructorInfo TargetParameterCountExceptionConstructor = 
+        private static readonly ConstructorInfo TargetParameterCountExceptionConstructor =
             typeof(TargetParameterCountException).GetConstructor(Type.EmptyTypes);
 
         /// <summary>
@@ -109,7 +94,7 @@ namespace Ninject.Extensions.Interception.Injection.Dynamic
         /// </summary>
         /// <param name="field">The field that the getter should read from.</param>
         /// <returns>A dynamic getter that can read from the specified field.</returns>
-        public static Getter CreateGetter( FieldInfo field )
+        public static Getter CreateGetter(FieldInfo field)
         {
             DynamicMethod callable = CreateDynamicGetterMethod();
 
@@ -165,7 +150,7 @@ namespace Ninject.Extensions.Interception.Injection.Dynamic
         /// </summary>
         /// <param name="field">The field that the setter should write to.</param>
         /// <returns>A dynamic setter that can write to the specified field.</returns>
-        public static Setter CreateSetter( FieldInfo field )
+        public static Setter CreateSetter(FieldInfo field)
         {
             DynamicMethod callable = CreateDynamicSetterMethod();
 
@@ -298,7 +283,7 @@ namespace Ninject.Extensions.Interception.Injection.Dynamic
                 else
                 {
                     locals[localIndex] = il.DeclareLocal(info.ParameterTypes[index], true);
-                    il.Emit(OpCodes.Ldloca_S, locals[localIndex++]);                    
+                    il.Emit(OpCodes.Ldloca_S, locals[localIndex++]);
                 }
             }
 
@@ -369,6 +354,7 @@ namespace Ninject.Extensions.Interception.Injection.Dynamic
                     {
                         il.Emit(OpCodes.Ldc_I4, value);
                     }
+
                     break;
             }
         }
@@ -403,8 +389,6 @@ namespace Ninject.Extensions.Interception.Injection.Dynamic
             }
         }
 
-        #region Nested type: DelegateBuildInfo
-
         private class DelegateBuildInfo
         {
             public DelegateBuildInfo(ConstructorInfo ctor)
@@ -422,7 +406,7 @@ namespace Ninject.Extensions.Interception.Injection.Dynamic
                 this.InitParameters();
             }
 
-            public IList<int> RefParameterIndexes { get; private set; } 
+            public IList<int> RefParameterIndexes { get; private set; }
 
             public MethodBase Method { get; private set; }
 
@@ -452,13 +436,11 @@ namespace Ninject.Extensions.Interception.Injection.Dynamic
                     }
                     else
                     {
-                        this.ParameterTypes[index] = type;                        
+                        this.ParameterTypes[index] = type;
                     }
                 }
             }
         }
-
-        #endregion
     }
 }
 

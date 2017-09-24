@@ -1,14 +1,10 @@
-#region License
-
-// 
-// Author: Ian Davis <ian@innovatian.com>
-// Copyright (c) 2010, Innovatian Software, LLC
-// 
-// Dual-licensed under the Apache License, Version 2.0, and the Microsoft Public License (Ms-PL).
-// See the file LICENSE.txt for details.
-// 
-
-#endregion
+// -------------------------------------------------------------------------------------------------
+// <copyright file="IAutoNotifyPropertyChangedInterceptor.cs" company="Ninject Project Contributors">
+//   Copyright (c) 2007-2010, Enkari, Ltd.
+//   Copyright (c) 2010-2017, Ninject Project Contributors
+//   Dual-licensed under the Apache License, Version 2.0, and the Microsoft Public License (Ms-PL).
+// </copyright>
+// -------------------------------------------------------------------------------------------------
 
 namespace Ninject.Extensions.Interception
 {

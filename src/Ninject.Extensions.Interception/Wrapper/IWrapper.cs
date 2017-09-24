@@ -1,36 +1,28 @@
-#region License
-
-// 
-// Author: Nate Kohari <nate@enkari.com>
-// Copyright (c) 2007-2010, Enkari, Ltd.
-// 
-// Dual-licensed under the Apache License, Version 2.0, and the Microsoft Public License (Ms-PL).
-// See the file LICENSE.txt for details.
-// 
-
-#endregion
-
-#region Using Directives
-
-using Ninject.Activation;
-using Ninject.Extensions.Interception.Request;
-
-#endregion
+// -------------------------------------------------------------------------------------------------
+// <copyright file="IWrapper.cs" company="Ninject Project Contributors">
+//   Copyright (c) 2007-2010, Enkari, Ltd.
+//   Copyright (c) 2010-2017, Ninject Project Contributors
+//   Dual-licensed under the Apache License, Version 2.0, and the Microsoft Public License (Ms-PL).
+// </copyright>
+// -------------------------------------------------------------------------------------------------
 
 namespace Ninject.Extensions.Interception.Wrapper
 {
+    using Ninject.Activation;
+    using Ninject.Extensions.Interception.Request;
+
     /// <summary>
     /// Contains a contextualized instance and can be used to create executable invocations.
     /// </summary>
     public interface IWrapper
     {
         /// <summary>
-        /// Gets the kernel associated with the wrapper.
+        /// Gets or sets the kernel associated with the wrapper.
         /// </summary>
         IKernel Kernel { get; set; }
 
         /// <summary>
-        /// Gets the context in which the wrapper was created.
+        /// Gets or sets the context in which the wrapper was created.
         /// </summary>
         IContext Context { get; set; }
 
@@ -44,6 +36,6 @@ namespace Ninject.Extensions.Interception.Wrapper
         /// </summary>
         /// <param name="request">The request.</param>
         /// <returns>An executable invocation representing the specified request.</returns>
-        IInvocation CreateInvocation( IProxyRequest request );
+        IInvocation CreateInvocation(IProxyRequest request);
     }
 }

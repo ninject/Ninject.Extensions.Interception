@@ -1,61 +1,50 @@
-#region License
-
-// 
-// Author: Nate Kohari <nate@enkari.com>
-// Copyright (c) 2007-2010, Enkari, Ltd.
-// 
-// Dual-licensed under the Apache License, Version 2.0, and the Microsoft Public License (Ms-PL).
-// See the file LICENSE.txt for details.
-// 
-
-#endregion
-
-#region Using Directives
-
-using System.Collections.Generic;
-using Ninject.Extensions.Interception.Infrastructure;
-using Ninject.Extensions.Interception.Request;
-
-#endregion
+// -------------------------------------------------------------------------------------------------
+// <copyright file="InvocationBase.cs" company="Ninject Project Contributors">
+//   Copyright (c) 2007-2010, Enkari, Ltd.
+//   Copyright (c) 2010-2017, Ninject Project Contributors
+//   Dual-licensed under the Apache License, Version 2.0, and the Microsoft Public License (Ms-PL).
+// </copyright>
+// -------------------------------------------------------------------------------------------------
 
 namespace Ninject.Extensions.Interception.Invocation
 {
+    using System.Collections.Generic;
+    using Ninject.Extensions.Interception.Infrastructure;
+    using Ninject.Extensions.Interception.Request;
+
     /// <summary>
     /// A baseline definition of an invocation.
     /// </summary>
     public abstract class InvocationBase : IInvocation
     {
-        private readonly IEnumerator<IInterceptor> _enumerator;
+        private readonly IEnumerator<IInterceptor> enumerator;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="InvocationBase"/> class.
         /// </summary>
         /// <param name="request">The request, which describes the method call.</param>
         /// <param name="interceptors">The chain of interceptors that will be executed before the target method is called.</param>
-        protected InvocationBase( IProxyRequest request, IEnumerable<IInterceptor> interceptors )
+        protected InvocationBase(IProxyRequest request, IEnumerable<IInterceptor> interceptors)
         {
-            Ensure.ArgumentNotNull( request, "request" );
+            Ensure.ArgumentNotNull(request, "request");
 
-            Request = request;
-            Interceptors = interceptors;
+            this.Request = request;
+            this.Interceptors = interceptors;
 
-            if ( interceptors != null )
+            if (interceptors != null)
             {
-                _enumerator = interceptors.GetEnumerator();
+                this.enumerator = interceptors.GetEnumerator();
             }
         }
 
-        #region IInvocation Members
-
         /// <summary>
-        /// Gets the request, which describes the method call.
+        /// Gets or sets the request, which describes the method call.
         /// </summary>
         public IProxyRequest Request { get; protected set; }
 
         /// <summary>
-        /// Gets the chain of interceptors that will be executed before the target method is called.
+        /// Gets or sets the chain of interceptors that will be executed before the target method is called.
         /// </summary>
-        /// <value></value>
         public IEnumerable<IInterceptor> Interceptors { get; protected set; }
 
         /// <summary>
@@ -69,14 +58,14 @@ namespace Ninject.Extensions.Interception.Invocation
         /// </summary>
         public void Proceed()
         {
-            if ( ( _enumerator != null ) &&
-                 _enumerator.MoveNext() )
+            if ((this.enumerator != null) &&
+                 this.enumerator.MoveNext())
             {
-                _enumerator.Current.Intercept( this );
+                this.enumerator.Current.Intercept(this);
             }
             else
             {
-                ReturnValue = CallTargetMethod();
+                this.ReturnValue = this.CallTargetMethod();
             }
         }
 
@@ -89,11 +78,10 @@ namespace Ninject.Extensions.Interception.Invocation
             return (IInvocation)this.MemberwiseClone();
         }
 
-        #endregion
-
         /// <summary>
         /// Calls the target method described by the request.
         /// </summary>
+        /// <returns>The return value of the method.</returns>
         protected abstract object CallTargetMethod();
     }
 }

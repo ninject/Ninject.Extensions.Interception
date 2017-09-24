@@ -1,26 +1,21 @@
-#region License
-
-// 
-// Dual-licensed under the Apache License, Version 2.0, and the Microsoft Public License (Ms-PL).
-// See the file LICENSE.txt for details.
-// 
-
-#endregion
-
-#region Using Directives
-
-using System.Collections.Generic;
-using System.Reflection;
-using Ninject.Extensions.Interception.Advice;
-using Ninject.Extensions.Interception.Attributes;
-using Ninject.Extensions.Interception.Planning.Directives;
-using Ninject.Extensions.Interception.Registry;
-using Ninject.Planning;
-
-#endregion
+// -------------------------------------------------------------------------------------------------
+// <copyright file="MethodInterceptorRegistrationStrategy.cs" company="Ninject Project Contributors">
+//   Copyright (c) 2007-2010, Enkari, Ltd.
+//   Copyright (c) 2010-2017, Ninject Project Contributors
+//   Dual-licensed under the Apache License, Version 2.0, and the Microsoft Public License (Ms-PL).
+// </copyright>
+// -------------------------------------------------------------------------------------------------
 
 namespace Ninject.Extensions.Interception.Planning.Strategies
 {
+    using System.Collections.Generic;
+    using System.Reflection;
+    using Ninject.Extensions.Interception.Advice;
+    using Ninject.Extensions.Interception.Attributes;
+    using Ninject.Extensions.Interception.Planning.Directives;
+    using Ninject.Extensions.Interception.Registry;
+    using Ninject.Planning;
+
     /// <summary>
     /// Provides interceptor attachment for methods configured by the kernel for method level interception.
     /// </summary>
@@ -32,12 +27,13 @@ namespace Ninject.Extensions.Interception.Planning.Strategies
         /// <param name="adviceFactory">The advice factory.</param>
         /// <param name="adviceRegistry">The advice registry.</param>
         /// <param name="methodInterceptorRegistry">The method interceptor registry.</param>
-        public MethodInterceptorRegistrationStrategy( IAdviceFactory adviceFactory,
-                                                      IAdviceRegistry adviceRegistry,
-                                                      IMethodInterceptorRegistry methodInterceptorRegistry )
-            : base( adviceFactory, adviceRegistry )
+        public MethodInterceptorRegistrationStrategy(
+            IAdviceFactory adviceFactory,
+            IAdviceRegistry adviceRegistry,
+            IMethodInterceptorRegistry methodInterceptorRegistry)
+            : base(adviceFactory, adviceRegistry)
         {
-            MethodInterceptorRegistry = methodInterceptorRegistry;
+            this.MethodInterceptorRegistry = methodInterceptorRegistry;
         }
 
         /// <summary>
@@ -46,48 +42,41 @@ namespace Ninject.Extensions.Interception.Planning.Strategies
         /// <value>The method interceptor registry.</value>
         public IMethodInterceptorRegistry MethodInterceptorRegistry { get; set; }
 
-        #region Implementation of INinjectComponent
-
         /// <summary>
         /// Contributes to the specified plan.
         /// </summary>
         /// <param name="plan">The plan that is being generated.</param>
-        public override void Execute( IPlan plan )
+        public override void Execute(IPlan plan)
         {
-            if ( !MethodInterceptorRegistry.Contains( plan.Type ) )
+            if (!this.MethodInterceptorRegistry.Contains(plan.Type))
             {
                 return;
             }
 
-            MethodInterceptorCollection methodInterceptors = MethodInterceptorRegistry.GetMethodInterceptors( plan.Type );
+            MethodInterceptorCollection methodInterceptors = this.MethodInterceptorRegistry.GetMethodInterceptors(plan.Type);
 
             Dictionary<MethodInfo, List<IInterceptor>>.KeyCollection methods = methodInterceptors.Keys;
-            if ( methods.Count == 0 )
+            if (methods.Count == 0)
             {
                 return;
             }
 
-            foreach ( MethodInfo method in methods )
+            foreach (MethodInfo method in methods)
             {
-                for ( int order = 0; order < methodInterceptors[method].Count; order++ )
+                for (int order = 0; order < methodInterceptors[method].Count; order++)
                 {
                     IInterceptor interceptor = methodInterceptors[method][order];
-                    RegisterMethodInterceptors( plan.Type,
-                                                method,
-                                                new[]
-                                                {
-                                                    new InternalInterceptAttribute( request => interceptor )
-                                                    {Order = order}
-                                                } );
+                    this.RegisterMethodInterceptors(
+                        plan.Type,
+                        method,
+                        new[] { new InternalInterceptAttribute(request => interceptor) { Order = order }, });
                 }
             }
 
-            if ( !plan.Has<ProxyDirective>() )
+            if (!plan.Has<ProxyDirective>())
             {
-                plan.Add( new ProxyDirective() );
+                plan.Add(new ProxyDirective());
             }
         }
-
-        #endregion
     }
 }

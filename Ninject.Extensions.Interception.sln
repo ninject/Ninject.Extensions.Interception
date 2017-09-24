@@ -1,13 +1,22 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ninject.Extensions.Interception", "src\Ninject.Extensions.Interception\Ninject.Extensions.Interception.csproj", "{C99A5FAE-C6AD-4F24-A938-EC8BDDB885A6}"
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26730.16
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ninject.Extensions.Interception", "src\Ninject.Extensions.Interception\Ninject.Extensions.Interception.csproj", "{C99A5FAE-C6AD-4F24-A938-EC8BDDB885A6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ninject.Extensions.Interception.DynamicProxy", "src\Ninject.Extensions.Interception.DynamicProxy\Ninject.Extensions.Interception.DynamicProxy.csproj", "{403F7CC5-2AC1-496A-96E2-1AC6D562EAB2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ninject.Extensions.Interception.LinFu", "src\Ninject.Extensions.Interception.LinFu\Ninject.Extensions.Interception.LinFu.csproj", "{8E34CAFA-BAEB-4FCB-8A63-1266EB58F24E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ninject.Extensions.Interception.Tests", "src\Ninject.Extensions.Interception.Test\Ninject.Extensions.Interception.Tests.csproj", "{959234A6-9E16-4208-9311-0F0219EAF078}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ninject.Extensions.Interception.DynamicProxy", "src\Ninject.Extensions.Interception.DynamicProxy\Ninject.Extensions.Interception.DynamicProxy.csproj", "{403F7CC5-2AC1-496A-96E2-1AC6D562EAB2}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{610876A6-97A2-41A0-8D91-409F3F78786D}"
+	ProjectSection(SolutionItems) = preProject
+		appveyor.yml = appveyor.yml
+		CHANGELOG.md = CHANGELOG.md
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,6 +28,10 @@ Global
 		{C99A5FAE-C6AD-4F24-A938-EC8BDDB885A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C99A5FAE-C6AD-4F24-A938-EC8BDDB885A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C99A5FAE-C6AD-4F24-A938-EC8BDDB885A6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{403F7CC5-2AC1-496A-96E2-1AC6D562EAB2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{403F7CC5-2AC1-496A-96E2-1AC6D562EAB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{403F7CC5-2AC1-496A-96E2-1AC6D562EAB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{403F7CC5-2AC1-496A-96E2-1AC6D562EAB2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8E34CAFA-BAEB-4FCB-8A63-1266EB58F24E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8E34CAFA-BAEB-4FCB-8A63-1266EB58F24E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8E34CAFA-BAEB-4FCB-8A63-1266EB58F24E}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -27,12 +40,11 @@ Global
 		{959234A6-9E16-4208-9311-0F0219EAF078}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{959234A6-9E16-4208-9311-0F0219EAF078}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{959234A6-9E16-4208-9311-0F0219EAF078}.Release|Any CPU.Build.0 = Release|Any CPU
-		{403F7CC5-2AC1-496A-96E2-1AC6D562EAB2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{403F7CC5-2AC1-496A-96E2-1AC6D562EAB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{403F7CC5-2AC1-496A-96E2-1AC6D562EAB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{403F7CC5-2AC1-496A-96E2-1AC6D562EAB2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4ECA34A5-00AF-4068-931C-34274A28A1F2}
 	EndGlobalSection
 EndGlobal

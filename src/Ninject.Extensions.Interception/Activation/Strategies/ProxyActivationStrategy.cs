@@ -1,27 +1,19 @@
-#region License
-
-// 
-// Author: Nate Kohari <nate@enkari.com>
-// Copyright (c) 2007-2010, Enkari, Ltd.
-// 
-// Dual-licensed under the Apache License, Version 2.0, and the Microsoft Public License (Ms-PL).
-// See the file LICENSE.txt for details.
-// 
-
-#endregion
-
-#region Using Directives
-
-using Ninject.Activation;
-using Ninject.Activation.Strategies;
-using Ninject.Extensions.Interception.Planning.Directives;
-using Ninject.Extensions.Interception.ProxyFactory;
-using Ninject.Extensions.Interception.Registry;
-
-#endregion
+// -------------------------------------------------------------------------------------------------
+// <copyright file="ProxyActivationStrategy.cs" company="Ninject Project Contributors">
+//   Copyright (c) 2007-2010, Enkari, Ltd.
+//   Copyright (c) 2010-2017, Ninject Project Contributors
+//   Dual-licensed under the Apache License, Version 2.0, and the Microsoft Public License (Ms-PL).
+// </copyright>
+// -------------------------------------------------------------------------------------------------
 
 namespace Ninject.Extensions.Interception.Activation.Strategies
 {
+    using Ninject.Activation;
+    using Ninject.Activation.Strategies;
+    using Ninject.Extensions.Interception.Planning.Directives;
+    using Ninject.Extensions.Interception.ProxyFactory;
+    using Ninject.Extensions.Interception.Registry;
+
     /// <summary>
     /// Activates and deactivates proxied instances in the activation pipeline attaching and detaching proxies.
     /// </summary>
@@ -46,14 +38,14 @@ namespace Ninject.Extensions.Interception.Activation.Strategies
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="reference">The reference.</param>
-        public override void Activate( IContext context, InstanceReference reference )
+        public override void Activate(IContext context, InstanceReference reference)
         {
-            if ( ShouldProxy( context ) )
+            if (this.ShouldProxy(context))
             {
-                this.proxyFactory.Wrap( context, reference );
+                this.proxyFactory.Wrap(context, reference);
             }
 
-            base.Activate( context, reference );
+            base.Activate(context, reference);
         }
 
         /// <summary>
@@ -61,14 +53,14 @@ namespace Ninject.Extensions.Interception.Activation.Strategies
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="reference">The reference.</param>
-        public override void Deactivate( IContext context, InstanceReference reference )
+        public override void Deactivate(IContext context, InstanceReference reference)
         {
-            if ( ShouldProxy( context ) )
+            if (this.ShouldProxy(context))
             {
-                context.Kernel.Components.Get<IProxyFactory>().Unwrap( context, reference );
+                context.Kernel.Components.Get<IProxyFactory>().Unwrap(context, reference);
             }
 
-            base.Deactivate( context, reference );
+            base.Deactivate(context, reference);
         }
 
         /// <summary>

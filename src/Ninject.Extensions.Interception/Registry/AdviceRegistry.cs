@@ -1,32 +1,22 @@
-#region License
-
-// 
-// Author: Nate Kohari <nate@enkari.com>
-// Copyright (c) 2007-2010, Enkari, Ltd.
-// 
-// Dual-licensed under the Apache License, Version 2.0, and the Microsoft Public License (Ms-PL).
-// See the file LICENSE.txt for details.
-// 
-
-#endregion
-
-#region Using Directives
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Ninject.Components;
-using Ninject.Extensions.Interception.Advice;
-using Ninject.Extensions.Interception.Infrastructure.Language;
-using Ninject.Extensions.Interception.Request;
-
-#endregion
+// -------------------------------------------------------------------------------------------------
+// <copyright file="AdviceRegistry.cs" company="Ninject Project Contributors">
+//   Copyright (c) 2007-2010, Enkari, Ltd.
+//   Copyright (c) 2010-2017, Ninject Project Contributors
+//   Dual-licensed under the Apache License, Version 2.0, and the Microsoft Public License (Ms-PL).
+// </copyright>
+// -------------------------------------------------------------------------------------------------
 
 namespace Ninject.Extensions.Interception.Registry
 {
+    using System;
     using System.Collections;
-
+    using System.Collections.Generic;
+    using System.Linq;
     using Ninject.Activation;
+    using Ninject.Components;
+    using Ninject.Extensions.Interception.Advice;
+    using Ninject.Extensions.Interception.Infrastructure.Language;
+    using Ninject.Extensions.Interception.Request;
     using Ninject.Infrastructure;
 
     /// <summary>
@@ -34,12 +24,10 @@ namespace Ninject.Extensions.Interception.Registry
     /// </summary>
     public class AdviceRegistry : NinjectComponent, IAdviceRegistry
     {
-        private readonly List<IAdvice> _advice = new List<IAdvice>();
+        private readonly List<IAdvice> advice = new List<IAdvice>();
 
-        private readonly Dictionary<RuntimeMethodHandle, IDictionary<RuntimeTypeHandle, List<IInterceptor>>> _cache =
+        private readonly Dictionary<RuntimeMethodHandle, IDictionary<RuntimeTypeHandle, List<IInterceptor>>> cache =
             new Dictionary<RuntimeMethodHandle, IDictionary<RuntimeTypeHandle, List<IInterceptor>>>();
-
-        #region IAdviceRegistry Members
 
         /// <summary>
         /// Gets a value indicating whether one or more dynamic interceptors have been registered.
@@ -51,13 +39,13 @@ namespace Ninject.Extensions.Interception.Registry
         /// </summary>
         /// <param name="context">The context.</param>
         /// <returns>
-        /// 	<c>true</c> if an advice for the specified context exists.; otherwise, <c>false</c>.
+        /// <c>true</c> if an advice for the specified context exists.; otherwise, <c>false</c>.
         /// </returns>
         public bool HasAdvice(IContext context)
         {
-            lock (_advice)
+            lock (this.advice)
             {
-                return _advice.Any( a => a.IsDynamic && a.Condition( context ) );
+                return this.advice.Any(a => a.IsDynamic && a.Condition(context));
             }
         }
 
@@ -65,20 +53,20 @@ namespace Ninject.Extensions.Interception.Registry
         /// Registers the specified advice.
         /// </summary>
         /// <param name="advice">The advice to register.</param>
-        public void Register( IAdvice advice )
+        public void Register(IAdvice advice)
         {
-            if ( advice.IsDynamic )
+            if (advice.IsDynamic)
             {
-                HasDynamicAdvice = true;
-                lock( _cache )
+                this.HasDynamicAdvice = true;
+                lock (this.cache)
                 {
-                    _cache.Clear();
+                    this.cache.Clear();
                 }
             }
 
-            lock ( _advice )
+            lock (this.advice)
             {
-                _advice.Add(advice);
+                this.advice.Add(advice);
             }
         }
 
@@ -87,7 +75,7 @@ namespace Ninject.Extensions.Interception.Registry
         /// </summary>
         /// <param name="type">The type in question.</param>
         /// <returns><see langword="True"/> if advice has been registered, otherwise <see langword="false"/>.</returns>
-        public bool HasStaticAdvice( Type type )
+        public bool HasStaticAdvice(Type type)
         {
             // TODO
             return true;
@@ -98,7 +86,7 @@ namespace Ninject.Extensions.Interception.Registry
         /// </summary>
         /// <param name="request">The request.</param>
         /// <returns>A collection of interceptors, ordered by the priority in which they should be invoked.</returns>
-        public ICollection<IInterceptor> GetInterceptors( IProxyRequest request )
+        public ICollection<IInterceptor> GetInterceptors(IProxyRequest request)
         {
             RuntimeMethodHandle methodHandle = request.Method.GetMethodHandle();
             RuntimeTypeHandle typeHandle = request.Target.GetType().TypeHandle;
@@ -106,12 +94,12 @@ namespace Ninject.Extensions.Interception.Registry
             ICollection<IInterceptor> interceptors = null;
             IDictionary<RuntimeTypeHandle, List<IInterceptor>> methodCache = null;
 
-            lock (_cache)
+            lock (this.cache)
             {
-                if (!_cache.TryGetValue(methodHandle, out methodCache))
+                if (!this.cache.TryGetValue(methodHandle, out methodCache))
                 {
                     methodCache = new Dictionary<RuntimeTypeHandle, List<IInterceptor>>();
-                    _cache.Add(methodHandle, methodCache);
+                    this.cache.Add(methodHandle, methodCache);
                 }
             }
 
@@ -122,31 +110,30 @@ namespace Ninject.Extensions.Interception.Registry
                     return methodCache[typeHandle];
                 }
 
-                if (!HasDynamicAdvice)
+                if (!this.HasDynamicAdvice)
                 {
-                    interceptors = GetInterceptorsForRequest(request);
+                    interceptors = this.GetInterceptorsForRequest(request);
+
                     // If there are no dynamic interceptors defined, we can safely cache the results.
                     // Otherwise, we have to evaluate and re-activate the interceptors each time.
-
                     methodCache.Add(typeHandle, interceptors.ToList());
                 }
 
-                return interceptors ?? GetInterceptorsForRequest(request);
+                return interceptors ?? this.GetInterceptorsForRequest(request);
             }
         }
 
-        #endregion
-
-        private ICollection<IInterceptor> GetInterceptorsForRequest( IProxyRequest request )
+        private ICollection<IInterceptor> GetInterceptorsForRequest(IProxyRequest request)
         {
             List<IAdvice> matches;
-            lock (_advice)
+            lock (this.advice)
             {
-                matches = _advice.Where( advice => advice.Matches( request ) ).ToList();
+                matches = this.advice.Where(advice => advice.Matches(request)).ToList();
             }
-            matches.Sort( ( lhs, rhs ) => lhs.Order - rhs.Order );
 
-            List<IInterceptor> interceptors = matches.Convert( a => a.GetInterceptor( request ) ).ToList();
+            matches.Sort((lhs, rhs) => lhs.Order - rhs.Order);
+
+            List<IInterceptor> interceptors = matches.Convert(a => a.GetInterceptor(request)).ToList();
             return interceptors;
         }
     }

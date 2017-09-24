@@ -1,42 +1,32 @@
+// -------------------------------------------------------------------------------------------------
+// <copyright file="DynamicMethodInjector.cs" company="Ninject Project Contributors">
+//   Copyright (c) 2007-2010, Enkari, Ltd.
+//   Copyright (c) 2010-2017, Ninject Project Contributors
+//   Dual-licensed under the Apache License, Version 2.0, and the Microsoft Public License (Ms-PL).
+// </copyright>
+// -------------------------------------------------------------------------------------------------
+
 #if !NO_LCG
-
-#region License
-
-// 
-// Author: Nate Kohari <nate@enkari.com>
-// Copyright (c) 2007-2010, Enkari, Ltd.
-// 
-// Dual-licensed under the Apache License, Version 2.0, and the Microsoft Public License (Ms-PL).
-// See the file LICENSE.txt for details.
-// 
-
-#endregion
-
-#region Using Directives
-
-using System.Reflection;
-
-#endregion
 
 namespace Ninject.Extensions.Interception.Injection.Dynamic
 {
+    using System.Reflection;
+
     /// <summary>
     /// A method injector that uses a dynamically-generated <see cref="Invoker"/> for invocation.
     /// </summary>
     public class DynamicMethodInjector : InjectorBase<MethodInfo>, IMethodInjector
     {
-        private Invoker _invoker;
+        private Invoker invoker;
 
         /// <summary>
-        /// Creates a new DynamicMethodInjector.
+        /// Initializes a new instance of the <see cref="DynamicMethodInjector"/> class.
         /// </summary>
         /// <param name="member">The method that will be injected.</param>
-        public DynamicMethodInjector( MethodInfo member )
-            : base( member )
+        public DynamicMethodInjector(MethodInfo member)
+            : base(member)
         {
         }
-
-        #region IMethodInjector Members
 
         /// <summary>
         /// Calls the method associated with the injector.
@@ -44,19 +34,16 @@ namespace Ninject.Extensions.Interception.Injection.Dynamic
         /// <param name="target">The instance on which to call the method.</param>
         /// <param name="arguments">The arguments to pass to the method.</param>
         /// <returns>The return value of the method.</returns>
-        public object Invoke( object target, params object[] arguments )
+        public object Invoke(object target, params object[] arguments)
         {
-            if ( _invoker == null )
+            if (this.invoker == null)
             {
-                _invoker = DynamicMethodFactory.CreateInvoker( Member );
+                this.invoker = DynamicMethodFactory.CreateInvoker(this.Member);
             }
 
-            return _invoker.Invoke( target, arguments );
+            return this.invoker.Invoke(target, arguments);
         }
-
-        #endregion
     }
 }
 
-#endif
-//!NO_LCG
+#endif //!NO_LCG
