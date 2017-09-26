@@ -4,15 +4,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [3.3.0] - 2017-09-26
 
 ### Added
-- Support NETSTANDARD2.0
+- Support .NET Standard 2.0
+- Added overloads to configure which methods are intercepted
+
+### Changed
+- Dynamic proxy does not wrap proxies again with another proxy
+- All kind of interceptions do not intercept `System.Object` methods by default unless they are overridden
+- Inject `AdviceRegistry` into `ProxyActivationStrategy` instead of getting it from the kernel on each request
 
 ### Removed
-- Support for .NET 3.5 .NET 4.0 and Silverlight
+- .NET 3.5, .NET 4.0 and Silverlight
 
-## [3.2.0]
+### Fixed
+- Dynamic Advices are not cached and reused
+
+## [3.2.0] - 2014-03-21
 
 ### Added
 - Interface Proxies allow to intercept "System.Object" methods (ToString, GetHashCode, Equals) now.
