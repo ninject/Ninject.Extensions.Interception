@@ -64,8 +64,6 @@ namespace Ninject.Extensions.Interception.Infrastructure.Language
             kernel.Components.Get<IMethodInterceptorRegistry>().Add(method, interceptor);
         }
 
-#if !NETCF
-
         /// <summary>
         /// Intercepts the given method call and replaces it with the proxy action.
         /// </summary>
@@ -346,7 +344,5 @@ namespace Ninject.Extensions.Interception.Infrastructure.Language
 
             return (PropertyInfo)memberExpr.Member;
         }
-
-#endif
     }
 }

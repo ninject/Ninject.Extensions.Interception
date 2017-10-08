@@ -6,7 +6,6 @@
 // </copyright>
 // -------------------------------------------------------------------------------------------------
 
-#if !NET_35 && !SILVERLIGHT
 namespace Ninject.Extensions.Interception
 {
     using System.Reflection;
@@ -110,4 +109,3 @@ namespace Ninject.Extensions.Interception
         }
     }
 }
-#endif
