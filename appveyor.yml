@@ -34,7 +34,7 @@ build:
 
 test_script:
   - OpenCover.Console.exe -oldstyle -returntargetcode -register:user -target:"C:\Program Files\dotnet\dotnet.exe" -targetargs:"test --configuration Release --no-build src\Ninject.Extensions.Interception.Test" -filter:"+[Ninject.Extensions.Interception*]* -[Ninject.Extensions.Interception.Test*]*" -excludebyattribute:*.ExcludeFromCodeCoverage*;*.Obsolete* -output:"Ninject.Extensions.Interception_coverage.xml"
-  - codecov -f "Ninject.Extensions.Interception_coverage.xml
+  - codecov -f "Ninject.Extensions.Interception_coverage.xml"
 
 artifacts:
   - path: '**\*.nupkg'
