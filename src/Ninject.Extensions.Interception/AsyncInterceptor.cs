@@ -23,9 +23,8 @@ namespace Ninject.Extensions.Interception
         /// <summary>
         /// Intercepts the specified invocation.
         /// </summary>
-        /// <remarks>If overridden, you should invoke base.</remarks>
         /// <param name="invocation">The invocation to intercept.</param>
-        public virtual void Intercept(IInvocation invocation)
+        public void Intercept(IInvocation invocation)
         {
             var returnType = invocation.Request.Method.ReturnType;
             if (returnType == typeof(Task))
