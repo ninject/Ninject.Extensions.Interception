@@ -102,9 +102,9 @@ namespace Ninject.Extensions.Interception
                     }).Unwrap()
                 .ContinueWith(t =>
                         {
+                            invocationClone.ReturnValue = t.Result;
                             this.AfterInvoke(invocationClone);
                             this.AfterInvoke(invocationClone, t);
-                            invocationClone.ReturnValue = t.Result;
                             return (TResult)invocationClone.ReturnValue;
                         });
         }
