@@ -20,7 +20,7 @@ namespace Ninject.Extensions.Interception
         [Fact]
         public void WhenAutoNotifyAttributeIsAttachedToAProperty_TheObjectIsProxied()
         {
-            typeof(IProxyTargetAccessor).IsAssignableFrom(ViewModel.GetType()).Should().BeTrue();
+            typeof(IProxyTargetAccessor).IsAssignableFrom(this.ViewModel.GetType()).Should().BeTrue();
         }
     }
 } 

@@ -1,6 +1,6 @@
 namespace Ninject.Extensions.Interception
 {
-#if !SILVERLIGHT
+#if !NETCOREAPP2_0
     using System.ServiceModel;
 #endif
     using Castle.DynamicProxy;
@@ -14,7 +14,7 @@ namespace Ninject.Extensions.Interception
     
     public class DynamicProxy2ChannelFactoryProxyTest : DynamicProxy2BaseTests
     {
-#if !SILVERLIGHT && !MONO
+#if !NETCOREAPP2_0
         [Fact]
         public void ProxiesCreatedWithChannelFactoryAreIntercepted()
         {

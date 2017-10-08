@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net452</TargetFramework>
+    <TargetFrameworks>netcoreapp2.0;net452</TargetFrameworks>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
@@ -9,26 +9,23 @@
     <PackageReference Include="FluentAssertions" Version="4.19.4" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.3.0" />
     <PackageReference Include="Moq" Version="4.7.99" />
-    <PackageReference Include="xunit" Version="2.2.0" />
-  </ItemGroup>
-
-  <ItemGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <PackageReference Include="xunit.runner.visualstudio" Version="2.2.0" />
+    <PackageReference Include="xunit" Version="2.3.0" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.3.0" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net452' ">
     <Reference Include="System" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Ninject.Extensions.Interception.DynamicProxy\Ninject.Extensions.Interception.DynamicProxy.csproj" />
-    <ProjectReference Include="..\Ninject.Extensions.Interception.LinFu\Ninject.Extensions.Interception.LinFu.csproj" />
     <ProjectReference Include="..\Ninject.Extensions.Interception\Ninject.Extensions.Interception.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="System.ServiceModel" />
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net452' ">
+    <ProjectReference Include="..\Ninject.Extensions.Interception.LinFu\Ninject.Extensions.Interception.LinFu.csproj" />
   </ItemGroup>
 
 </Project>

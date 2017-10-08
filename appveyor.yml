@@ -22,10 +22,10 @@ dotnet_csproj:
 cache:
   - C:\ProgramData\chocolatey\bin -> appveyor.yml
   - C:\ProgramData\chocolatey\lib -> appveyor.yml
-  - '%LocalAppData%\NuGet\v3-cache'
+  - '%LocalAppData%\NuGet\v3-cache -> **\*.csproj'
 
 before_build:
-  - nuget restore -Verbosity quiet
+  - dotnet restore --verbosity quiet
   - choco install opencover.portable
   - choco install codecov
 
@@ -33,7 +33,7 @@ build:
   verbosity: minimal
 
 test_script:
-  - OpenCover.Console.exe -register:user -target:"%xunit20%\xunit.console.x86.exe" -targetargs:".\src\Ninject.Extensions.Interception.Test\bin\Release\net452\Ninject.Extensions.Interception.Tests.dll -noshadow -parallel none" -filter:"+[Ninject.Extensions.Interception*]* -[Ninject.Extensions.Interception.Test*]*" -output:".\Ninject.Extensions.Interception_coverage.xml"
+  - OpenCover.Console.exe -oldstyle -register:user -target:"C:\Program Files\dotnet\dotnet.exe" -targetargs:"test --configuration Release --no-build src\Ninject.Extensions.Interception.Test" -filter:"+[Ninject.Extensions.Interception*]* -[Ninject.Extensions.Interception.Test*]*" -excludebyattribute:*.ExcludeFromCodeCoverage*;*.Obsolete* -output:"Ninject.Extensions.Interception_coverage.xml"
   - codecov -f "Ninject.Extensions.Interception_coverage.xml
 
 artifacts:

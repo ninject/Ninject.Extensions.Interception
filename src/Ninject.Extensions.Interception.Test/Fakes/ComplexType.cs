@@ -6,8 +6,8 @@
     {
         public ComplexType()
         {
-            Name = GetType().Name;
-            Simple = new SimpleType();
+            this.Name = GetType().Name;
+            this.Simple = new SimpleType();
         }
 
         public string Name { get; set; }
@@ -19,7 +19,7 @@
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return Equals(other.Name, Name) && Equals(other.Simple, Simple);
+            return Equals(other.Name, this.Name) && Equals(other.Simple, this.Simple);
         }
 
         #endregion
@@ -36,7 +36,7 @@
         {
             unchecked
             {
-                return ((Name != null ? Name.GetHashCode() : 0)*397) ^ (Simple != null ? Simple.GetHashCode() : 0);
+                return ((this.Name != null ? this.Name.GetHashCode() : 0)*397) ^ (this.Simple != null ? this.Simple.GetHashCode() : 0);
             }
         }
 

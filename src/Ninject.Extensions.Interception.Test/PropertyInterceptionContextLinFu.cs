@@ -1,4 +1,4 @@
-#if !SILVERLIGHT
+#if !NETCOREAPP2_0
 namespace Ninject.Extensions.Interception
 {
     using FluentAssertions;

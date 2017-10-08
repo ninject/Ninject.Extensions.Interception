@@ -11,12 +11,12 @@ namespace Ninject.Extensions.Interception.Fakes
         [Inject]
         public RequestsConstructorInjection( SimpleObject child )
         {
-            _child = child;
+            this._child = child;
         }
 
         public virtual SimpleObject Child
         {
-            get { return _child; }
+            get { return this._child; }
         }
     }
 }

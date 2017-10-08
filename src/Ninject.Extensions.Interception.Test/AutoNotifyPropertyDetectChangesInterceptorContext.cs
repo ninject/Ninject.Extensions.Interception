@@ -9,18 +9,18 @@
     {
         public AutoNotifyPropertyDetectChangesInterceptorContext()
         {
-            ViewModel = Kernel.Get<ViewModel>();
-            ViewModel.PropertyChanged += (o, e) =>
+            this.ViewModel = this.Kernel.Get<ViewModel>();
+            this.ViewModel.PropertyChanged += (o, e) =>
                                              {
-                                                 LastPropertyToChange = e.PropertyName;
-                                                 PropertyChanges.Add(LastPropertyToChange);
+                                                 this.LastPropertyToChange = e.PropertyName;
+                                                 this.PropertyChanges.Add(this.LastPropertyToChange);
                                              };
 
-            ComplexViewModel = Kernel.Get<ComplexViewModel>();
-            ComplexViewModel.PropertyChanged += (o, e) =>
+            this.ComplexViewModel = this.Kernel.Get<ComplexViewModel>();
+            this.ComplexViewModel.PropertyChanged += (o, e) =>
                                                     {
-                                                        LastPropertyToChange = e.PropertyName;
-                                                        PropertyChanges.Add(LastPropertyToChange);
+                                                        this.LastPropertyToChange = e.PropertyName;
+                                                        this.PropertyChanges.Add(this.LastPropertyToChange);
                                                     };
         }
 
@@ -31,44 +31,44 @@
         [Fact]
         public void WhenValueAssignedIsTheSameAsTheCurrentValue_ItShouldNotNotify()
         {
-            ViewModel.ZipCode = 0;
-            LastPropertyToChange.Should().BeNull();
+            this.ViewModel.ZipCode = 0;
+            this.LastPropertyToChange.Should().BeNull();
         }
 
         [Fact]
         public void WhenValueAssignedIsTheSameAsTheCurrentComplexValue_ItShouldNotNotify()
         {
             var value = new ComplexType();
-            ComplexViewModel.Complex = value; // initialize
-            LastPropertyToChange.Should().Be("Complex");
-            LastPropertyToChange = null;
+            this.ComplexViewModel.Complex = value; // initialize
+            this.LastPropertyToChange.Should().Be("Complex");
+            this.LastPropertyToChange = null;
             var newValue = new ComplexType();
-            ComplexViewModel.Complex = newValue; // test
-            LastPropertyToChange.Should().BeNull();
+            this.ComplexViewModel.Complex = newValue; // test
+            this.LastPropertyToChange.Should().BeNull();
         }
 
         [Fact]
         public void WhenValueAssignedIsNotTheSameAsTheCurrentComplexValue_ItShouldNotNotify()
         {
             var value = new ComplexType();
-            ComplexViewModel.Complex = value; // initialize
-            LastPropertyToChange.Should().Be("Complex");
-            LastPropertyToChange = null;
+            this.ComplexViewModel.Complex = value; // initialize
+            this.LastPropertyToChange.Should().Be("Complex");
+            this.LastPropertyToChange = null;
             var newValue = new ComplexType {Name = "Foo"};
-            ComplexViewModel.Complex = newValue; // test
-            LastPropertyToChange.Should().Be("Complex");
+            this.ComplexViewModel.Complex = newValue; // test
+            this.LastPropertyToChange.Should().Be("Complex");
         }
 
         [Fact]
         public void WhenPropertySubValueAssignedIsNotTheSameAsTheCurrentComplexValue_ItShouldNotNotify()
         {
             var value = new ComplexType();
-            ComplexViewModel.Complex = value; // initialize
-            LastPropertyToChange.Should().Be("Complex");
-            LastPropertyToChange = null;
+            this.ComplexViewModel.Complex = value; // initialize
+            this.LastPropertyToChange.Should().Be("Complex");
+            this.LastPropertyToChange = null;
             var newValue = new ComplexType {Simple = new SimpleType {Id = 5}};
-            ComplexViewModel.Complex = newValue; // test
-            LastPropertyToChange.Should().Be("Complex");
+            this.ComplexViewModel.Complex = newValue; // test
+            this.LastPropertyToChange.Should().Be("Complex");
         }
     }
 }

@@ -14,7 +14,7 @@
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return Equals(other.Complex, Complex);
+            return Equals(other.Complex, this.Complex);
         }
 
         #endregion
@@ -29,7 +29,7 @@
 
         public override int GetHashCode()
         {
-            return (Complex != null ? Complex.GetHashCode() : 0);
+            return (this.Complex != null ? this.Complex.GetHashCode() : 0);
         }
 
         public static bool operator ==(ComplexViewModel left, ComplexViewModel right)

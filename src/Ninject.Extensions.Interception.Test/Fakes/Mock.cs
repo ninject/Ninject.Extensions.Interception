@@ -4,19 +4,19 @@ namespace Ninject.Extensions.Interception.Fakes
     {
         public Mock( string myProperty )
         {
-            MyProperty = myProperty;
+            this.MyProperty = myProperty;
         }
 
         public virtual string MyProperty { get; set; }
 
         public virtual string GetMyProperty()
         {
-            return MyProperty;
+            return this.MyProperty;
         }
 
         public virtual void SetMyProperty( string myProperty )
         {
-            MyProperty = myProperty;
+            this.MyProperty = myProperty;
         }
     }
 }

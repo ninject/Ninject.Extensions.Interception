@@ -12,7 +12,7 @@
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return other.Id == Id;
+            return other.Id == this.Id;
         }
 
         #endregion
@@ -27,7 +27,7 @@
 
         public override int GetHashCode()
         {
-            return Id;
+            return this.Id;
         }
 
         public static bool operator ==(SimpleType left, SimpleType right)

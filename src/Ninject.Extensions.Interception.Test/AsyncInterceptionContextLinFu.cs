@@ -1,4 +1,4 @@
-#if !NET_35 && !SILVERLIGHT
+#if !NETCOREAPP2_0
 namespace Ninject.Extensions.Interception
 {
     public class AsyncInterceptionContextLinFu : AsyncInterceptionContext

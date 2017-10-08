@@ -12,8 +12,8 @@ namespace Ninject.Extensions.Interception
             this.ViewModel = this.Kernel.Get<ViewModelWithClassNotify>();
             this.ViewModel.PropertyChanged += (o, e) =>
                                            {
-                                               LastPropertyToChange = e.PropertyName;
-                                               PropertyChanges.Add(LastPropertyToChange);
+                                               this.LastPropertyToChange = e.PropertyName;
+                                               this.PropertyChanges.Add(this.LastPropertyToChange);
                                            };
         }
 
@@ -23,23 +23,23 @@ namespace Ninject.Extensions.Interception
         public void WhenValueChangesOnPropertyWithoutNotifyAttribute_ItShouldNotifyChanges()
         {
             this.ViewModel.Address = "123 Main Street";
-            LastPropertyToChange.Should().Be("Address");
+            this.LastPropertyToChange.Should().Be("Address");
         }
 
         [Fact]
         public void WhenValueChangesOnPropertyWithDependentProperties_ItShouldNotifyAllChanges()
         {
             this.ViewModel.ZipCode = 9700;
-            PropertyChanges[0].Should().Be("ZipCode");
-            PropertyChanges[1].Should().Be("City");
-            PropertyChanges[2].Should().Be("State");
+            this.PropertyChanges[0].Should().Be("ZipCode");
+            this.PropertyChanges[1].Should().Be("City");
+            this.PropertyChanges[2].Should().Be("State");
         }
 
         [Fact]
         public void WhenPropertyHasDoNotNotifyAttribute_ChangNotificationIsSuppressed()
         {
             this.ViewModel.DoNotNotifyChanges = "...";
-            LastPropertyToChange.Should().BeNull();
+            this.LastPropertyToChange.Should().BeNull();
         }
     }
 }

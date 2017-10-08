@@ -15,15 +15,15 @@ namespace Ninject.Extensions.Interception
         {
             InterceptionFlag = false;
 
-            kernel = base.CreateDefaultInterceptionKernel();
+            this.kernel = base.CreateDefaultInterceptionKernel();
         }
  
         [Fact]
         public void InterceptionUsingAttribute_InterceptsMethods()
         {
-            kernel.Bind<IHaveInterceptAttribute>().To<HaveInterceptAttribute>();
+            this.kernel.Bind<IHaveInterceptAttribute>().To<HaveInterceptAttribute>();
 
-            kernel.Get<IHaveInterceptAttribute>().DoSomething();
+            this.kernel.Get<IHaveInterceptAttribute>().DoSomething();
             
             InterceptionFlag.Should().BeTrue();
         }
@@ -31,9 +31,9 @@ namespace Ninject.Extensions.Interception
         [Fact]
         public void InterceptionUsingAttribute_DoesNotInterceptSystemObjectMethods()
         {
-            kernel.Bind<IHaveInterceptAttribute>().To<HaveInterceptAttribute>();
+            this.kernel.Bind<IHaveInterceptAttribute>().To<HaveInterceptAttribute>();
 
-            kernel.Get<IHaveInterceptAttribute>().GetHashCode();
+            this.kernel.Get<IHaveInterceptAttribute>().GetHashCode();
             
             InterceptionFlag.Should().BeFalse();
         }
@@ -41,9 +41,9 @@ namespace Ninject.Extensions.Interception
         [Fact]
         public void InterceptionUsingAttribute_DoesInterceptOverridenSystemObjectMethods()
         {
-            kernel.Bind<IHaveInterceptAttribute>().To<HaveInterceptAndOverrideGetHashCodeAttribute>();
+            this.kernel.Bind<IHaveInterceptAttribute>().To<HaveInterceptAndOverrideGetHashCodeAttribute>();
 
-            kernel.Get<IHaveInterceptAttribute>().GetHashCode();
+            this.kernel.Get<IHaveInterceptAttribute>().GetHashCode();
 
             InterceptionFlag.Should().BeTrue();
         }
@@ -51,9 +51,9 @@ namespace Ninject.Extensions.Interception
         [Fact]
         public void InterceptionUsingBindingExtension_InterceptsMethods()
         {
-            kernel.Bind<IHaveNoInterceptAttribute>().To<HaveNoInterceptAttribute>().Intercept().With<MethodInterceptor>();
+            this.kernel.Bind<IHaveNoInterceptAttribute>().To<HaveNoInterceptAttribute>().Intercept().With<MethodInterceptor>();
 
-            kernel.Get<IHaveNoInterceptAttribute>().DoSomething();
+            this.kernel.Get<IHaveNoInterceptAttribute>().DoSomething();
             
             InterceptionFlag.Should().BeTrue();
         }
@@ -61,9 +61,9 @@ namespace Ninject.Extensions.Interception
         [Fact]
         public void InterceptionUsingBindingExtension_DoesNotInterceptSystemObjectMethods()
         {
-            kernel.Bind<IHaveNoInterceptAttribute>().To<HaveNoInterceptAttribute>().Intercept().With<MethodInterceptor>();
+            this.kernel.Bind<IHaveNoInterceptAttribute>().To<HaveNoInterceptAttribute>().Intercept().With<MethodInterceptor>();
 
-            kernel.Get<IHaveNoInterceptAttribute>().GetHashCode();
+            this.kernel.Get<IHaveNoInterceptAttribute>().GetHashCode();
 
             InterceptionFlag.Should().BeFalse();
         }
@@ -71,9 +71,9 @@ namespace Ninject.Extensions.Interception
         [Fact]
         public void InterceptionUsingBindingExtension_DoesInterceptOverriddenSystemObjectMethods()
         {
-            kernel.Bind<IHaveNoInterceptAttribute>().To<HaveNoInterceptAttributeButOverrideGetHashCode>().Intercept().With<MethodInterceptor>();
+            this.kernel.Bind<IHaveNoInterceptAttribute>().To<HaveNoInterceptAttributeButOverrideGetHashCode>().Intercept().With<MethodInterceptor>();
 
-            kernel.Get<IHaveNoInterceptAttribute>().GetHashCode();
+            this.kernel.Get<IHaveNoInterceptAttribute>().GetHashCode();
 
             InterceptionFlag.Should().BeTrue();
         }
@@ -81,10 +81,10 @@ namespace Ninject.Extensions.Interception
         [Fact]
         public void InterceptionUsingBindingExtension_WithInterceptAllMethodsPredicate_DoesInterceptSystemObjectMethods()
         {
-            kernel.Bind<IHaveNoInterceptAttribute>().To<HaveNoInterceptAttribute>()
+            this.kernel.Bind<IHaveNoInterceptAttribute>().To<HaveNoInterceptAttribute>()
                 .Intercept(mi => true).With<MethodInterceptor>();
 
-            kernel.Get<IHaveNoInterceptAttribute>().GetHashCode();
+            this.kernel.Get<IHaveNoInterceptAttribute>().GetHashCode();
 
             InterceptionFlag.Should().BeTrue();
         }
@@ -92,10 +92,10 @@ namespace Ninject.Extensions.Interception
         [Fact]
         public void InterceptionUsingBindingExtension_WithInterceptNothingPredicate_DoesNotInterceptMethods()
         {
-            kernel.Bind<IHaveNoInterceptAttribute>().To<HaveNoInterceptAttribute>()
+            this.kernel.Bind<IHaveNoInterceptAttribute>().To<HaveNoInterceptAttribute>()
                 .Intercept(mi => false).With<MethodInterceptor>();
 
-            kernel.Get<IHaveNoInterceptAttribute>().DoSomething();
+            this.kernel.Get<IHaveNoInterceptAttribute>().DoSomething();
 
             InterceptionFlag.Should().BeFalse();
         }
@@ -103,66 +103,66 @@ namespace Ninject.Extensions.Interception
         [Fact]
         public void InterceptionUsingKernelExtension_InterceptsMethods()
         {
-            kernel.Bind<IHaveNoInterceptAttribute>().To<HaveNoInterceptAttribute>();
-            kernel
+            this.kernel.Bind<IHaveNoInterceptAttribute>().To<HaveNoInterceptAttribute>();
+            this.kernel
                 .Intercept(ctx => typeof(IHaveNoInterceptAttribute).IsAssignableFrom(ctx.Plan.Type))
                 .With<MethodInterceptor>();
 
-            kernel.Get<IHaveNoInterceptAttribute>().DoSomething();
+            this.kernel.Get<IHaveNoInterceptAttribute>().DoSomething();
             InterceptionFlag.Should().BeTrue();
         }
 
         [Fact]
         public void InterceptionUsingKernelExtension_DoesNotInterceptSystemObjectMethods()
         {
-            kernel.Bind<IHaveNoInterceptAttribute>().To<HaveNoInterceptAttribute>();
-            kernel
+            this.kernel.Bind<IHaveNoInterceptAttribute>().To<HaveNoInterceptAttribute>();
+            this.kernel
                 .Intercept(ctx => typeof(IHaveNoInterceptAttribute).IsAssignableFrom(ctx.Plan.Type))
                 .With<MethodInterceptor>();
 
-            kernel.Get<IHaveNoInterceptAttribute>().GetHashCode();
+            this.kernel.Get<IHaveNoInterceptAttribute>().GetHashCode();
             InterceptionFlag.Should().BeFalse();
         }
 
         [Fact]
         public void InterceptionUsingKernelExtension_DoesInterceptOverriddenSystemObjectMethods()
         {
-            kernel.Bind<IHaveNoInterceptAttribute>().To<HaveNoInterceptAttributeButOverrideGetHashCode>();
-            kernel
+            this.kernel.Bind<IHaveNoInterceptAttribute>().To<HaveNoInterceptAttributeButOverrideGetHashCode>();
+            this.kernel
                 .Intercept(ctx => typeof(IHaveNoInterceptAttribute).IsAssignableFrom(ctx.Plan.Type))
                 .With<MethodInterceptor>();
 
-            kernel.Get<IHaveNoInterceptAttribute>().GetHashCode();
+            this.kernel.Get<IHaveNoInterceptAttribute>().GetHashCode();
             InterceptionFlag.Should().BeTrue();
         }
 
         [Fact]
         public void InterceptionUsingKernelExtension_WithInterceptAllMethodsPredicate_DoesInterceptSystemObjectMethods()
         {
-            kernel.Bind<IHaveNoInterceptAttribute>().To<HaveNoInterceptAttribute>();
-            kernel
+            this.kernel.Bind<IHaveNoInterceptAttribute>().To<HaveNoInterceptAttribute>();
+            this.kernel
                 .Intercept(
                     ctx => typeof(IHaveNoInterceptAttribute).IsAssignableFrom(ctx.Plan.Type),
                     mi => true
                 )
                 .With<MethodInterceptor>();
 
-            kernel.Get<IHaveNoInterceptAttribute>().GetHashCode();
+            this.kernel.Get<IHaveNoInterceptAttribute>().GetHashCode();
             InterceptionFlag.Should().BeTrue();
         }
 
         [Fact]
         public void InterceptionUsingKernelExtension_WithInterceptNothingPredicate_DoesNotInterceptMethods()
         {
-            kernel.Bind<IHaveNoInterceptAttribute>().To<HaveNoInterceptAttribute>();
-            kernel
+            this.kernel.Bind<IHaveNoInterceptAttribute>().To<HaveNoInterceptAttribute>();
+            this.kernel
                 .Intercept(
                     ctx => typeof(IHaveNoInterceptAttribute).IsAssignableFrom(ctx.Plan.Type),
                     mi => false
                 )
                 .With<MethodInterceptor>();
 
-            kernel.Get<IHaveNoInterceptAttribute>().DoSomething();
+            this.kernel.Get<IHaveNoInterceptAttribute>().DoSomething();
             InterceptionFlag.Should().BeFalse();
         }
 

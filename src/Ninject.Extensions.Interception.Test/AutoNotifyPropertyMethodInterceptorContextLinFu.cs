@@ -1,4 +1,4 @@
-#if !SILVERLIGHT
+#if !NETCOREAPP2_0
 namespace Ninject.Extensions.Interception
 {
     using FluentAssertions;
@@ -19,7 +19,7 @@ namespace Ninject.Extensions.Interception
         [Fact]
         public void WhenAutoNotifyAttributeIsAttachedToAProperty_TheObjectIsProxied()
         {
-            typeof(IProxy).IsAssignableFrom(ViewModel.GetType()).Should().BeTrue();
+            typeof(IProxy).IsAssignableFrom(this.ViewModel.GetType()).Should().BeTrue();
         }
     }
 } 

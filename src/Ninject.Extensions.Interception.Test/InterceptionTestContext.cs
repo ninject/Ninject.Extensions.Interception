@@ -9,16 +9,12 @@ namespace Ninject.Extensions.Interception
     {
         protected virtual INinjectSettings GetSettings()
         {
-#if !SILVERLIGHT
             return new NinjectSettings { LoadExtensions = false };
-#else
-            return new NinjectSettings();
-#endif
         }
 
         protected virtual StandardKernel CreateDefaultInterceptionKernel()
         {
-            return new StandardKernel( this.GetSettings(), InterceptionModule );
+            return new StandardKernel( this.GetSettings(), this.InterceptionModule );
         }
 
         protected abstract InterceptionModule InterceptionModule { get; }

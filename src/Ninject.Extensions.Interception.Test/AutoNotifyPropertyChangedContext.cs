@@ -4,7 +4,7 @@ namespace Ninject.Extensions.Interception
 
     public abstract class AutoNotifyPropertyChangedContext : InterceptionTestContext
     {
-        public AutoNotifyPropertyChangedContext()
+        protected AutoNotifyPropertyChangedContext()
         {
             this.Kernel = this.CreateDefaultInterceptionKernel();
             this.PropertyChanges = new List<string>();
