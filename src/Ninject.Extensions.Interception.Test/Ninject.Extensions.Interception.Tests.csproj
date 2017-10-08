@@ -28,4 +28,10 @@
     <ProjectReference Include="..\Ninject.Extensions.Interception.LinFu\Ninject.Extensions.Interception.LinFu.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="xunit.runner.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
