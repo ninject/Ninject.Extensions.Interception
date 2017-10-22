@@ -1,5 +1,5 @@
-// -------------------------------------------------------------------------------------------------
-// <copyright file="IDisposableEx.cs" company="Ninject Project Contributors">
+﻿// -------------------------------------------------------------------------------------------------
+// <copyright file="AssemblyInfo.cs" company="Ninject Project Contributors">
 //   Copyright (c) 2007-2010 Enkari, Ltd. All rights reserved.
 //   Copyright (c) 2010-2017 Ninject Project Contributors. All rights reserved.
 //
@@ -19,18 +19,6 @@
 // </copyright>
 // -------------------------------------------------------------------------------------------------
 
-namespace Ninject.Extensions.Interception.Infrastructure
-{
-    using System;
+using System;
 
-    /// <summary>
-    /// A disposable object.
-    /// </summary>
-    public interface IDisposableEx : IDisposable
-    {
-        /// <summary>
-        /// Gets a value indicating whether the object has been disposed.
-        /// </summary>
-        bool IsDisposed { get; }
-    }
-}
+[assembly: CLSCompliant(true)]

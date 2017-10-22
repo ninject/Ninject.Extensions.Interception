@@ -3,18 +3,18 @@
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net45</TargetFrameworks>
     <Version>0.0.0</Version>
-    <Authors>Ninject Contributors</Authors>
+    <Authors>Ninject Project Contributors</Authors>
     <Company>Ninject Project Contributors</Company>
     <Product>Interception extension for Ninject</Product>
     <Description>Adds support for interception to Ninject</Description>
-    <Copyright>2007-2010, Enkari, Ltd. 2010-2017, Ninject Contributors.</Copyright>
+    <Copyright>2007-2010 Enkari, Ltd. 2010-2017 Ninject Project Contributors.</Copyright>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <AssemblyOriginatorKeyFile>..\Ninject.snk</AssemblyOriginatorKeyFile>
     <SignAssembly>true</SignAssembly>
     <PublicSign Condition=" '$(OS)' != 'Windows_NT' ">true</PublicSign>
     <PackageId>Ninject.Extensions.Interception</PackageId>
     <PackageVersion>0.0.0</PackageVersion>
-    <PackageTags>Ninject;ioc;di;interception;aop;dynamicproxy;</PackageTags>
+    <PackageTags>Ninject;ioc;di;interception;aop;</PackageTags>
     <PackageProjectUrl>http://www.ninject.org/</PackageProjectUrl>
     <PackageReleaseNotes>https://github.com/ninject/Ninject.Extensions.Interception/blob/master/CHANGELOG.md</PackageReleaseNotes>
     <PackageIconUrl>https://github.com/ninject/ninject/raw/master/logos/Ninject-Logo32.png</PackageIconUrl>
@@ -36,15 +36,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Ninject" Version="3.3.2-beta1" />
+    <PackageReference Include="Ninject" Version="3.3.3" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.0-beta004">
       <PrivateAssets>All</PrivateAssets>
     </PackageReference>
-  </ItemGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
-    <Reference Include="System" />
-    <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
 
 </Project>
