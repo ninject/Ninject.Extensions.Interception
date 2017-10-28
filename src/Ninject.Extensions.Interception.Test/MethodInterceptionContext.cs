@@ -1,5 +1,6 @@
 namespace Ninject.Extensions.Interception
 {
+    using System.Linq;
     using FluentAssertions;
 
     using Ninject.Extensions.Interception.Fakes;
@@ -174,6 +175,26 @@ namespace Ninject.Extensions.Interception
 
                 obj.DoDerived();
                 CountInterceptor.Count.Should().Be(2);
+            }
+        }
+
+        [Fact]
+        public void MethodsFromDerivedClassesWithAttributeCanBeIntercepted()
+        {
+            using (var kernel = CreateDefaultInterceptionKernel())
+            {
+                CountInterceptor.Reset();
+
+                kernel.Bind<IDerived>().To<Derived>();
+                kernel.Bind<IDerived>().To<Derived2>();
+
+                var objs = kernel.GetAll<IDerived>().ToList();
+
+                objs[0].DoDerived();
+                CountInterceptor.Count.Should().Be(1);
+
+                objs[1].DoDerived();
+                CountInterceptor.Count.Should().Be(1);
             }
         }
 

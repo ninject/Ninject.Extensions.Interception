@@ -164,6 +164,11 @@ namespace Ninject.Extensions.Interception.Advice
         /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
         private bool MatchesMethod(IProxyRequest request)
         {
+            if (!this.method.DeclaringType.IsAssignableFrom(request.Target.GetType()))
+            {
+                return false;
+            }
+
             if (request.Method.GetMethodHandle().Equals(this.MethodHandle))
             {
                 return true;
@@ -186,6 +191,6 @@ namespace Ninject.Extensions.Interception.Advice
             }
 
             return map.TargetMethods[index].GetMethodHandle() == this.method.GetMethodHandle();
-         }
+        }
     }
 }

@@ -9,4 +9,10 @@ namespace Ninject.Extensions.Interception.Fakes
         {
         }
     }
+
+    public class Derived2 : Base, IDerived
+    {
+        public void DoDerived()
+        { }
+    }
 }
