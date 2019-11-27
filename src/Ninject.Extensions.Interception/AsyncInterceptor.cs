@@ -21,6 +21,7 @@
 
 namespace Ninject.Extensions.Interception
 {
+    using System;
     using System.Reflection;
     using System.Threading.Tasks;
 
@@ -30,7 +31,7 @@ namespace Ninject.Extensions.Interception
     /// </summary>
     public abstract class AsyncInterceptor : IInterceptor
     {
-        private static MethodInfo startTaskMethodInfo = typeof(AsyncInterceptor).GetMethod("InterceptTaskWithResult", BindingFlags.Instance | BindingFlags.NonPublic);
+        private static readonly MethodInfo StartTaskMethodInfo = typeof(AsyncInterceptor).GetMethod(nameof(InterceptTaskWithResult), BindingFlags.Instance | BindingFlags.NonPublic);
 
         /// <summary>
         /// Intercepts the specified invocation.
@@ -48,7 +49,7 @@ namespace Ninject.Extensions.Interception
             if (returnType.IsGenericType && returnType.GetGenericTypeDefinition() == typeof(Task<>))
             {
                 var resultType = returnType.GetGenericArguments()[0];
-                var mi = startTaskMethodInfo.MakeGenericMethod(resultType);
+                var mi = StartTaskMethodInfo.MakeGenericMethod(resultType);
                 mi.Invoke(this, new object[] { invocation });
                 return;
             }
@@ -85,6 +86,15 @@ namespace Ninject.Extensions.Interception
         {
         }
 
+        /// <summary>
+        /// Handles exception for the invocation proceeding.
+        /// </summary>
+        /// <param name="invocation">The invocation that is being intercepted.</param>
+        /// <param name="exception">The exception when proceed the invocation.</param>
+        protected virtual void HandleException(IInvocation invocation, Exception exception)
+        {
+        }
+
         private void InterceptTask(IInvocation invocation)
         {
             var invocationClone = invocation.Clone();
@@ -97,6 +107,10 @@ namespace Ninject.Extensions.Interception
                     }).Unwrap()
                 .ContinueWith(t =>
                             {
+                                if (t.IsFaulted)
+                                {
+                                    this.HandleException(invocationClone, t.Exception);
+                                }
                                 this.AfterInvoke(invocation);
                                 this.AfterInvoke(invocation, t);
                             });
@@ -114,7 +128,15 @@ namespace Ninject.Extensions.Interception
                     }).Unwrap()
                 .ContinueWith(t =>
                         {
-                            invocationClone.ReturnValue = t.Result;
+                            if (t.IsFaulted)
+                            {
+                                this.HandleException(invocationClone, t.Exception);
+                                invocationClone.ReturnValue = default(TResult);
+                            }
+                            else
+                            {
+                                invocationClone.ReturnValue = t.Result;
+                            }
                             this.AfterInvoke(invocationClone);
                             this.AfterInvoke(invocationClone, t);
                             return (TResult)invocationClone.ReturnValue;
