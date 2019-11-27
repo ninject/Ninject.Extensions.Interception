@@ -87,7 +87,7 @@ namespace Ninject.Extensions.Interception
                 var result = await service.DoAsyncIntThrow();
 
                 BeforeAfterCallOrderInterceptor.Order.Should().Be("Before_Action_HandleException_AfterCompleted_");
-                result.Should().Be(default);
+                result.Should().Be(default(int));
             }
         }
 
