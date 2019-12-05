@@ -54,9 +54,23 @@ namespace Ninject.Extensions.Interception
                 return;
             }
 
-            this.BeforeInvoke(invocation);
-            invocation.Proceed();
-            this.AfterInvoke(invocation);
+            try
+            {
+                this.BeforeInvoke(invocation);
+                invocation.Proceed();
+                this.AfterInvoke(invocation);
+            }
+            catch (Exception exception)
+            {
+                if (!this.HandleException(invocation, exception))
+                {
+                    throw;
+                }
+            }
+            finally
+            {
+                this.CompleteInvoke(invocation);
+            }
         }
 
         /// <summary>
@@ -91,7 +105,28 @@ namespace Ninject.Extensions.Interception
         /// </summary>
         /// <param name="invocation">The invocation that is being intercepted.</param>
         /// <param name="exception">The exception when proceed the invocation.</param>
-        protected virtual void HandleException(IInvocation invocation, Exception exception)
+        /// <returns>A boolean value indicating whether the exception is being handled or not.</returns>
+        protected virtual bool HandleException(IInvocation invocation, Exception exception)
+        {
+            return false;
+        }
+
+        /// <summary>
+        /// Takes some action after the invocation proceeds.
+        /// </summary>
+        /// <remarks>Use one AfterInvoke method overload.</remarks>
+        /// <param name="invocation">The invocation that is being intercepted.</param>
+        protected virtual void CompleteInvoke(IInvocation invocation)
+        {
+        }
+
+        /// <summary>
+        /// Takes some action after the invocation proceeds.
+        /// </summary>
+        /// <remarks>Use one AfterInvoke method overload.</remarks>
+        /// <param name="invocation">The invocation that is being intercepted.</param>
+        /// <param name="task">The task that was executed.</param>
+        protected virtual void CompleteInvoke(IInvocation invocation, Task task)
         {
         }
 
@@ -99,48 +134,85 @@ namespace Ninject.Extensions.Interception
         {
             var invocationClone = invocation.Clone();
             invocation.ReturnValue = Task.Factory
-                .StartNew(() => this.BeforeInvoke(invocation))
-                .ContinueWith(t =>
+                .StartNew(() => this.BeforeInvoke(invocationClone))
+                .ContinueWith(
+                    t =>
                     {
                         invocationClone.Proceed();
                         return invocationClone.ReturnValue as Task;
-                    }).Unwrap()
-                .ContinueWith(t =>
-                            {
-                                if (t.IsFaulted)
-                                {
-                                    this.HandleException(invocationClone, t.Exception);
-                                }
-                                this.AfterInvoke(invocation);
-                                this.AfterInvoke(invocation, t);
-                            });
+                    }, TaskContinuationOptions.OnlyOnRanToCompletion).Unwrap()
+                .ContinueWith(
+                    t =>
+                    {
+                        return this.PipelineTask<object>(invocation, t);
+                    }).Unwrap();
         }
 
         private void InterceptTaskWithResult<TResult>(IInvocation invocation)
         {
             var invocationClone = invocation.Clone();
             invocation.ReturnValue = Task.Factory
-                .StartNew(() => this.BeforeInvoke(invocation))
-                .ContinueWith(t =>
+                .StartNew(() => this.BeforeInvoke(invocationClone))
+                .ContinueWith(
+                    t =>
                     {
                         invocationClone.Proceed();
                         return invocationClone.ReturnValue as Task<TResult>;
-                    }).Unwrap()
-                .ContinueWith(t =>
-                        {
-                            if (t.IsFaulted)
-                            {
-                                this.HandleException(invocationClone, t.Exception);
-                                invocationClone.ReturnValue = default(TResult);
-                            }
-                            else
-                            {
-                                invocationClone.ReturnValue = t.Result;
-                            }
-                            this.AfterInvoke(invocationClone);
-                            this.AfterInvoke(invocationClone, t);
-                            return (TResult)invocationClone.ReturnValue;
-                        });
+                    }, TaskContinuationOptions.OnlyOnRanToCompletion).Unwrap()
+                .ContinueWith(
+                    t =>
+                    {
+                        return this.PipelineTask<TResult>(invocation, t);
+                    }).Unwrap();
+        }
+
+        /// <summary>
+        /// Creates a pipeline for the task result such that multiple interceptors can
+        /// contribute to the final result.
+        /// </summary>
+        /// <typeparam name="TResult">Type of the task's intended result.</typeparam>
+        /// <param name="invocation">The invocation that is being intercepted.</param>
+        /// <param name="task">The task whose result is to be passed on ("pipelined").</param>
+        /// <returns>A new task with the result of the previous task plus any interception logic.</returns>
+        private Task<TResult> PipelineTask<TResult>(IInvocation invocation, Task task)
+        {
+            var tcs = new TaskCompletionSource<TResult>();
+            invocation.ReturnValue = default(TResult);
+
+            switch (task.Status)
+            {
+                case TaskStatus.Canceled:
+                    tcs.SetCanceled();
+                    break;
+
+                case TaskStatus.Faulted:
+                    var originalException = task.Exception is AggregateException ae ? ae.InnerException : task.Exception;
+                    if (!this.HandleException(invocation, originalException))
+                    {
+                        tcs.SetException(originalException);
+                    }
+                    else
+                    {
+                        tcs.SetResult((TResult)invocation.ReturnValue);
+                    }
+
+                    break;
+
+                case TaskStatus.RanToCompletion:
+                    if (task is Task<TResult> typedTask)
+                    {
+                        invocation.ReturnValue = typedTask.Result;
+                    }
+
+                    this.AfterInvoke(invocation);
+                    this.AfterInvoke(invocation, task);
+                    tcs.SetResult((TResult)invocation.ReturnValue);
+                    break;
+            }
+
+            this.CompleteInvoke(invocation);
+            this.CompleteInvoke(invocation, task);
+            return tcs.Task;
         }
     }
 }

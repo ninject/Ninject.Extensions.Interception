@@ -1,167 +1,271 @@
 namespace Ninject.Extensions.Interception
 {
     using System;
+    using System.Threading;
     using System.Threading.Tasks;
     using FluentAssertions;
     using Ninject.Extensions.Interception.Infrastructure.Language;
     using Xunit;
 
-    public abstract class AsyncInterceptionContext : InterceptionTestContext
+    public abstract class AsyncInterceptionContext : InterceptionTestContext, IDisposable
     {
-        [Fact]
-        public async Task AsyncMethodsCanBeIntercepted()
+        public AsyncInterceptionContext()
         {
-            using (var kernel = this.CreateDefaultInterceptionKernel())
-            {
-                BeforeAfterCallOrderInterceptor.Reset();
+            CallRecordingInterceptor.Reset();
+            Kernel = this.CreateDefaultInterceptionKernel();
+        }
 
-                kernel.Bind<AsyncService>().ToSelf().Intercept().With<BeforeAfterCallOrderInterceptor>();
-                var service = kernel.Get<AsyncService>();
+        IKernel Kernel { get; set; }
 
-                await service.DoAsync();
-
-                BeforeAfterCallOrderInterceptor.Order.Should().Be("Before_Action_AfterCompleted_");
-            }
+        public void Dispose()
+        {
+            Kernel.Dispose();
         }
 
         [Fact]
-        public async Task AsyncMethods_InterceptorsCanCatchException()
+        public void CanInterceptSynchronousMethods()
         {
-            using (var kernel = this.CreateDefaultInterceptionKernel())
-            {
-                BeforeAfterCallOrderInterceptor.Reset();
+            Kernel.Bind<AsyncService>().ToSelf().Intercept().With<CallRecordingInterceptor>();
+            var service = Kernel.Get<AsyncService>();
 
-                kernel.Bind<AsyncService>().ToSelf().Intercept().With<BeforeAfterCallOrderInterceptor>();
-                var service = kernel.Get<AsyncService>();
+            service.Do();
 
-                await service.DoAsyncThrow();
-
-                BeforeAfterCallOrderInterceptor.Order.Should().Be("Before_Action_HandleException_AfterCompleted_");
-            }
+            CallRecordingInterceptor.Order.Should().Be("CallRecordingBefore_Action_CallRecordingAfter_CallRecordingComplete_");
         }
 
         [Fact]
-        public async Task AsyncMethodsWithReturnValueCanBeIntercepted()
+        public void CanHandleErrorsInSynchronousMethods()
         {
-            using (var kernel = this.CreateDefaultInterceptionKernel())
-            {
-                BeforeAfterCallOrderInterceptor.Reset();
+            Kernel.Bind<AsyncService>().ToSelf().Intercept().With<CallRecordingInterceptor>();
+            var service = Kernel.Get<AsyncService>();
 
-                kernel.Bind<AsyncService>().ToSelf().Intercept().With<BeforeAfterCallOrderInterceptor>();
-                var service = kernel.Get<AsyncService>();
+            service.DoThrow();
 
-                var result = await service.DoAsyncInt();
-
-                BeforeAfterCallOrderInterceptor.Order.Should().Be("Before_Action_AfterCompleted_");
-                result.Should().Be(42);
-            }
+            CallRecordingInterceptor.Order.Should().Be("CallRecordingBefore_Action_CallRecordingHandleException_CallRecordingComplete_");
         }
 
         [Fact]
-        public async Task AsyncMethodsWithReturnValue_InterceptorsCanChangeTheResult()
+        public void CanRethrowErrorsInSynchronousMethods()
         {
-            using (var kernel = this.CreateDefaultInterceptionKernel())
-            {
-                BeforeAfterCallOrderInterceptor.Reset();
+            Kernel.Bind<AsyncService>().ToSelf().Intercept().With<RethrowingInterceptor>();
+            var service = Kernel.Get<AsyncService>();
 
-                kernel.Bind<AsyncService>().ToSelf().Intercept().With<IncreaseResultInterceptor>();
-                var service = kernel.Get<AsyncService>();
+            Assert.Throws<Exception>(() => service.DoThrow());
 
-                var result = await service.DoAsyncInt();
-
-                BeforeAfterCallOrderInterceptor.Order.Should().Be("Before_Action_AfterCompleted_");
-                result.Should().Be(43);
-            }
+            CallRecordingInterceptor.Order.Should().Be("RethrowingBefore_Action_RethrowingHandleException_RethrowingComplete_");
         }
 
         [Fact]
-        public async Task AsyncMethodsWithReturnValue_InterceptorsCanCatchException()
+        public async Task CanInterceptAsyncMethods()
         {
-            using (var kernel = this.CreateDefaultInterceptionKernel())
-            {
-                BeforeAfterCallOrderInterceptor.Reset();
+            Kernel.Bind<AsyncService>().ToSelf().Intercept().With<CallRecordingInterceptor>();
+            var service = Kernel.Get<AsyncService>();
 
-                kernel.Bind<AsyncService>().ToSelf().Intercept().With<BeforeAfterCallOrderInterceptor>();
-                var service = kernel.Get<AsyncService>();
+            await service.DoAsync();
 
-                var result = await service.DoAsyncIntThrow();
-
-                BeforeAfterCallOrderInterceptor.Order.Should().Be("Before_Action_HandleException_AfterCompleted_");
-                result.Should().Be(default(int));
-            }
+            CallRecordingInterceptor.Order.Should().Be("CallRecordingBefore_Action_CallRecordingAfter_CallRecordingAfterIsCompleted_CallRecordingComplete_CallRecordingCompleteIsCompleted_");
         }
 
         [Fact]
-        public async Task AsyncMethodsWithReturnValue_InterceptorsSetDefaultReturnValueOnFault()
+        public async Task CanInterceptAsyncMethodsWithReturnCode()
         {
-            using (var kernel = this.CreateDefaultInterceptionKernel())
-            {
-                BeforeAfterCallOrderInterceptor.Reset();
+            Kernel.Bind<AsyncService>().ToSelf().Intercept().With<CallRecordingInterceptor>();
+            var service = Kernel.Get<AsyncService>();
 
-                kernel.Bind<AsyncService>().ToSelf().Intercept().With<IncreaseResultInterceptor>();
-                var service = kernel.Get<AsyncService>();
+            var result = await service.DoIntAsync();
 
-                var result = await service.DoAsyncIntThrow();
+            CallRecordingInterceptor.Order.Should().Be("CallRecordingBefore_Action_CallRecordingAfter_CallRecordingAfterIsCompleted_CallRecordingComplete_CallRecordingCompleteIsCompleted_");
+            result.Should().Be(42);
+        }
 
-                BeforeAfterCallOrderInterceptor.Order.Should().Be("Before_Action_HandleException_AfterCompleted_");
-                result.Should().Be(1);
-            }
+        [Fact]
+        public async Task CanInterceptAsyncMethodsWithReturnCodeAndChangeTheResult()
+        {
+            Kernel.Bind<AsyncService>().ToSelf().Intercept().With<IncreaseResultInterceptor>();
+            var service = Kernel.Get<AsyncService>();
+
+            var result = await service.DoIntAsync();
+
+            CallRecordingInterceptor.Order.Should().Be("IncreaseResultBefore_Action_IncreaseResultAfter_IncreaseResultAfterIsCompleted_IncreaseResultComplete_IncreaseResultCompleteIsCompleted_");
+            result.Should().Be(43);
+        }
+
+        [Fact]
+        public async Task CanHandleErrorsInAsyncMethods()
+        {
+            Kernel.Bind<AsyncService>().ToSelf().Intercept().With<CallRecordingInterceptor>();
+            var service = Kernel.Get<AsyncService>();
+
+            await service.DoThrowAsync();
+
+            CallRecordingInterceptor.Order.Should().Be("CallRecordingBefore_Action_CallRecordingHandleException_CallRecordingComplete_CallRecordingCompleteIsFaulted_");
+        }
+
+        [Fact]
+        public async Task CanRethrowErrorsInAsyncMethods()
+        {
+            Kernel.Bind<AsyncService>().ToSelf().Intercept().With<RethrowingInterceptor>();
+            var service = Kernel.Get<AsyncService>();
+
+            await Assert.ThrowsAsync<Exception>(() => service.DoThrowAsync());
+
+            CallRecordingInterceptor.Order.Should().Be("RethrowingBefore_Action_RethrowingHandleException_RethrowingComplete_RethrowingCompleteIsFaulted_");
+        }
+
+        [Fact]
+        public async Task DoesNotProceedIfBeforeFails()
+        {
+            Kernel.Bind<AsyncService>().ToSelf().Intercept().With<ThrowsBeforeInterceptor>();
+            var service = Kernel.Get<AsyncService>();
+
+            await Assert.ThrowsAsync<TaskCanceledException>(() => service.DoThrowAsync());
+
+            CallRecordingInterceptor.Order.Should().Be("ThrowsBeforeBefore_ThrowsBeforeComplete_ThrowsBeforeCompleteIsCanceled_");
+        }
+
+        [Fact]
+        public async Task FirstInterceptorCanSetReturnCode()
+        {
+            var binding = Kernel.Bind<AsyncService>().ToSelf();
+            binding.Intercept().With<IncreaseResultInterceptor>();
+            binding.Intercept().With<CallRecordingInterceptor>();
+            var service = Kernel.Get<AsyncService>();
+
+            var result = await service.DoIntAsync();
+
+            CallRecordingInterceptor.Order.Should().Be("IncreaseResultBefore_CallRecordingBefore_Action_CallRecordingAfter_CallRecordingAfterIsCompleted_CallRecordingComplete_CallRecordingCompleteIsCompleted_IncreaseResultAfter_IncreaseResultAfterIsCompleted_IncreaseResultComplete_IncreaseResultCompleteIsCompleted_");
+            result.Should().Be(43);
+        }
+
+        [Fact]
+        public async Task SecondInterceptorCanSetReturnCode()
+        {
+            var binding = Kernel.Bind<AsyncService>().ToSelf();
+            binding.Intercept().With<CallRecordingInterceptor>();
+            binding.Intercept().With<IncreaseResultInterceptor>();
+            var service = Kernel.Get<AsyncService>();
+
+            var result = await service.DoIntAsync();
+
+            CallRecordingInterceptor.Order.Should().Be("CallRecordingBefore_IncreaseResultBefore_Action_IncreaseResultAfter_IncreaseResultAfterIsCompleted_IncreaseResultComplete_IncreaseResultCompleteIsCompleted_CallRecordingAfter_CallRecordingAfterIsCompleted_CallRecordingComplete_CallRecordingCompleteIsCompleted_");
+            result.Should().Be(43);
+        }
+
+        [Fact]
+        public async Task BothInterceptorsCanSetReturnCode()
+        {
+            var binding = Kernel.Bind<AsyncService>().ToSelf();
+            binding.Intercept().With<IncreaseResultInterceptor>();
+            binding.Intercept().With<IncreaseResultInterceptor>();
+            var service = Kernel.Get<AsyncService>();
+
+            var result = await service.DoIntAsync();
+
+            CallRecordingInterceptor.Order.Should().Be("IncreaseResultBefore_IncreaseResultBefore_Action_IncreaseResultAfter_IncreaseResultAfterIsCompleted_IncreaseResultComplete_IncreaseResultCompleteIsCompleted_IncreaseResultAfter_IncreaseResultAfterIsCompleted_IncreaseResultComplete_IncreaseResultCompleteIsCompleted_");
+            result.Should().Be(44);
+        }
+
+        [Fact]
+        public async Task FirstInterceptorCanHandleErrorsAndSetReturnCode()
+        {
+            var binding = Kernel.Bind<AsyncService>().ToSelf();
+            binding.Intercept().With<IncreaseResultInterceptor>();
+            binding.Intercept().With<RethrowingInterceptor>();
+            var service = Kernel.Get<AsyncService>();
+
+            var result = await service.DoIntThrowAsync();
+
+            CallRecordingInterceptor.Order.Should().Be("IncreaseResultBefore_RethrowingBefore_Action_RethrowingHandleException_RethrowingComplete_RethrowingCompleteIsFaulted_IncreaseResultHandleException_IncreaseResultComplete_IncreaseResultCompleteIsFaulted_");
+            result.Should().Be(1);
+        }
+
+        [Fact]
+        public async Task SecondInterceptorCanHandleErrorsAndSetReturnCode()
+        {
+            var binding = Kernel.Bind<AsyncService>().ToSelf();
+            binding.Intercept().With<RethrowingInterceptor>();
+            binding.Intercept().With<IncreaseResultInterceptor>();
+            var service = Kernel.Get<AsyncService>();
+
+            var result = await service.DoIntThrowAsync();
+
+            CallRecordingInterceptor.Order.Should().Be("RethrowingBefore_IncreaseResultBefore_Action_IncreaseResultHandleException_IncreaseResultComplete_IncreaseResultCompleteIsFaulted_RethrowingAfter_RethrowingAfterIsCompleted_RethrowingComplete_RethrowingCompleteIsCompleted_");
+            result.Should().Be(1);
+        }
+
+        [Fact]
+        public async Task BothInterceptorsCanRethrowErrors()
+        {
+            var binding = Kernel.Bind<AsyncService>().ToSelf();
+            binding.Intercept().With<RethrowingInterceptor>();
+            binding.Intercept().With<RethrowingInterceptor>();
+            var service = Kernel.Get<AsyncService>();
+
+            await Assert.ThrowsAsync<Exception>(() => service.DoThrowAsync());
+
+            CallRecordingInterceptor.Order.Should().Be("RethrowingBefore_RethrowingBefore_Action_RethrowingHandleException_RethrowingComplete_RethrowingCompleteIsFaulted_RethrowingHandleException_RethrowingComplete_RethrowingCompleteIsFaulted_");
         }
 
         public class AsyncService
         {
+            public virtual void Do()
+            {
+                CallRecordingInterceptor.ActionCalled();
+            }
+
+            public virtual void DoThrow()
+            {
+                Do();
+                throw new Exception();
+            }
+
             public virtual async Task DoAsync()
             {
-                await this.Do();
+                Do();
+                await Task.Delay(1);
             }
 
-            public virtual async Task<int> DoAsyncInt()
+            public virtual async Task<int> DoIntAsync()
             {
-                int result = await this.DoInt();
-                return result;
+                Do();
+                return await Task.Delay(1).ContinueWith((t, o) => 42, null);
             }
 
-            public virtual async Task DoAsyncThrow()
+            public virtual async Task DoThrowAsync(Exception e = null)
             {
-                await this.DoThrow();
+                Do();
+                await this.ThrowAsync(e);
             }
 
-            public virtual async Task<int> DoAsyncIntThrow()
+            public virtual async Task<int> DoIntThrowAsync(Exception e = null)
             {
-                int result = await this.DoIntThrow();
-                return result;
+                Do();
+                return await this.IntThrowAsync(e);
             }
 
-            private Task Do()
+            private Task ThrowAsync(Exception e = null)
             {
-                BeforeAfterCallOrderInterceptor.ActionCalled();
-                return Task.Delay(100);
+                throw e ?? new Exception();
             }
 
-            private Task DoThrow()
+            private Task<int> IntThrowAsync(Exception e = null)
             {
-                BeforeAfterCallOrderInterceptor.ActionCalled();
-                throw new Exception();
-            }
-
-            private Task<int> DoInt()
-            {
-                BeforeAfterCallOrderInterceptor.ActionCalled();
-                return Task.Delay(100).ContinueWith((t, o) => 42, null);
-            }
-
-            private Task<int> DoIntThrow()
-            {
-                BeforeAfterCallOrderInterceptor.ActionCalled();
-                throw new Exception();
+                throw e ?? new Exception();
             }
         }
 
-        public class BeforeAfterCallOrderInterceptor : AsyncInterceptor
+        public class CallRecordingInterceptor : AsyncInterceptor
         {
             public static string Order
             {
                 get; set;
+            }
+
+            protected virtual string Name => "CallRecording";
+
+            protected void Record(string callName)
+            {
+                Order += Name + callName + "_";
             }
 
             public static void Reset()
@@ -176,32 +280,95 @@ namespace Ninject.Extensions.Interception
 
             protected override void BeforeInvoke(IInvocation invocation)
             {
-                Order += "Before_";
+                Record("Before");
+            }
+
+            protected override void AfterInvoke(IInvocation invocation)
+            {
+                Record("After");
             }
 
             protected override void AfterInvoke(IInvocation invocation, Task task)
             {
-                if (task.IsCompleted)
-                {
-                    Order += "AfterCompleted_";
-                }
-                else
-                {
-                    Order += "BeforeCompleted_";
-                }
+                Record("After" + StateFor(task));
             }
 
-            protected override void HandleException(IInvocation invocation, Exception e)
+            protected override bool HandleException(IInvocation invocation, Exception e)
             {
-                Order += "HandleException_";
+                Record("HandleException");
+                return true;
+            }
+
+            protected override void CompleteInvoke(IInvocation invocation)
+            {
+                Record("Complete");
+            }
+
+            protected override void CompleteInvoke(IInvocation invocation, Task task)
+            {
+                Record("Complete" + StateFor(task));
+            }
+
+            private string StateFor(Task task)
+            {
+                if (task.IsCanceled)
+                {
+                    return "IsCanceled";
+                }
+                if (task.IsFaulted)
+                {
+                    return "IsFaulted";
+                }
+                if (task.IsCompleted)
+                {
+                    return "IsCompleted";
+                }
+                return string.Empty;
             }
         }
 
-        public class IncreaseResultInterceptor : BeforeAfterCallOrderInterceptor
+        public class ThrowsBeforeInterceptor : CallRecordingInterceptor
         {
+            protected override string Name => "ThrowsBefore";
+
+            protected override void BeforeInvoke(IInvocation invocation)
+            {
+                base.BeforeInvoke(invocation);
+                throw new Exception();
+            }
+        }
+
+        public class RethrowingInterceptor : CallRecordingInterceptor
+        {
+            protected override string Name => "Rethrowing";
+
+            protected override bool HandleException(IInvocation invocation, Exception e)
+            {
+                base.HandleException(invocation, e);
+                return false;
+            }
+        }
+
+        public class IncreaseResultInterceptor : CallRecordingInterceptor
+        {
+            protected override string Name => "IncreaseResult";
+
+            protected override bool HandleException(IInvocation invocation, Exception e)
+            {
+                base.HandleException(invocation, e);
+                IncrementReturnValue(invocation);
+                return true;
+            }
+
             protected override void AfterInvoke(IInvocation invocation)
             {
-                invocation.ReturnValue = ((int)invocation.ReturnValue + 1);
+                base.AfterInvoke(invocation);
+                IncrementReturnValue(invocation);
+            }
+
+            private void IncrementReturnValue(IInvocation invocation)
+            {
+                invocation.ReturnValue = (int)invocation.ReturnValue + 1;
             }
         }
     }
