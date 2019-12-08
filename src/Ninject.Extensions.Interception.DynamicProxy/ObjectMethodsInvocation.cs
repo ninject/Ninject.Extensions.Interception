@@ -129,6 +129,12 @@ namespace Ninject.Extensions.Interception.ProxyFactory
             this.Method.Invoke(this.InvocationTarget, this.Arguments);
         }
 
+        /// <inheritdoc />
+        public IInvocationProceedInfo CaptureProceedInfo()
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// Sets the argument value.
         /// </summary>
