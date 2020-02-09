@@ -150,7 +150,8 @@ namespace Ninject.Extensions.Interception.Advice
                 requestMethod = request.Target.GetType()
                     .GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
                     .SingleOrDefault(mi => mi.Name == requestMethod.Name &&
-                                     mi.GetParameters().SequenceEqual(requestMethod.GetParameters()))
+                                     mi.GetParameters().SequenceEqual(requestMethod.GetParameters()) &&
+                                     mi.GetGenericArguments().SequenceEqual(requestMethod.GetGenericArguments()))
                     ?? requestMethod;
             }
 

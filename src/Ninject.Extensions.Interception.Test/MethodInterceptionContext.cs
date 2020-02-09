@@ -329,6 +329,18 @@ namespace Ninject.Extensions.Interception
         }
 
         [Fact]
+        public void SameNameMethodAreIntercepted()
+        {
+            using (var kernel = CreateDefaultInterceptionKernel())
+            {
+                kernel.Bind<ISameNameMethod>().To<SameNameMethod>().Intercept().With<CountInterceptor>();
+                var obj = kernel.Get<ISameNameMethod>();
+
+                new Action(() => obj.Foo<IFoo>()).ShouldNotThrow<InvalidOperationException>();
+            }
+        }
+
+        [Fact]
         public void SelfBoundTypesDeclaringMethodInterceptorsCanBeReleased()
         {
             using (var kernel = CreateDefaultInterceptionKernel())
