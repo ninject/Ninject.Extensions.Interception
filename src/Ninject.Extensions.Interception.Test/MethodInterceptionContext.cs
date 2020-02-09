@@ -1,5 +1,6 @@
 namespace Ninject.Extensions.Interception
 {
+    using System;
     using System.Linq;
     using FluentAssertions;
 
